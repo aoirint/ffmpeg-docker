@@ -1,4 +1,5 @@
-FROM ubuntu:bionic
+ARG BASE_IMAGE=ubuntu:bionic
+FROM $BASE_IMAGE
 
 # https://www.nasm.us/
 ARG NASM_VERSION=2.14.02
@@ -15,7 +16,8 @@ ARG LAME_VERSION=3.100
 # https://github.com/xiph/opus.git
 ARG OPUS_VERSION=034c1b61a250457649d788bbf983b3f0fb63f02e
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=45ea1032792e9087cee114d047c8eb4b71a52c8a
+# use tag because commit id of the same commit on master branch quite frequently chnages
+ARG AOM_VERSION=v2.0.0
 # https://ffmpeg.org/download.html
 ARG FFMPEG_VERSION=4.3.1
 

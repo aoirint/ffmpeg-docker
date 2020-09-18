@@ -153,8 +153,8 @@ RUN mkdir -p ${SOURCE_PREFIX}/ffmpeg \
   && make -j$(nproc) \
   && make install
 
-RUN apt-get clean \
-  && rm -rf ${SOURCE_PREFIX}
+# RUN apt-get clean
+#   && rm -rf ${SOURCE_PREFIX}
 
 ENTRYPOINT [ "ffmpeg" ]
 CMD [ "--help" ]

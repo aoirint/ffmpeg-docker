@@ -1,0 +1,37 @@
+name: Docker registry
+
+on: 
+   push:
+     tags:
+       - 'v*'
+
+jobs:
+  dockerhub:
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Login to github registry
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY_URL: docker.io
+
+      - name: Build :python
+        if: success()
+        run: docker build -t aoirint/ffmpeg:python --build-arg BASE_IMAGE=python:3 .
+
+      - name: Build :ubuntu
+        if: success()
+        run: docker build -t aoirint/ffmpeg:ubuntu --build-arg BASE_IMAGE=ubuntu:bionic .
+
+      - name: Build :tag
+        if: success()
+        run: docker build -t aoirint/ffmpeg:${IMAGE_TAG} .
+
+      - name: Push to docker hub :tag
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push aoirint/ffmpeg

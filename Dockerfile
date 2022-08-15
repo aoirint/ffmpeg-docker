@@ -240,7 +240,7 @@ RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/vmaf
     cd ${SOURCE_PREFIX}/vmaf
-    git clone --depth 1 --branch ${DAV1D_VERSION} https://github.com/Netflix/vmaf.git ./
+    git clone --depth 1 --branch ${VMAF_VERSION} https://github.com/Netflix/vmaf.git ./
     mkdir build
     cd build
     meson setup -Denable_tests=false -Denable_docs=false --buildtype=release --default-library=static --prefix="${INSTALL_PREFIX}" --bindir="${INSTALL_PREFIX}/bin" --libdir="${INSTALL_PREFIX}/lib"

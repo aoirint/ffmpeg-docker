@@ -10,6 +10,7 @@ ARG INSTALL_PREFIX=/usr/local
 # https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 # dependencies
 RUN <<EOF
+    set -eux
     apt-get update
     apt-get -y install \
         autoconf \
@@ -42,6 +43,7 @@ EOF
 # https://www.nasm.us/
 ARG NASM_VERSION=2.15.05
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/nasm
     cd ${SOURCE_PREFIX}/
     wget -O nasm.tar.bz2 https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.bz2
@@ -58,6 +60,7 @@ EOF
 # https://code.videolan.org/videolan/x264.git
 ARG LIBX264_VERSION=baee400fa9ced6f5481a728138fed6e867b0ff7f
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/libx264
     cd ${SOURCE_PREFIX}/libx264
     git clone https://code.videolan.org/videolan/x264.git ./
@@ -70,6 +73,7 @@ EOF
 
 # libx265
 RUN <<EOF
+    set -eux
     apt-get update
     apt-get install -y \
         libx265-dev \
@@ -82,6 +86,7 @@ EOF
 # https://bitbucket.org/multicoreware/x265_git.git
 # ARG LIBX265_VERSION=Release_3.5
 # RUN <<EOF
+#     set -eux
 #     mkdir -p ${SOURCE_PREFIX}/libx265
 #     cd ${SOURCE_PREFIX}/libx265
 #     apt-get install libnuma-dev
@@ -97,6 +102,7 @@ EOF
 # https://chromium.googlesource.com/webm/libvpx.git
 ARG LIBVPX_VERSION=v1.12.0
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/libvpx
     cd ${SOURCE_PREFIX}/libvpx
     git clone --depth 1 --branch ${LIBVPX_VERSION} https://chromium.googlesource.com/webm/libvpx.git ./
@@ -110,6 +116,7 @@ EOF
 # https://github.com/mstorsjo/fdk-aac.git
 ARG AAC_VERSION=v2.0.2
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/libfdk-aac
     cd ${SOURCE_PREFIX}/libfdk-aac
     git clone --depth 1 --branch ${AAC_VERSION} https://github.com/mstorsjo/fdk-aac.git ./
@@ -124,6 +131,7 @@ EOF
 # https://sourceforge.net/projects/lame/files/
 ARG LAME_VERSION=3.100
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/libmp3lame
     cd ${SOURCE_PREFIX}/
     wget -O lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
@@ -139,6 +147,7 @@ EOF
 # https://github.com/xiph/opus.git
 ARG OPUS_VERSION=v1.3.1
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/libopus
     cd ${SOURCE_PREFIX}/libopus
     git clone --depth 1 --branch ${OPUS_VERSION} https://github.com/xiph/opus.git ./
@@ -153,6 +162,7 @@ EOF
 # https://aomedia.googlesource.com/aom.git
 ARG AOM_VERSION=v3.4.0
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/libaom
     cd ${SOURCE_PREFIX}/libaom
     git clone --depth 1 --branch ${AOM_VERSION} https://aomedia.googlesource.com/aom.git ./
@@ -168,6 +178,7 @@ EOF
 # https://gitlab.com/AOMediaCodec/SVT-AV1
 ARG SVTAV1_VERSION=v1.2.0
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/SVT-AV1
     cd ${SOURCE_PREFIX}/SVT-AV1
     git clone --depth 1 --branch ${SVTAV1_VERSION} https://gitlab.com/AOMediaCodec/SVT-AV1.git ./
@@ -183,6 +194,7 @@ EOF
 # https://github.com/ninja-build/ninja
 ARG NINJA_VERSION=v1.11.0
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/ninja
     cd ${SOURCE_PREFIX}/ninja
     wget -O ninja-linux.zip "https://github.com/ninja-build/ninja/releases/download/${NINJA_VERSION}/ninja-linux.zip"
@@ -195,6 +207,7 @@ EOF
 # https://github.com/mesonbuild/meson
 ARG MESON_VERSION=0.63.1
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/meson
     cd ${SOURCE_PREFIX}/meson
     git clone --depth 1 --branch ${MESON_VERSION} https://github.com/mesonbuild/meson.git ./
@@ -206,6 +219,7 @@ EOF
 # https://code.videolan.org/videolan/dav1d
 ARG DAV1D_VERSION=v1.2.0
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/dav1d
     cd ${SOURCE_PREFIX}/dav1d
     git clone --depth 1 --branch ${DAV1D_VERSION} https://code.videolan.org/videolan/dav1d.git ./
@@ -221,6 +235,7 @@ EOF
 # https://ffmpeg.org/download.html
 ARG FFMPEG_VERSION=5.1
 RUN <<EOF
+    set -eux
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
     cd ${SOURCE_PREFIX}/
     wget -O ffmpeg.tar.bz2 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2

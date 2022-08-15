@@ -14,6 +14,16 @@ env:
 
 jobs:
   push:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tag_prefix: ''
+            base_image: 'ubuntu:focal'
+          - tag_prefix: 'ubuntu-'
+            base_image: 'ubuntu:focal'
+          - tag_prefix: 'nvidia-'
+            base_image: 'nvcr.io/nvidia/driver:515-signed-ubuntu20.04'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -35,12 +45,14 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         env:
-          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG) }}
+          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}{2}', env.IMAGE_NAME, matrix.tag_prefix, env.IMAGE_TAG) }}
         with:
           push: true
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
+          build-args:
+            BASE_IMAGE=${{ matrix.base_image }}
           tags: ${{ env.IMAGE_NAME_AND_TAG }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache,mode=max

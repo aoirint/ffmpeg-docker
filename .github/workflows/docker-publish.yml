@@ -1,67 +1,46 @@
 name: Docker registry
 
-on: 
-   push:
-     tags:
-       - 'v*'
+on:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - created
+
+env:
+  IMAGE_NAME: aoirint/ffmpeg
+  IMAGE_TAG: ${{ github.event.release.tag_name != '' && github.event.release.tag_name || 'latest' }}
 
 jobs:
-  dockerhub-python:
+  push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to docker hub
-        uses: actions-hub/docker/login@master
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_REGISTRY_URL: docker.io
-
-      - name: Build :python
-        if: success()
-        run: docker build -t aoirint/ffmpeg:python --build-arg BASE_IMAGE=python:3 .
-
-      - name: Push to docker hub :python
-        if: success()
-        uses: actions-hub/docker@master
+          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG) }}
         with:
-          args: push aoirint/ffmpeg:python
-
-  dockerhub-ubuntu:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Login to docker hub
-        uses: actions-hub/docker/login@master
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_REGISTRY_URL: docker.io
-
-      - name: Build :ubuntu
-        if: success()
-        run: docker build -t aoirint/ffmpeg:ubuntu --build-arg BASE_IMAGE=ubuntu:bionic .
-
-      - name: Push to docker hub :ubuntu
-        if: success()
-        uses: actions-hub/docker@master
-        with:
-          args: push aoirint/ffmpeg:ubuntu
-
-      - name: Build :tag
-        if: success()
-        run: docker build -t aoirint/ffmpeg:${IMAGE_TAG} .
-
-      - name: Push to docker hub :tag
-        if: success()
-        uses: actions-hub/docker@master
-        with:
-          args: push aoirint/ffmpeg:${IMAGE_TAG}
-
-      - name: Push to docker hub :latest
-        if: success()
-        uses: actions-hub/docker@master
-        with:
-          args: push aoirint/ffmpeg:latest
+          push: true
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          tags: ${{ env.IMAGE_NAME_AND_TAG }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache,mode=max

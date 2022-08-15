@@ -102,6 +102,7 @@ EOF
 #     cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off ../../source
 #     make -j$(nproc)
 #     make install
+#     rm -rf ${SOURCE_PREFIX}/libx265
 # EOF
 
 # libvpx

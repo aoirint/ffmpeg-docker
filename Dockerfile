@@ -243,7 +243,7 @@ RUN <<EOF
     git clone --depth 1 --branch ${VMAF_VERSION} https://github.com/Netflix/vmaf.git ./
     mkdir build
     cd build
-    meson setup -Denable_tests=false -Denable_docs=false --buildtype=release --default-library=static --prefix="${INSTALL_PREFIX}" --bindir="${INSTALL_PREFIX}/bin" --libdir="${INSTALL_PREFIX}/lib"
+    meson setup -Denable_tests=false -Denable_docs=false --buildtype=release --default-library=static --prefix="${INSTALL_PREFIX}" --bindir="${INSTALL_PREFIX}/bin" --libdir="${INSTALL_PREFIX}/lib" ../
     ninja
     ninja install
     rm -rf ${SOURCE_PREFIX}/vmaf

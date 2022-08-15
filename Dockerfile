@@ -2,23 +2,23 @@ ARG BASE_IMAGE=ubuntu:focal
 FROM $BASE_IMAGE
 
 # https://www.nasm.us/
-ARG NASM_VERSION=2.14.02
+ARG NASM_VERSION=2.15.05
 # https://code.videolan.org/videolan/x264.git
-ARG LIBX264_VERSION=db0d417728460c647ed4a847222a535b00d3dbcb
+ARG LIBX264_VERSION=baee400fa9ced6f5481a728138fed6e867b0ff7f
 # https://bitbucket.org/multicoreware/x265_git.git
 # ARG LIBX265_VERSION=Release_3.5
 # https://chromium.googlesource.com/webm/libvpx.git
-ARG LIBVPX_VERSION=v1.9.0
+ARG LIBVPX_VERSION=v1.12.0
 # https://github.com/mstorsjo/fdk-aac.git
-ARG AAC_VERSION=v2.0.1
+ARG AAC_VERSION=v2.0.2
 # https://sourceforge.net/projects/lame/files/
 ARG LAME_VERSION=3.100
 # https://github.com/xiph/opus.git
 ARG OPUS_VERSION=v1.3.1
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=v2.0.0
+ARG AOM_VERSION=v3.4.0
 # https://ffmpeg.org/download.html
-ARG FFMPEG_VERSION=4.3.1
+ARG FFMPEG_VERSION=5.1
 
 ARG SOURCE_PREFIX=/ffmpeg_sources
 ARG INSTALL_PREFIX=/usr/local

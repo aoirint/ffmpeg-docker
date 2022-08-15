@@ -197,7 +197,7 @@ ARG MESON_VERSION=0.63.1
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/meson
     cd ${SOURCE_PREFIX}/meson
-    git clone --depth 1 --branch ${DAV1D_VERSION} https://github.com/mesonbuild/meson.git ./
+    git clone --depth 1 --branch ${MESON_VERSION} https://github.com/mesonbuild/meson.git ./
     pip3 install .
     rm -rf ${SOURCE_PREFIX}/meson
 EOF

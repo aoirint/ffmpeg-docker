@@ -1,6 +1,8 @@
 ARG BASE_IMAGE=ubuntu:focal
 FROM $BASE_IMAGE
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 # https://www.nasm.us/
 ARG NASM_VERSION=2.15.05
 # https://code.videolan.org/videolan/x264.git

@@ -87,16 +87,16 @@ RUN <<EOF
 EOF
 
 # broken manual builds
-RUN <<EOF
-    mkdir -p ${SOURCE_PREFIX}/libx265
-    cd ${SOURCE_PREFIX}/libx265
-    apt-get install libnuma-dev
-    git clone --depth 1 --branch ${LIBX265_VERSION} https://bitbucket.org/multicoreware/x265_git.git ./
-    cd ./build/linux
-    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off ../../source
-    make -j$(nproc)
-    make install
-EOF
+# RUN <<EOF
+#     mkdir -p ${SOURCE_PREFIX}/libx265
+#     cd ${SOURCE_PREFIX}/libx265
+#     apt-get install libnuma-dev
+#     git clone --depth 1 --branch ${LIBX265_VERSION} https://bitbucket.org/multicoreware/x265_git.git ./
+#     cd ./build/linux
+#     cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off ../../source
+#     make -j$(nproc)
+#     make install
+# EOF
 
 # libvpx
 RUN <<EOF

@@ -34,7 +34,9 @@ RUN <<EOF
         wget \
         yasm \
         zlib1g-dev \
-        unzip
+        unzip \
+        python3 \
+        python3-pip
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF

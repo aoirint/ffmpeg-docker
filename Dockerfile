@@ -39,7 +39,7 @@ EOF
 
 # nasm
 # https://www.nasm.us/
-ARG NASM_VERSION=2.14.02
+ARG NASM_VERSION=2.15.05
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/nasm
     cd ${SOURCE_PREFIX}/
@@ -55,7 +55,7 @@ EOF
 
 # libx264
 # https://code.videolan.org/videolan/x264.git
-ARG LIBX264_VERSION=db0d417728460c647ed4a847222a535b00d3dbcb
+ARG LIBX264_VERSION=baee400fa9ced6f5481a728138fed6e867b0ff7f
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libx264
     cd ${SOURCE_PREFIX}/libx264
@@ -94,7 +94,7 @@ EOF
 
 # libvpx
 # https://chromium.googlesource.com/webm/libvpx.git
-ARG LIBVPX_VERSION=v1.9.0
+ARG LIBVPX_VERSION=v1.12.0
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libvpx
     cd ${SOURCE_PREFIX}/libvpx
@@ -107,7 +107,7 @@ EOF
 
 # libfdk-aac
 # https://github.com/mstorsjo/fdk-aac.git
-ARG AAC_VERSION=v2.0.1
+ARG AAC_VERSION=v2.0.2
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libfdk-aac
     cd ${SOURCE_PREFIX}/libfdk-aac
@@ -150,7 +150,7 @@ EOF
 
 # libaom
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=v2.0.0
+ARG AOM_VERSION=v3.4.0
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libaom
     cd ${SOURCE_PREFIX}/libaom
@@ -165,7 +165,7 @@ EOF
 
 # ffmpeg
 # https://ffmpeg.org/download.html
-ARG FFMPEG_VERSION=4.3.1
+ARG FFMPEG_VERSION=5.1
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
     cd ${SOURCE_PREFIX}/

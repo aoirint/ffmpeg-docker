@@ -4,25 +4,6 @@ FROM $BASE_IMAGE
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# https://www.nasm.us/
-ARG NASM_VERSION=2.14.02
-# https://code.videolan.org/videolan/x264.git
-ARG LIBX264_VERSION=db0d417728460c647ed4a847222a535b00d3dbcb
-# https://bitbucket.org/multicoreware/x265_git.git
-# ARG LIBX265_VERSION=Release_3.5
-# https://chromium.googlesource.com/webm/libvpx.git
-ARG LIBVPX_VERSION=v1.9.0
-# https://github.com/mstorsjo/fdk-aac.git
-ARG AAC_VERSION=v2.0.1
-# https://sourceforge.net/projects/lame/files/
-ARG LAME_VERSION=3.100
-# https://github.com/xiph/opus.git
-ARG OPUS_VERSION=v1.3.1
-# https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=v2.0.0
-# https://ffmpeg.org/download.html
-ARG FFMPEG_VERSION=4.3.1
-
 ARG SOURCE_PREFIX=/ffmpeg_sources
 ARG INSTALL_PREFIX=/usr/local
 
@@ -57,6 +38,8 @@ RUN <<EOF
 EOF
 
 # nasm
+# https://www.nasm.us/
+ARG NASM_VERSION=2.14.02
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/nasm
     cd ${SOURCE_PREFIX}/
@@ -71,6 +54,8 @@ RUN <<EOF
 EOF
 
 # libx264
+# https://code.videolan.org/videolan/x264.git
+ARG LIBX264_VERSION=db0d417728460c647ed4a847222a535b00d3dbcb
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libx264
     cd ${SOURCE_PREFIX}/libx264
@@ -93,6 +78,8 @@ RUN <<EOF
 EOF
 
 # broken manual builds
+# https://bitbucket.org/multicoreware/x265_git.git
+# ARG LIBX265_VERSION=Release_3.5
 # RUN <<EOF
 #     mkdir -p ${SOURCE_PREFIX}/libx265
 #     cd ${SOURCE_PREFIX}/libx265
@@ -106,6 +93,8 @@ EOF
 # EOF
 
 # libvpx
+# https://chromium.googlesource.com/webm/libvpx.git
+ARG LIBVPX_VERSION=v1.9.0
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libvpx
     cd ${SOURCE_PREFIX}/libvpx
@@ -117,6 +106,8 @@ RUN <<EOF
 EOF
 
 # libfdk-aac
+# https://github.com/mstorsjo/fdk-aac.git
+ARG AAC_VERSION=v2.0.1
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libfdk-aac
     cd ${SOURCE_PREFIX}/libfdk-aac
@@ -129,6 +120,8 @@ RUN <<EOF
 EOF
 
 # libmp3lame
+# https://sourceforge.net/projects/lame/files/
+ARG LAME_VERSION=3.100
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libmp3lame
     cd ${SOURCE_PREFIX}/
@@ -142,6 +135,8 @@ RUN <<EOF
 EOF
 
 # libopus
+# https://github.com/xiph/opus.git
+ARG OPUS_VERSION=v1.3.1
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libopus
     cd ${SOURCE_PREFIX}/libopus
@@ -154,6 +149,8 @@ RUN <<EOF
 EOF
 
 # libaom
+# https://aomedia.googlesource.com/aom.git
+ARG AOM_VERSION=v2.0.0
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/libaom
     cd ${SOURCE_PREFIX}/libaom
@@ -167,6 +164,8 @@ RUN <<EOF
 EOF
 
 # ffmpeg
+# https://ffmpeg.org/download.html
+ARG FFMPEG_VERSION=4.3.1
 RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
     cd ${SOURCE_PREFIX}/

@@ -1,5 +1,5 @@
 # ffmpeg-docker
-最新のffmpegを使うためのDockerfile
+最新のffmpegを使うためのDockerイメージ
 
 - <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
 
@@ -8,6 +8,8 @@
 |`ffmpeg`|(same as ffmpeg:ubuntu)|
 |`ffmpeg:ubuntu-*`|通常版|
 |`ffmpeg:nvidia-*`|NVIDIA GPU ハードウェアエンコード対応版（NVIDIAドライバ510.x以降）|
+
+- Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
 
 ## 用例
 

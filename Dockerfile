@@ -178,6 +178,32 @@ RUN <<EOF
     rm -rf ${SOURCE_PREFIX}/SVT-AV1
 EOF
 
+# meson
+# https://github.com/mesonbuild/meson
+ARG MESON_VERSION=0.63.1
+RUN <<EOF
+    mkdir -p ${SOURCE_PREFIX}/meson
+    cd ${SOURCE_PREFIX}/meson
+    git clone --depth 1 --branch ${DAV1D_VERSION} https://github.com/mesonbuild/meson.git ./
+    pip3 install .
+    rm -rf ${SOURCE_PREFIX}/meson
+EOF
+
+# libdav1d
+# https://code.videolan.org/videolan/dav1d
+ARG DAV1D_VERSION=v1.2.0
+RUN <<EOF
+    mkdir -p ${SOURCE_PREFIX}/dav1d
+    cd ${SOURCE_PREFIX}/dav1d
+    git clone --depth 1 --branch ${DAV1D_VERSION} https://code.videolan.org/videolan/dav1d.git ./
+    mkdir build
+    cd build
+    meson setup -Denable_tools=false -Denable_tests=false --default-library=static --prefix="${INSTALL_PREFIX}" --libdir="${INSTALL_PREFIX}/lib" ../
+    ninja
+    ninja install
+    rm -rf ${SOURCE_PREFIX}/dav1d
+EOF
+
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_VERSION=5.1
@@ -203,6 +229,7 @@ RUN <<EOF
         --enable-libx264 \
         --enable-libx265 \
         --enable-libsvtav1 \
+        --enable-libdav1d \
         --enable-nonfree
     make -j$(nproc)
     make install

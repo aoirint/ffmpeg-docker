@@ -163,6 +163,21 @@ RUN <<EOF
     rm -rf ${SOURCE_PREFIX}/libaom
 EOF
 
+# libsvtav1
+# https://gitlab.com/AOMediaCodec/SVT-AV1
+ARG SVTAV1_VERSION=v1.2.0
+RUN <<EOF
+    mkdir -p ${SOURCE_PREFIX}/SVT-AV1
+    cd ${SOURCE_PREFIX}/SVT-AV1
+    git clone --depth 1 --branch ${SVTAV1_VERSION} https://gitlab.com/AOMediaCodec/SVT-AV1.git ./
+    mkdir build
+    cd build
+    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DCMAKE_BUILD_TYPE=Release -DBUILD_DEC=OFF -DBUILD_SHARED_LIBS=OFF ../
+    make -j$(nproc)
+    make install
+    rm -rf ${SOURCE_PREFIX}/SVT-AV1
+EOF
+
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_VERSION=5.1
@@ -187,6 +202,7 @@ RUN <<EOF
         --enable-libvpx \
         --enable-libx264 \
         --enable-libx265 \
+        --enable-libsvtav1 \
         --enable-nonfree
     make -j$(nproc)
     make install

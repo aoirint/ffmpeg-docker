@@ -32,7 +32,8 @@ RUN <<EOF
         texinfo \
         wget \
         yasm \
-        zlib1g-dev
+        zlib1g-dev \
+        unzip
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -176,6 +177,18 @@ RUN <<EOF
     make -j$(nproc)
     make install
     rm -rf ${SOURCE_PREFIX}/SVT-AV1
+EOF
+
+# ninja
+# https://github.com/ninja-build/ninja
+ARG NINJA_VERSION=v1.11.0
+RUN <<EOF
+    mkdir -p ${SOURCE_PREFIX}/ninja
+    cd ${SOURCE_PREFIX}/ninja
+    wget -O ninja-linux.zip "https://github.com/ninja-build/ninja/releases/download/${NINJA_VERSION}/ninja-linux.zip"
+    unzip ninja-linux.zip
+    cp ninja "${INSTALL_PREFIX}/bin/"
+    rm -rf ${SOURCE_PREFIX}/ninja
 EOF
 
 # meson

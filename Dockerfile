@@ -168,7 +168,7 @@ RUN <<EOF
     git clone --depth 1 --branch ${AOM_VERSION} https://aomedia.googlesource.com/aom.git ./
     mkdir aom_build
     cd aom_build
-    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off -DENABLE_NASM=on ../
+    cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off -DENABLE_TESTS=off -DENABLE_NASM=on ../
     make -j$(nproc)
     make install
     rm -rf ${SOURCE_PREFIX}/libaom

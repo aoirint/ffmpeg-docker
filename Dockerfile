@@ -241,6 +241,7 @@ RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/vmaf
     cd ${SOURCE_PREFIX}/vmaf
     git clone --depth 1 --branch ${VMAF_VERSION} https://github.com/Netflix/vmaf.git ./
+    cd libvmaf
     mkdir build
     cd build
     meson setup -Denable_tests=false -Denable_docs=false --buildtype=release --default-library=static --prefix="${INSTALL_PREFIX}" --bindir="${INSTALL_PREFIX}/bin" --libdir="${INSTALL_PREFIX}/lib" ../

@@ -23,7 +23,7 @@ jobs:
           - tag_prefix: 'ubuntu-'
             base_image: 'ubuntu:focal'
           - tag_prefix: 'nvidia-'
-            base_image: 'nvcr.io/nvidia/driver:515-signed-ubuntu20.04'
+            base_image: 'nvcr.io/nvidia/driver:510-signed-ubuntu20.04'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

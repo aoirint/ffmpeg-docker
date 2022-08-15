@@ -52,6 +52,8 @@ RUN <<EOF
         wget \
         yasm \
         zlib1g-dev
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 EOF
 
 # nasm
@@ -65,6 +67,7 @@ RUN <<EOF
     ./configure --prefix="${INSTALL_PREFIX}"
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/nasm
 EOF
 
 # libx264
@@ -76,6 +79,7 @@ RUN <<EOF
     ./configure --prefix="${INSTALL_PREFIX}" --enable-static --enable-pic
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/libx264
 EOF
 
 # libx265
@@ -84,6 +88,8 @@ RUN <<EOF
     apt-get install -y \
         libx265-dev \
         libnuma-dev
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 EOF
 
 # broken manual builds
@@ -106,6 +112,7 @@ RUN <<EOF
     ./configure --prefix="${INSTALL_PREFIX}" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/libvpx
 EOF
 
 # libfdk-aac
@@ -117,6 +124,7 @@ RUN <<EOF
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/libfdk-aac
 EOF
 
 # libmp3lame
@@ -129,6 +137,7 @@ RUN <<EOF
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared --enable-nasm
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/libmp3lame
 EOF
 
 # libopus
@@ -140,6 +149,7 @@ RUN <<EOF
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/libopus
 EOF
 
 # libaom
@@ -152,6 +162,7 @@ RUN <<EOF
     cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off -DENABLE_NASM=on ../
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/libaom
 EOF
 
 # ffmpeg
@@ -160,7 +171,7 @@ RUN <<EOF
     cd ${SOURCE_PREFIX}/
     wget -O ffmpeg.tar.bz2 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
     tar xjvf ffmpeg.tar.bz2 -C ./ffmpeg --strip-components 1
-    cd ./ffmpeg/
+    cd ./ffmpeg
     ./configure \
         --prefix="${INSTALL_PREFIX}" \
         --pkg-config-flags="--static" \
@@ -179,6 +190,7 @@ RUN <<EOF
         --enable-nonfree
     make -j$(nproc)
     make install
+    rm -rf ${SOURCE_PREFIX}/ffmpeg
 EOF
 
 ENTRYPOINT [ "ffmpeg" ]

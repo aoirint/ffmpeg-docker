@@ -51,7 +51,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          build-args:
+          build-args: |
             BASE_IMAGE=${{ matrix.base_image }}
           tags: ${{ env.IMAGE_NAME_AND_TAG }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME_AND_TAG }}-buildcache

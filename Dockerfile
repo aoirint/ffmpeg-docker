@@ -233,6 +233,22 @@ RUN <<EOF
     rm -rf ${SOURCE_PREFIX}/dav1d
 EOF
 
+# libvmaf
+# https://github.com/Netflix/vmaf
+ARG VMAF_VERSION=v2.3.1
+RUN <<EOF
+    set -eux
+    mkdir -p ${SOURCE_PREFIX}/vmaf
+    cd ${SOURCE_PREFIX}/vmaf
+    git clone --depth 1 --branch ${DAV1D_VERSION} https://github.com/Netflix/vmaf.git ./
+    mkdir build
+    cd build
+    meson setup -Denable_tests=false -Denable_docs=false --buildtype=release --default-library=static --prefix="${INSTALL_PREFIX}" --bindir="${INSTALL_PREFIX}/bin" --libdir="${INSTALL_PREFIX}/lib"
+    ninja
+    ninja install
+    rm -rf ${SOURCE_PREFIX}/vmaf
+EOF
+
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_VERSION=5.1
@@ -247,6 +263,7 @@ RUN <<EOF
         --prefix="${INSTALL_PREFIX}" \
         --pkg-config-flags="--static" \
         --extra-libs="-lpthread -lm" \
+        --ld="g++" \
         --enable-gpl \
         --enable-libaom \
         --enable-libass \
@@ -260,6 +277,7 @@ RUN <<EOF
         --enable-libx265 \
         --enable-libsvtav1 \
         --enable-libdav1d \
+        --enable-libvmaf \
         --enable-nonfree
     make -j$(nproc)
     make install

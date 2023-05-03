@@ -60,7 +60,7 @@ EOF
 
 # libx264
 # https://code.videolan.org/videolan/x264.git
-ARG LIBX264_VERSION=baee400fa9ced6f5481a728138fed6e867b0ff7f
+ARG LIBX264_VERSION=a8b68ebfaa68621b5ac8907610d3335971839d52
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libx264

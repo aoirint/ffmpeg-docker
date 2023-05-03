@@ -147,7 +147,7 @@ EOF
 
 # libopus
 # https://github.com/xiph/opus.git
-ARG OPUS_VERSION=v1.3.1
+ARG OPUS_VERSION=v1.4
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libopus

@@ -252,7 +252,7 @@ EOF
 
 # ffmpeg
 # https://ffmpeg.org/download.html
-ARG FFMPEG_VERSION=5.1
+ARG FFMPEG_VERSION=6.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/ffmpeg

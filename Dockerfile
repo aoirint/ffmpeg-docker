@@ -21,6 +21,7 @@ RUN <<EOF
         libass-dev \
         libfreetype6-dev \
         libgnutls28-dev \
+        libunistring-dev \
         libsdl2-dev \
         libtool \
         libva-dev \

@@ -214,7 +214,7 @@ RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/meson
     cd ${SOURCE_PREFIX}/meson
     git clone --depth 1 --branch ${MESON_VERSION} https://github.com/mesonbuild/meson.git ./
-    pip3 install .
+    pip3 install --no-cache-dir .
     rm -rf ${SOURCE_PREFIX}/meson
 EOF
 

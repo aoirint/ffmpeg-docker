@@ -43,7 +43,7 @@ EOF
 
 # nasm
 # https://www.nasm.us/
-ARG NASM_VERSION=2.15.05
+ARG NASM_VERSION=2.16.01
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/nasm

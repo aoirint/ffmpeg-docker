@@ -19,11 +19,11 @@ jobs:
       matrix:
         include:
           - tag_prefix: ''
-            base_image: 'ubuntu:20.04'
+            base_image: 'ubuntu:22.04'
           - tag_prefix: 'ubuntu-'
-            base_image: 'ubuntu:20.04'
+            base_image: 'ubuntu:22.04'
           - tag_prefix: 'nvidia-'
-            base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu20.04'
+            base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu22.04'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -7,7 +7,7 @@
 |:--|:--|
 |`ffmpeg`|(same as ffmpeg:ubuntu)|
 |`ffmpeg:ubuntu-*`|通常版|
-|`ffmpeg:nvidia-*`|NVIDIA GPU ハードウェアエンコード対応版（NVIDIAドライバ510.x以降）|
+|`ffmpeg:nvidia-*`|NVIDIA GPU ハードウェアエンコード対応版（NVIDIAドライバ525.x以降）|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
 

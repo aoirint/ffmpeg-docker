@@ -194,7 +194,7 @@ EOF
 
 # ninja
 # https://github.com/ninja-build/ninja
-ARG NINJA_VERSION=v1.11.0
+ARG NINJA_VERSION=v1.11.1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/ninja

@@ -36,8 +36,7 @@ RUN <<EOF
         zlib1g-dev \
         unzip \
         python3 \
-        python3-pip \
-        libssl-dev
+        python3-pip
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -267,6 +266,7 @@ RUN <<EOF
         --extra-libs="-lpthread -lm" \
         --ld="g++" \
         --enable-gpl \
+        --enable-gnutls \
         --enable-libaom \
         --enable-libass \
         --enable-libfdk-aac \
@@ -280,8 +280,7 @@ RUN <<EOF
         --enable-libsvtav1 \
         --enable-libdav1d \
         --enable-libvmaf \
-        --enable-nonfree \
-        --enable-openssl
+        --enable-nonfree
     make -j$(nproc)
     make install
     rm -rf ${SOURCE_PREFIX}/ffmpeg

@@ -103,7 +103,7 @@ EOF
 
 # libvpx
 # https://chromium.googlesource.com/webm/libvpx.git
-ARG LIBVPX_VERSION=v1.13.0
+ARG LIBVPX_VERSION=v1.13.1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libvpx

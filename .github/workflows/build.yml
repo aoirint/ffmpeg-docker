@@ -26,24 +26,24 @@ jobs:
             base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu22.04'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to docker hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         env:
           IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}{2}', env.IMAGE_NAME, matrix.tag_prefix, env.IMAGE_TAG) }}
           IMAGE_CACHE_FROM: ${{ format('type=registry,ref={0}:{1}latest-buildcache,mode=max', env.IMAGE_NAME, matrix.tag_prefix) }}

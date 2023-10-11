@@ -179,7 +179,7 @@ EOF
 
 # libsvtav1
 # https://gitlab.com/AOMediaCodec/SVT-AV1
-ARG SVTAV1_VERSION=v1.5.0
+ARG SVTAV1_VERSION=v1.7.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/SVT-AV1

@@ -51,6 +51,8 @@ RUN <<EOF
     cd ${SOURCE_PREFIX}/
     wget -O nasm.tar.bz2 https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.bz2
     tar xjvf ./nasm.tar.bz2 -C ./nasm --strip-components 1
+    rm ./nasm.tar.bz2
+
     cd ./nasm
     ./autogen.sh
     ./configure --prefix="${INSTALL_PREFIX}"
@@ -137,8 +139,10 @@ RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libmp3lame
     cd ${SOURCE_PREFIX}/
-    wget -O lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
-    tar xzvf lame.tar.gz -C ./libmp3lame --strip-components 1
+    wget -O ./lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
+    tar xzvf ./lame.tar.gz -C ./libmp3lame --strip-components 1
+    rm ./lame.tar.gz
+
     cd ./libmp3lame/
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared --enable-nasm
     make -j$(nproc)
@@ -200,8 +204,10 @@ RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/ninja
     cd ${SOURCE_PREFIX}/ninja
-    wget -O ninja-linux.zip "https://github.com/ninja-build/ninja/releases/download/${NINJA_VERSION}/ninja-linux.zip"
-    unzip ninja-linux.zip
+    wget -O ./ninja-linux.zip "https://github.com/ninja-build/ninja/releases/download/${NINJA_VERSION}/ninja-linux.zip"
+    unzip ./ninja-linux.zip
+    rm ./ninja-linux.zip
+
     cp ninja "${INSTALL_PREFIX}/bin/"
     rm -rf ${SOURCE_PREFIX}/ninja
 EOF
@@ -258,8 +264,10 @@ RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
     cd ${SOURCE_PREFIX}/
-    wget -O ffmpeg.tar.bz2 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
-    tar xjvf ffmpeg.tar.bz2 -C ./ffmpeg --strip-components 1
+    wget -O ./ffmpeg.tar.bz2 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
+    tar xjvf ./ffmpeg.tar.bz2 -C ./ffmpeg --strip-components 1
+    rm ./ffmpeg.tar.bz2
+
     cd ./ffmpeg
     ./configure \
         --prefix="${INSTALL_PREFIX}" \

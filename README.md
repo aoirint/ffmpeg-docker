@@ -43,8 +43,8 @@ docker run --rm --gpus all aoirint/ffmpeg:nvidia-latest -decoders
 ```shell
 docker pull aoirint/ffmpeg:ubuntu-aoirint-latest
 
-docker run --rm --gpus all aoirint/ffmpeg:ubuntu-aoirint-latest -help
-docker run --rm --gpus all aoirint/ffmpeg:ubuntu-aoirint-latest -formats
-docker run --rm --gpus all aoirint/ffmpeg:ubuntu-aoirint-latest -encoders
-docker run --rm --gpus all aoirint/ffmpeg:ubuntu-aoirint-latest -decoders
+docker run --rm aoirint/ffmpeg:ubuntu-aoirint-latest -help
+docker run --rm aoirint/ffmpeg:ubuntu-aoirint-latest -formats
+docker run --rm aoirint/ffmpeg:ubuntu-aoirint-latest -encoders
+docker run --rm aoirint/ffmpeg:ubuntu-aoirint-latest -decoders
 ```

@@ -18,11 +18,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - tag_prefix: ''
+          -
+            tag_prefix: ''
+            tag_suffix: ''
             base_image: 'ubuntu:22.04'
-          - tag_prefix: 'ubuntu-'
+          -
+            tag_prefix: 'ubuntu-'
+            tag_suffix: ''
             base_image: 'ubuntu:22.04'
-          - tag_prefix: 'nvidia-'
+          -
+            tag_prefix: 'nvidia-'
+            tag_suffix: ''
             base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu22.04'
     runs-on: ubuntu-latest
     steps:
@@ -45,9 +51,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         env:
-          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}{2}', env.IMAGE_NAME, matrix.tag_prefix, env.IMAGE_TAG) }}
-          IMAGE_CACHE_FROM: ${{ format('type=registry,ref={0}:{1}latest-buildcache', env.IMAGE_NAME, matrix.tag_prefix) }}
-          IMAGE_CACHE_TO: ${{ env.IMAGE_TAG == 'latest' && format('type=registry,ref={0}:{1}latest-buildcache,mode=max', env.IMAGE_NAME, matrix.tag_prefix) || '' }}
+          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}{2}{3}', env.IMAGE_NAME, matrix.tag_prefix, env.IMAGE_TAG, matrix.tag_suffix) }}
+          IMAGE_CACHE_FROM: ${{ format('type=registry,ref={0}:{1}latest{2}-buildcache', env.IMAGE_NAME, matrix.tag_prefix, matrix.tag_suffix) }}
+          IMAGE_CACHE_TO: ${{ env.IMAGE_TAG == 'latest' && format('type=registry,ref={0}:{1}latest{2}-buildcache,mode=max', env.IMAGE_NAME, matrix.tag_prefix, matrix.tag_suffix) || '' }}
         with:
           push: true
           builder: ${{ steps.buildx.outputs.name }}

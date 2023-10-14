@@ -259,16 +259,13 @@ EOF
 
 # ffmpeg
 # https://ffmpeg.org/download.html
-ARG FFMPEG_VERSION=6.0
+ARG FFMPEG_REPOSITORY_URL=https://git.ffmpeg.org/ffmpeg.git
+ARG FFMPEG_VERSION=n6.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
-    cd ${SOURCE_PREFIX}/
-    wget -O ./ffmpeg.tar.bz2 https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2
-    tar xjvf ./ffmpeg.tar.bz2 -C ./ffmpeg --strip-components 1
-    rm ./ffmpeg.tar.bz2
-
-    cd ./ffmpeg
+    cd ${SOURCE_PREFIX}/ffmpeg
+    git clone --depth 1 --branch "${FFMPEG_VERSION}" "${FFMPEG_REPOSITORY_URL}" ./
     ./configure \
         --prefix="${INSTALL_PREFIX}" \
         --pkg-config-flags="--static" \

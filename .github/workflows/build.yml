@@ -41,7 +41,7 @@ jobs:
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://github.com/aoirint/FFmpeg.git'
-            ffmpeg_version: '6.0-aoirint.1'
+            ffmpeg_version: '6.0-aoirint.2'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -282,7 +282,7 @@ RUN <<EOF
     set -eux
 
     # NVIDIA video codec configuration
-    # https://docs.nvidia.com/video-technologies/video-codec-sdk/11.1/ffmpeg-with-nvidia-gpu/index.html
+    # https://docs.nvidia.com/video-technologies/video-codec-sdk/12.1/ffmpeg-with-nvidia-gpu/index.html
     NVCODEC_OPTS=""
     if [ "${ENABLE_NVCODEC}" = "1" ]; then
         NVCODEC_OPTS="--enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-static --enable-shared"

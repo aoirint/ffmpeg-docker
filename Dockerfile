@@ -266,11 +266,13 @@ RUN <<EOF
 
     if [ "${ENABLE_NVCODEC}" = "1" ]; then
         # Install ffnvcodec
-        mkdir -p ${SOURCE_PREFIX}/nv-codec-headers
-        cd ${SOURCE_PREFIX}/nv-codec-headers
+        mkdir -p "${SOURCE_PREFIX}/nv-codec-headers"
+        cd "${SOURCE_PREFIX}/nv-codec-headers"
         git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://git.videolan.org/git/ffmpeg/nv-codec-headers.git ./
 
         make install
+
+        rm -rf "${SOURCE_PREFIX}/nv-codec-headers"
     fi
 EOF
 

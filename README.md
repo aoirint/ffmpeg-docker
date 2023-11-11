@@ -7,7 +7,7 @@
 |:--|:--|
 |`ffmpeg`|(same as `ffmpeg:ubuntu`)|
 |`ffmpeg:ubuntu-*`|通常版|
-|`ffmpeg:nvidia-*`|NVIDIA GPU ハードウェアエンコード対応版（NVIDIAドライバ525.x以降）|
+|`ffmpeg:nvidia-*`|~~NVIDIA GPU ハードウェアコーデック対応版（NVIDIAドライバ525.x以降）~~|
 |`ffmpeg:ubuntu-aoirint-*`|aoirint Fork版|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
@@ -25,7 +25,11 @@ docker run --rm aoirint/ffmpeg:ubuntu-latest -encoders
 docker run --rm aoirint/ffmpeg:ubuntu-latest -decoders
 ```
 
-### NVIDIA GPU ハードウェアエンコード対応版
+### ~~NVIDIA GPU ハードウェアコーデック対応版~~
+
+現在、ハードウェアコーデックは動作しません。今後修正予定です。
+
+- https://github.com/aoirint/ffmpeg-docker/issues/28
 
 ```shell
 docker pull aoirint/ffmpeg:nvidia-latest

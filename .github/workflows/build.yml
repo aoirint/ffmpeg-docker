@@ -33,7 +33,7 @@ jobs:
           -
             tag_prefix: 'nvidia-'
             tag_suffix: ''
-            base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu22.04'
+            base_image: 'nvcr.io/nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
             ffmpeg_version: 'n6.0.1'
           -

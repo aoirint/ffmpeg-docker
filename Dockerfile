@@ -258,7 +258,7 @@ RUN <<EOF
 EOF
 
 # NVIDIA video codec
-# https://git.videolan.org/?p=ffmpeg/nv-codec-headers
+# https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git
 ARG ENABLE_NVCODEC=0
 ARG NVCODEC_HEADER_VERSION=n12.1.14.0
 RUN <<EOF
@@ -287,7 +287,7 @@ RUN <<EOF
     # https://docs.nvidia.com/video-technologies/video-codec-sdk/12.1/ffmpeg-with-nvidia-gpu/index.html
     NVCODEC_OPTS=""
     if [ "${ENABLE_NVCODEC}" = "1" ]; then
-        NVCODEC_OPTS="--enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-static --enable-shared"
+        NVCODEC_OPTS="--enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64"
     fi
 
     mkdir -p ${SOURCE_PREFIX}/ffmpeg

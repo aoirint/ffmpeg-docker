@@ -24,24 +24,28 @@ jobs:
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
             ffmpeg_version: 'n6.0.1'
+            enable_nvcodec: '0'
           -
             tag_prefix: 'ubuntu-'
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
             ffmpeg_version: 'n6.0.1'
+            enable_nvcodec: '0'
           -
             tag_prefix: 'nvidia-'
             tag_suffix: ''
-            base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu22.04'
+            base_image: 'nvcr.io/nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
             ffmpeg_version: 'n6.0.1'
+            enable_nvcodec: '1'
           -
             tag_prefix: 'ubuntu-aoirint-'
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://github.com/aoirint/FFmpeg.git'
             ffmpeg_version: '6.0.1-aoirint.1'
+            enable_nvcodec: '0'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -75,6 +79,7 @@ jobs:
             BASE_IMAGE=${{ matrix.base_image }}
             FFMPEG_REPOSITORY_URL=${{ matrix.ffmpeg_repository_url }}
             FFMPEG_VERSION=${{ matrix.ffmpeg_version }}
+            ENABLE_NVCODEC=${{ matrix.enable_nvcodec }}
           tags: ${{ env.IMAGE_NAME_AND_TAG }}
           cache-from: ${{ env.IMAGE_CACHE_FROM }}
           cache-to: ${{ env.IMAGE_CACHE_TO }} 

@@ -257,15 +257,43 @@ RUN <<EOF
     rm -rf ${SOURCE_PREFIX}/vmaf
 EOF
 
+# NVIDIA video codec
+# https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git
+ARG ENABLE_NVCODEC=0
+ARG NVCODEC_HEADER_VERSION=n12.1.14.0
+RUN <<EOF
+    set -eux
+
+    if [ "${ENABLE_NVCODEC}" = "1" ]; then
+        # Install ffnvcodec
+        mkdir -p "${SOURCE_PREFIX}/nv-codec-headers"
+        cd "${SOURCE_PREFIX}/nv-codec-headers"
+        git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://git.videolan.org/git/ffmpeg/nv-codec-headers.git ./
+
+        make install
+
+        rm -rf "${SOURCE_PREFIX}/nv-codec-headers"
+    fi
+EOF
+
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_REPOSITORY_URL=https://git.ffmpeg.org/ffmpeg.git
 ARG FFMPEG_VERSION=n6.0.1
 RUN <<EOF
     set -eux
+
+    # NVIDIA video codec configuration
+    # https://docs.nvidia.com/video-technologies/video-codec-sdk/12.1/ffmpeg-with-nvidia-gpu/index.html
+    NVCODEC_OPTS=""
+    if [ "${ENABLE_NVCODEC}" = "1" ]; then
+        NVCODEC_OPTS="--enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64"
+    fi
+
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
     cd ${SOURCE_PREFIX}/ffmpeg
     git clone --depth 1 --branch "${FFMPEG_VERSION}" "${FFMPEG_REPOSITORY_URL}" ./
+
     ./configure \
         --prefix="${INSTALL_PREFIX}" \
         --pkg-config-flags="--static" \
@@ -286,9 +314,11 @@ RUN <<EOF
         --enable-libsvtav1 \
         --enable-libdav1d \
         --enable-libvmaf \
-        --enable-nonfree
+        --enable-nonfree ${NVCODEC_OPTS}
+
     make -j$(nproc)
     make install
+
     rm -rf ${SOURCE_PREFIX}/ffmpeg
 EOF
 

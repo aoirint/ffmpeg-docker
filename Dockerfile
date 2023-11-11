@@ -258,7 +258,9 @@ RUN <<EOF
 EOF
 
 # NVIDIA video codec
+# https://git.videolan.org/?p=ffmpeg/nv-codec-headers
 ARG ENABLE_NVCODEC=0
+ARG NVCODEC_HEADER_VERSION=n12.1.14.0
 RUN <<EOF
     set -eux
 
@@ -266,7 +268,7 @@ RUN <<EOF
         # Install ffnvcodec
         mkdir -p ${SOURCE_PREFIX}/nv-codec-headers
         cd ${SOURCE_PREFIX}/nv-codec-headers
-        git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git ./
+        git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://git.videolan.org/git/ffmpeg/nv-codec-headers.git ./
 
         make install
     fi

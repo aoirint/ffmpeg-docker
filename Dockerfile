@@ -260,7 +260,7 @@ EOF
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_REPOSITORY_URL=https://git.ffmpeg.org/ffmpeg.git
-ARG FFMPEG_VERSION=n6.0
+ARG FFMPEG_VERSION=n6.0.1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/ffmpeg

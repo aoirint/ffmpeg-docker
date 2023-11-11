@@ -23,25 +23,25 @@ jobs:
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
-            ffmpeg_version: 'n6.0'
+            ffmpeg_version: 'n6.0.1'
           -
             tag_prefix: 'ubuntu-'
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
-            ffmpeg_version: 'n6.0'
+            ffmpeg_version: 'n6.0.1'
           -
             tag_prefix: 'nvidia-'
             tag_suffix: ''
             base_image: 'nvcr.io/nvidia/driver:525-signed-ubuntu22.04'
             ffmpeg_repository_url: 'https://git.ffmpeg.org/ffmpeg.git'
-            ffmpeg_version: 'n6.0'
+            ffmpeg_version: 'n6.0.1'
           -
             tag_prefix: 'ubuntu-aoirint-'
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://github.com/aoirint/FFmpeg.git'
-            ffmpeg_version: '6.0-aoirint.2'
+            ffmpeg_version: '6.0.1-aoirint.1'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

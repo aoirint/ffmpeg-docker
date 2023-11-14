@@ -30,10 +30,10 @@ docker run --rm aoirint/ffmpeg:ubuntu-latest -decoders
 ```shell
 docker pull aoirint/ffmpeg:nvidia-latest
 
-docker run --rm --gpus all,capabilities=gpu,video aoirint/ffmpeg:nvidia-latest -help
-docker run --rm --gpus all,capabilities=gpu,video aoirint/ffmpeg:nvidia-latest -formats
-docker run --rm --gpus all,capabilities=gpu,video aoirint/ffmpeg:nvidia-latest -encoders
-docker run --rm --gpus all,capabilities=gpu,video aoirint/ffmpeg:nvidia-latest -decoders
+docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia-latest -help
+docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia-latest -formats
+docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia-latest -encoders
+docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia-latest -decoders
 ```
 
 ### aoirint Fork版

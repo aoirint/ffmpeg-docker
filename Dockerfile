@@ -119,7 +119,7 @@ EOF
 
 # libfdk-aac
 # https://github.com/mstorsjo/fdk-aac.git
-ARG AAC_VERSION=v2.0.2
+ARG AAC_VERSION=v2.0.3
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libfdk-aac

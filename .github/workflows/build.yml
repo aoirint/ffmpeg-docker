@@ -44,7 +44,7 @@ jobs:
             tag_suffix: ''
             base_image: 'ubuntu:22.04'
             ffmpeg_repository_url: 'https://github.com/aoirint/FFmpeg.git'
-            ffmpeg_version: '6.0.1-aoirint.1'
+            ffmpeg_version: '7.0.1-aoirint.1'
             enable_nvcodec: '0'
     runs-on: ubuntu-latest
     steps:

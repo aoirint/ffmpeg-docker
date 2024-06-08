@@ -260,7 +260,7 @@ EOF
 # NVIDIA video codec
 # https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git
 ARG ENABLE_NVCODEC=0
-ARG NVCODEC_HEADER_VERSION=n12.1.14.0
+ARG NVCODEC_HEADER_VERSION=n12.2.72.0
 RUN <<EOF
     set -eux
 

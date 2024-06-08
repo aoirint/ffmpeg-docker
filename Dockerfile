@@ -226,7 +226,7 @@ EOF
 
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
-ARG DAV1D_VERSION=1.3.0
+ARG DAV1D_VERSION=1.4.2
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/dav1d

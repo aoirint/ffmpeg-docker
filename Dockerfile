@@ -242,7 +242,7 @@ EOF
 
 # libvmaf
 # https://github.com/Netflix/vmaf
-ARG VMAF_VERSION=v2.3.1
+ARG VMAF_VERSION=v3.0.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/vmaf

@@ -167,7 +167,7 @@ EOF
 
 # libaom
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=v3.7.0
+ARG AOM_VERSION=v3.9.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libaom

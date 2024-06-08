@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1.7
 ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE
 

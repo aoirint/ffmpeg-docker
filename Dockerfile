@@ -214,7 +214,7 @@ EOF
 
 # meson
 # https://github.com/mesonbuild/meson
-ARG MESON_VERSION=1.2.3
+ARG MESON_VERSION=1.4.1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/meson

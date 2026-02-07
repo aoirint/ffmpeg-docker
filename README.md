@@ -7,16 +7,16 @@
 |バリアント|イメージ|説明|
 |:--|:--|:--|
 |latest|`aoirint/ffmpeg:latest`|`ffmpeg:ubuntu` と同じ|
-|latest|`aoirint/ffmpeg:v<version>`|`ffmpeg:ubuntu-v<version>` と同じ|
+|latest|`aoirint/ffmpeg:v<version>`|`ffmpeg:v<version>-ubuntu` と同じ|
 |latest|`aoirint/ffmpeg:edge`|`ffmpeg:ubuntu-edge` と同じ|
 |ubuntu|`aoirint/ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
-|ubuntu|`aoirint/ffmpeg:ubuntu-v<version>`|ubuntu版の指定バージョン|
+|ubuntu|`aoirint/ffmpeg:v<version>-ubuntu`|ubuntu版の指定バージョン|
 |ubuntu|`aoirint/ffmpeg:ubuntu-edge`|ubuntu版のmainブランチ最新版|
 |nvidia|`aoirint/ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
-|nvidia|`aoirint/ffmpeg:nvidia-v<version>`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
+|nvidia|`aoirint/ffmpeg:v<version>-nvidia`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
 |nvidia|`aoirint/ffmpeg:nvidia-edge`|NVIDIA GPU ハードウェアコーデック対応版のmainブランチ最新版|
 |ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
-|ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint-v<version>`|aoirint Fork版の指定バージョン|
+|ubuntu-aoirint|`aoirint/ffmpeg:v<version>-ubuntu-aoirint`|aoirint Fork版の指定バージョン|
 |ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint-edge`|aoirint Fork版のmainブランチ最新版|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>

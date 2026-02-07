@@ -56,8 +56,10 @@ jobs:
 
     env:
       TAG_PREFIX: ${{ matrix.variant && format('{0}-', matrix.variant) || '' }}
+      TAG_SUFFIX: ${{ matrix.variant && format('-{0}', matrix.variant) || '' }}
       TAG_LATEST: ${{ matrix.variant || 'latest' }}
       ALIAS_PREFIX: ${{ matrix.alias_enabled == 'true' && (matrix.alias_variant && format('{0}-', matrix.alias_variant) || '') || '' }}
+      ALIAS_SUFFIX: ${{ matrix.alias_enabled == 'true' && (matrix.alias_variant && format('-{0}', matrix.alias_variant) || '') || '' }}
       ALIAS_TAG_LATEST: ${{ matrix.alias_enabled == 'true' && (matrix.alias_variant || 'latest') || '' }}
 
     steps:
@@ -107,10 +109,10 @@ jobs:
             latest=false
           tags: |
             type=raw,value=${{ format('{0}edge', env.TAG_PREFIX) }},enable=${{ github.event_name == 'push' }}
-            type=raw,value=${{ format('{0}{1}', env.TAG_PREFIX, github.event.release.tag_name) }},enable=${{ github.event_name == 'release' }}
+            type=raw,value=${{ format('{0}{1}', github.event.release.tag_name, env.TAG_SUFFIX) }},enable=${{ github.event_name == 'release' }}
             type=raw,value=${{ env.TAG_LATEST }},enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
             type=raw,value=${{ format('{0}edge', env.ALIAS_PREFIX) }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'push' }}
-            type=raw,value=${{ format('{0}{1}', env.ALIAS_PREFIX, github.event.release.tag_name) }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'release' }}
+            type=raw,value=${{ format('{0}{1}', github.event.release.tag_name, env.ALIAS_SUFFIX) }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'release' }}
             type=raw,value=${{ env.ALIAS_TAG_LATEST }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'release' && !github.event.release.prerelease }}
 
       # Choose cache tags for edge vs release tags

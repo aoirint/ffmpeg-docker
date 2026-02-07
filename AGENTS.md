@@ -19,10 +19,11 @@
 	- 形式: `<type>[optional scope]: <description>`
 	- 参考: https://www.conventionalcommits.org/ja/v1.0.0/
 	- 例
-		- `feat(variant): 新しいイメージvariantを追加する`
-		- `build: FFmpeg を 7.1.3 に更新する`
-		- `fix(build): ビルド手順の誤記を修正する`
-		- `docs(readme): README の手順を更新する`
+		- `feat(variant): 独自フォーク版のvariant ubuntu-aoirint を追加する`
+		- `fix(build): nvidia 版のビルドがライブラリ不足で失敗するのを修正する`
+		- `docs(readme): NVIDIA ハードウェアコーデックの動作要件を README に追加する`
+		- `style(docker): Dockerfile に空行を追加する`
+		- `build: FFmpeg のバージョンを更新する`
 - プルリクエストのタイトルと説明文は日本語で書く。
 - Markdown ドキュメントは https://github.com/DavidAnson/markdownlint のルールに従う。
 
@@ -31,12 +32,12 @@
 #### feat
 
 - ユーザー向けの新機能を追加したとき。
-- 例: 新しいイメージvariantを追加する。
+- 例: イメージのvariantを追加する。
 
 #### fix
 
 - ユーザー向けの不具合を修正したとき。
-- 例: nvidia 版のビルド失敗を修正する。
+- 例: nvidia 版のビルドがライブラリ不足で失敗するのを修正する。
 
 #### docs
 

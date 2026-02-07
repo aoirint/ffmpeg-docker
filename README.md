@@ -4,20 +4,20 @@
 
 - <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
 
-|バリアント|タグ|説明|
+|バリアント|イメージ|説明|
 |:--|:--|:--|
-|ubuntu|`ffmpeg:latest`|`ffmpeg:ubuntu` と同じ|
-|ubuntu|`ffmpeg:edge`|`ffmpeg:ubuntu-edge` と同じ|
-|ubuntu|`ffmpeg:v<version>`|`ffmpeg:ubuntu-v<version>` と同じ|
-|ubuntu|`ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
-|ubuntu|`ffmpeg:ubuntu-edge`|ubuntu版のedge（mainブランチ）|
-|ubuntu|`ffmpeg:ubuntu-v<version>`|ubuntu版の指定バージョン|
-|nvidia|`ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
-|nvidia|`ffmpeg:nvidia-edge`|NVIDIA GPU ハードウェアコーデック対応版のedge（mainブランチ）|
-|nvidia|`ffmpeg:nvidia-v<version>`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
-|ubuntu-aoirint|`ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
-|ubuntu-aoirint|`ffmpeg:ubuntu-aoirint-edge`|aoirint Fork版のedge（mainブランチ）|
-|ubuntu-aoirint|`ffmpeg:ubuntu-aoirint-v<version>`|aoirint Fork版の指定バージョン|
+|latest|`aoirint/ffmpeg:latest`|`ffmpeg:ubuntu` と同じ|
+|latest|`aoirint/ffmpeg:v<version>`|`ffmpeg:ubuntu-v<version>` と同じ|
+|latest|`aoirint/ffmpeg:edge`|`ffmpeg:ubuntu-edge` と同じ|
+|ubuntu|`aoirint/ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
+|ubuntu|`aoirint/ffmpeg:ubuntu-v<version>`|ubuntu版の指定バージョン|
+|ubuntu|`aoirint/ffmpeg:ubuntu-edge`|ubuntu版のmainブランチ最新版|
+|nvidia|`aoirint/ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
+|nvidia|`aoirint/ffmpeg:nvidia-v<version>`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
+|nvidia|`aoirint/ffmpeg:nvidia-edge`|NVIDIA GPU ハードウェアコーデック対応版のmainブランチ最新版|
+|ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
+|ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint-v<version>`|aoirint Fork版の指定バージョン|
+|ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint-edge`|aoirint Fork版のmainブランチ最新版|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
 

@@ -59,12 +59,20 @@ jobs:
       TAG_LATEST: ${{ matrix.variant || 'latest' }}
       ALIAS_PREFIX: ${{ matrix.alias_enabled == 'true' && (matrix.alias_variant && format('{0}-', matrix.alias_variant) || '') || '' }}
       ALIAS_TAG_LATEST: ${{ matrix.alias_enabled == 'true' && (matrix.alias_variant || 'latest') || '' }}
-      RELEASE_TAG: ${{ startsWith(github.event.release.tag_name, 'v') && github.event.release.tag_name || format('v{0}', github.event.release.tag_name) }}
 
     steps:
       # Checkout repository
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Require v-prefixed release tags
+      - name: Validate release tag prefix
+        if: ${{ github.event_name == 'release' }}
+        run: |-
+          if [[ "${{ github.event.release.tag_name }}" != v* ]]; then
+            echo "Release tag must start with 'v': ${{ github.event.release.tag_name }}"
+            exit 1
+          fi
 
       # Enable Buildx for cache and multi-platform builds
       - name: Setup Docker Buildx
@@ -99,10 +107,10 @@ jobs:
             latest=false
           tags: |
             type=raw,value=${{ format('{0}edge', env.TAG_PREFIX) }},enable=${{ github.event_name == 'push' }}
-            type=raw,value=${{ format('{0}{1}', env.TAG_PREFIX, env.RELEASE_TAG) }},enable=${{ github.event_name == 'release' }}
+            type=raw,value=${{ format('{0}{1}', env.TAG_PREFIX, github.event.release.tag_name) }},enable=${{ github.event_name == 'release' }}
             type=raw,value=${{ env.TAG_LATEST }},enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
             type=raw,value=${{ format('{0}edge', env.ALIAS_PREFIX) }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'push' }}
-            type=raw,value=${{ format('{0}{1}', env.ALIAS_PREFIX, env.RELEASE_TAG) }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'release' }}
+            type=raw,value=${{ format('{0}{1}', env.ALIAS_PREFIX, github.event.release.tag_name) }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'release' }}
             type=raw,value=${{ env.ALIAS_TAG_LATEST }},enable=${{ matrix.alias_enabled == 'true' && github.event_name == 'release' && !github.event.release.prerelease }}
 
       # Choose cache tags for edge vs release tags

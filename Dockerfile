@@ -1,5 +1,5 @@
-# syntax=docker/dockerfile:1.7
-ARG BASE_IMAGE=ubuntu:22.04
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=ubuntu:24.04
 FROM $BASE_IMAGE
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -37,7 +37,8 @@ RUN <<EOF
         zlib1g-dev \
         unzip \
         python3 \
-        python3-pip
+        python3-pip \
+        python3-venv
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -220,9 +221,14 @@ RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/meson
     cd ${SOURCE_PREFIX}/meson
     git clone --depth 1 --branch ${MESON_VERSION} https://github.com/mesonbuild/meson.git ./
-    pip3 install --no-cache-dir .
+
+    mkdir -p /opt/python-venv
+    python3 -m venv /opt/python-venv
+
+    /opt/python-venv/bin/pip3 install --no-cache-dir .
     rm -rf ${SOURCE_PREFIX}/meson
 EOF
+ARG PATH="/opt/python-venv/bin:${PATH}"
 
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
@@ -279,7 +285,7 @@ EOF
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_REPOSITORY_URL=https://git.ffmpeg.org/ffmpeg.git
-ARG FFMPEG_VERSION=n7.0.1
+ARG FFMPEG_VERSION=n7.1.3
 RUN <<EOF
     set -eux
 

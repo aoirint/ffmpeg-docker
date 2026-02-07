@@ -8,6 +8,9 @@ on:
     types:
       - created
 
+concurrency:
+  group: ${{ github.event_name == 'release' && format('release-{0}', github.event.release.tag_name) || format('edge-{0}', github.ref_name) }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 # Minimal permissions for pushing images to GHCR
 permissions:
   contents: read

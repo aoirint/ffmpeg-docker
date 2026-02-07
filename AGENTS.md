@@ -7,17 +7,27 @@
 ## よく使うコマンド
 
 - 通常ビルド: `make build`
-- NVIDIA 対応ビルド: `make build-nvidia`
+- NVIDIA ハードウェアコーデック対応版ビルド: `make build-nvidia`
 
 ## CI
 
-- GitHub Actions の設定は `.github/workflows/build.yml`。
+### `.github/workflows/build.yml`
+
+- Docker イメージのビルドとレジストリへの公開を行う。
+
+#### Variables / Secrets
+
+|種類|名前|説明|
+|:--|:--|:--|
+|Variables|`DOCKERHUB_USERNAME`|Docker Hub のユーザー名|
+|Secrets|`DOCKERHUB_TOKEN`|Docker Hub のアクセストークン|
+|Secrets|`GITHUB_TOKEN`|GHCR への push に使う GitHub Actions のトークン|
 
 ## ルール
 
 - コミットメッセージとプルリクエストのタイトルは Conventional Commits のルールに従う。
 	- 形式: `<type>[optional scope]: <description>`
-	- 参考: https://www.conventionalcommits.org/ja/v1.0.0/
+	- 参考: <https://www.conventionalcommits.org/ja/v1.0.0/>
 	- 例
 		- `feat(variant): 独自フォーク版のvariant ubuntu-aoirint を追加する`
 		- `fix(build): nvidia 版のビルドがライブラリ不足で失敗するのを修正する`
@@ -25,7 +35,7 @@
 		- `style(docker): Dockerfile に空行を追加する`
 		- `build: FFmpeg のバージョンを更新する`
 - プルリクエストのタイトルと説明文は日本語で書く。
-- Markdown ドキュメントは https://github.com/DavidAnson/markdownlint のルールに従う。
+- Markdown ドキュメントは <https://github.com/DavidAnson/markdownlint> のルールに従う。
 
 ### Conventional Commitsのtype一覧
 
@@ -37,27 +47,27 @@
 #### fix
 
 - ユーザー向けの不具合を修正したとき。
-- 例: nvidia 版のビルドがライブラリ不足で失敗するのを修正する。
+- 例: nvidia版のビルドがライブラリ不足で失敗するのを修正する。
 
 #### docs
 
 - ドキュメントのみを変更したとき。
-- 例: NVIDIA ハードウェアコーデックの動作要件を README に追加する。
+- 例: NVIDIA ハードウェアコーデックの動作要件を `README.md` に追加する。
 
 #### style
 
 - 自動フォーマットや整形のみを行ったとき。
-- 例: Dockerfile やシェルスクリプトに空行を追加する。
+- 例: `Dockerfile` やシェルスクリプトに空行を追加する。
 
 #### refactor
 
 - 振る舞いを変えずに内部構造を整理したとき（挙動は変更しない）。
-- 例: Dockerfile の命令の統廃合を行う、共通処理のステージ化・外部スクリプト化を行う。
+- 例: `Dockerfile` の命令の統廃合を行う、共通処理のステージ化・外部スクリプト化を行う。
 
 #### perf
 
 - ビルド実行時や成果物実行時の処理時間やリソース効率（CI のビルド時間・配布物のファイルサイズ・実行時のメモリ使用量など）を改善したとき（挙動は変更しない）。
-- 例: FFmpeg のパフォーマンスチューニングを行う、buildcache の設定を変更して CI のビルド時間を短縮する、イメージサイズを削減する。
+- 例: FFmpeg のパフォーマンスチューニングを行う、ビルドキャッシュの設定を変更して CI のビルド時間を短縮する、イメージサイズを削減する。
 
 #### test
 
@@ -67,7 +77,7 @@
 #### build
 
 - ビルドシステム、依存関係や成果物の構成を変更したとき。
-- 例: FFmpeg のバージョンを更新する、Dockerfile の syntax を更新する、Makefile のローカルビルド手順を変更する。
+- 例: FFmpeg のバージョンを更新する、`Dockerfile` の `syntax` を更新する、`Makefile` のローカルビルド手順を変更する。
 
 #### ci
 
@@ -77,7 +87,7 @@
 #### chore
 
 - 開発補助の作業（ツール更新など）を行ったとき。
-- 例: .gitignore など開発用の補助設定を変更する。
+- 例: `.gitignore` など開発用の補助設定を変更する。
 
 #### revert
 

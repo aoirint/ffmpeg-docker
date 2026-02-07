@@ -37,7 +37,8 @@ RUN <<EOF
         zlib1g-dev \
         unzip \
         python3 \
-        python3-pip
+        python3-pip \
+        python3-venv
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -220,9 +221,14 @@ RUN <<EOF
     mkdir -p ${SOURCE_PREFIX}/meson
     cd ${SOURCE_PREFIX}/meson
     git clone --depth 1 --branch ${MESON_VERSION} https://github.com/mesonbuild/meson.git ./
-    pip3 install --no-cache-dir .
+
+    mkdir -p /opt/python-venv
+    python3 -m venv /opt/python-venv
+
+    /opt/python-venv/bin/pip3 install --no-cache-dir .
     rm -rf ${SOURCE_PREFIX}/meson
 EOF
+ARG PATH="/opt/python-venv/bin:${PATH}"
 
 # libdav1d
 # https://code.videolan.org/videolan/dav1d

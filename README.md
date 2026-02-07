@@ -1,5 +1,6 @@
 # ffmpeg-docker
-最新のffmpegを使うためのDockerイメージ
+
+最新のFFmpegを使うためのDockerイメージ
 
 - <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
 

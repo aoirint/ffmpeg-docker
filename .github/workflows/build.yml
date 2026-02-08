@@ -68,7 +68,7 @@ jobs:
       - name: Derive tag naming
         id: tagvars
         run: |-
-          # タグ命名規則の派生値をまとめて算出する。
+          # タグの構成要素をまとめて生成する。
           # 仕様:
           # - バージョン: v<version>-<variant>
           # - edge: edge-<variant>
@@ -77,6 +77,8 @@ jobs:
           # 実装:
           # - variant_tag_latest: <variant>
           # - default_tag_latest: latest（ubuntu のみ）
+
+          # variant タグの生成
           if [[ "${{ matrix.variant }}" != "" ]]; then
             echo "variant_tag_prefix=${{ matrix.variant }}-" >> "$GITHUB_OUTPUT"
             echo "variant_tag_suffix=-${{ matrix.variant }}" >> "$GITHUB_OUTPUT"
@@ -85,6 +87,7 @@ jobs:
             echo "variant_tag_suffix=" >> "$GITHUB_OUTPUT"
           fi
 
+          # default タグの生成
           if [[ "${{ matrix.is_default_tag }}" == "true" ]]; then
             echo "default_tag_prefix=" >> "$GITHUB_OUTPUT"
             echo "default_tag_suffix=" >> "$GITHUB_OUTPUT"
@@ -93,6 +96,7 @@ jobs:
             echo "default_tag_suffix=" >> "$GITHUB_OUTPUT"
           fi
 
+          # latest タグの生成
           if [[ "${{ matrix.variant }}" != "" ]]; then
             echo "variant_tag_latest=${{ matrix.variant }}" >> "$GITHUB_OUTPUT"
           else

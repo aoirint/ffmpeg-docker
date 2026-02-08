@@ -87,15 +87,6 @@ jobs:
             echo "variant_tag_suffix=" >> "$GITHUB_OUTPUT"
           fi
 
-          # default タグの生成
-          if [[ "${{ matrix.is_default_tag }}" == "true" ]]; then
-            echo "default_tag_prefix=" >> "$GITHUB_OUTPUT"
-            echo "default_tag_suffix=" >> "$GITHUB_OUTPUT"
-          else
-            echo "default_tag_prefix=" >> "$GITHUB_OUTPUT"
-            echo "default_tag_suffix=" >> "$GITHUB_OUTPUT"
-          fi
-
           # latest タグの生成
           if [[ "${{ matrix.variant }}" != "" ]]; then
             echo "variant_tag_latest=${{ matrix.variant }}" >> "$GITHUB_OUTPUT"
@@ -149,8 +140,8 @@ jobs:
             # latest はプレリリースを除外したリリースのみ
             type=raw,value=${{ steps.tagvars.outputs.variant_tag_latest }},enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
             # default は ubuntu の別名として ffmpeg:* を生成する
-            type=raw,value=${{ format('edge{0}', steps.tagvars.outputs.default_tag_suffix) }},enable=${{ matrix.is_default_tag == 'true' && github.event_name == 'push' }}
-            type=raw,value=${{ format('{0}{1}', github.event.release.tag_name, steps.tagvars.outputs.default_tag_suffix) }},enable=${{ matrix.is_default_tag == 'true' && github.event_name == 'release' }}
+            type=raw,value=edge,enable=${{ matrix.is_default_tag == 'true' && github.event_name == 'push' }}
+            type=raw,value=${{ github.event.release.tag_name }},enable=${{ matrix.is_default_tag == 'true' && github.event_name == 'release' }}
             type=raw,value=${{ steps.tagvars.outputs.default_tag_latest }},enable=${{ matrix.is_default_tag == 'true' && github.event_name == 'release' && !github.event.release.prerelease }}
 
       # Choose cache tags for edge vs release tags

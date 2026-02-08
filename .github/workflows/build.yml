@@ -103,6 +103,7 @@ jobs:
             echo "variant_tag_latest=latest" >> "$GITHUB_OUTPUT"
           fi
 
+          # default latest タグの生成
           if [[ "${{ matrix.is_default_tag }}" == "true" ]]; then
             echo "default_tag_latest=latest" >> "$GITHUB_OUTPUT"
           else

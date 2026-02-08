@@ -4,22 +4,35 @@
 
 - <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
 
+## タグ一覧
+
 |バリアント|イメージ|説明|
 |:--|:--|:--|
 |latest|`aoirint/ffmpeg:latest`|`ffmpeg:ubuntu` と同じ|
 |latest|`aoirint/ffmpeg:v<version>`|`ffmpeg:v<version>-ubuntu` と同じ|
-|latest|`aoirint/ffmpeg:edge`|`ffmpeg:ubuntu-edge` と同じ|
+|latest|`aoirint/ffmpeg:edge`|`ffmpeg:edge-ubuntu` と同じ|
 |ubuntu|`aoirint/ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
 |ubuntu|`aoirint/ffmpeg:v<version>-ubuntu`|ubuntu版の指定バージョン|
-|ubuntu|`aoirint/ffmpeg:ubuntu-edge`|ubuntu版のmainブランチ最新版|
+|ubuntu|`aoirint/ffmpeg:edge-ubuntu`|ubuntu版のmainブランチ最新版|
 |nvidia|`aoirint/ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
 |nvidia|`aoirint/ffmpeg:v<version>-nvidia`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
-|nvidia|`aoirint/ffmpeg:nvidia-edge`|NVIDIA GPU ハードウェアコーデック対応版のmainブランチ最新版|
+|nvidia|`aoirint/ffmpeg:edge-nvidia`|NVIDIA GPU ハードウェアコーデック対応版のmainブランチ最新版|
 |ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
 |ubuntu-aoirint|`aoirint/ffmpeg:v<version>-ubuntu-aoirint`|aoirint Fork版の指定バージョン|
-|ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint-edge`|aoirint Fork版のmainブランチ最新版|
+|ubuntu-aoirint|`aoirint/ffmpeg:edge-ubuntu-aoirint`|aoirint Fork版のmainブランチ最新版|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
+
+## ビルドキャッシュ
+
+|バリアント|イメージ|説明|
+|:--|:--|:--|
+|ubuntu|`ghcr.io/aoirint/ffmpeg:ubuntu-buildcache`|ubuntu版のbuildcache（latest系）|
+|ubuntu|`ghcr.io/aoirint/ffmpeg:edge-ubuntu-buildcache`|ubuntu版のbuildcache（edge系）|
+|nvidia|`ghcr.io/aoirint/ffmpeg:nvidia-buildcache`|NVIDIA GPU ハードウェアコーデック対応版のbuildcache（latest系）|
+|nvidia|`ghcr.io/aoirint/ffmpeg:edge-nvidia-buildcache`|NVIDIA GPU ハードウェアコーデック対応版のbuildcache（edge系）|
+|ubuntu-aoirint|`ghcr.io/aoirint/ffmpeg:ubuntu-aoirint-buildcache`|aoirint Fork版のbuildcache（latest系）|
+|ubuntu-aoirint|`ghcr.io/aoirint/ffmpeg:edge-ubuntu-aoirint-buildcache`|aoirint Fork版のbuildcache（edge系）|
 
 ## リリース手順
 

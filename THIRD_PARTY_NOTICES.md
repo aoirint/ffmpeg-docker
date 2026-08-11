@@ -26,8 +26,8 @@ under `/usr/local/share/licenses/ffmpeg/`.
   `git-worktree-workflow`, `github-actions-quality-check`, `github-workflow`,
   `prose-quality-check`, `security-check`, and
   `software-documentation-maintenance`
-- Commit: `86894aa7086e86830b254c1517b9fa1ba37f0138`
-- License: MIT, <https://github.com/aoirint/skills/blob/86894aa7086e86830b254c1517b9fa1ba37f0138/LICENSE>
+- Commit: `f97f2cf209112a3dfafff5618bd5466f6f502e72`
+- License: MIT, <https://github.com/aoirint/skills/blob/f97f2cf209112a3dfafff5618bd5466f6f502e72/LICENSE>
 - Copyright: Copyright (c) 2026 aoirint
 
 The full license text is available at the linked canonical source. This notice

@@ -8,6 +8,10 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+### Added
+
+- `ubuntu-aoirint`の公開イメージに対し、外部サービスへ接続せずRTMP strict pathの拒否・受入を確認するsmoke testを追加。
+
 ## [v0.6.0] - 2026-08-11 UTC
 
 ### Changed

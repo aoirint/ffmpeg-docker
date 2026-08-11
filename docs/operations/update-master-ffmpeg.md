@@ -2,8 +2,9 @@
 
 ## 目的
 
-aoirint/FFmpeg の `master` を upstream `master` へfast-forwardし、同じ完全な
-コミットSHAを ffmpeg-docker の edge buildへ反映します。
+aoirint/FFmpeg の `master` を upstream `master` へfast-forwardします。
+ffmpeg-docker のイメージは安定版タグを使用するため、この操作では
+Docker workflowの参照versionを変更しません。
 
 ## 手順
 
@@ -11,11 +12,9 @@ aoirint/FFmpeg の `master` を upstream `master` へfast-forwardし、同じ完
 2. `git merge-base --is-ancestor origin/master upstream/master` で、forkが純粋な
    fast-forwardとして更新できることを確認します。
 3. upstream `master` を forkの `master` へpushし、remoteのSHAを読み戻します。
-4. `.github/workflows/build.yml` の全バリアントにある `edge_ffmpeg_version` を
-   読み戻した40文字のSHAへ更新します。
-5. upstream URLとfork URLの両方から同じSHAを取得できることを確認します。
-6. `main` へマージしたbuild workflowと、公開されたedge imageの
-   `ffmpeg -version` を確認します。
+4. upstream URLとfork URLの両方から同じSHAを取得できることを確認します。
+5. ffmpeg-docker の workflow matrix にmaster SHAを追加していないことを
+   確認します。
 
 ## 失敗時の扱い
 
@@ -24,5 +23,5 @@ fork固有コミットによってfast-forwardできない場合は `master` を
 
 ## 更新契機
 
-edge imageを新しいupstream `master` へ進めるときに実行します。branch名ではなく
-完全なSHAを更新するため、定期追従にはffmpeg-docker側の変更と再検証が必要です。
+aoirint/FFmpeg の `master` を新しいupstream `master` へ進めるときに実行します。
+Docker イメージの FFmpeg revision は、安定版更新の手順でのみ変更します。

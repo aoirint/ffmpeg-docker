@@ -22,6 +22,8 @@ Docker Hub および GitHub Container Registry に公開します。
   通常版、NVIDIA 版、`ubuntu-aoirint` 版への影響を確認します。
 - `ubuntu-aoirint` の参照バージョンを変更するときは、`../FFmpeg` のタグ、
   コミット、パッチ適用状態と対応していることを確認します。
+- Dockerfile、workflow、公開規則、fork 連携を変更したときは、`docs/` の
+  対応するドメイン、アーキテクチャ、運用文書も同じ変更で更新します。
 - 秘密値を追跡ファイル、ログ、PR 本文へ含めません。
 
 ## Agent Skills

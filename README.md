@@ -4,6 +4,9 @@
 
 - <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
 
+設計、FFmpeg fork との連動、更新・公開手順は
+[開発者向け文書](docs/README.md)を参照してください。
+
 ## タグ一覧
 
 |バリアント|イメージ|説明|
@@ -13,13 +16,13 @@
 |latest|`aoirint/ffmpeg:edge`|`ffmpeg:edge-ubuntu` と同じ|
 |ubuntu|`aoirint/ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
 |ubuntu|`aoirint/ffmpeg:v<version>-ubuntu`|ubuntu版の指定バージョン|
-|ubuntu|`aoirint/ffmpeg:edge-ubuntu`|ubuntu版のmainブランチ最新版|
+|ubuntu|`aoirint/ffmpeg:edge-ubuntu`|ubuntu版の継続ビルド|
 |nvidia|`aoirint/ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
 |nvidia|`aoirint/ffmpeg:v<version>-nvidia`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
-|nvidia|`aoirint/ffmpeg:edge-nvidia`|NVIDIA GPU ハードウェアコーデック対応版のmainブランチ最新版|
+|nvidia|`aoirint/ffmpeg:edge-nvidia`|NVIDIA GPU ハードウェアコーデック対応版の継続ビルド|
 |ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
 |ubuntu-aoirint|`aoirint/ffmpeg:v<version>-ubuntu-aoirint`|aoirint Fork版の指定バージョン|
-|ubuntu-aoirint|`aoirint/ffmpeg:edge-ubuntu-aoirint`|aoirint Fork版のmainブランチ最新版|
+|ubuntu-aoirint|`aoirint/ffmpeg:edge-ubuntu-aoirint`|aoirint Fork版の継続ビルド|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
 

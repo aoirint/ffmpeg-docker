@@ -3,7 +3,7 @@
 ## aoirint/skills
 
 - Source: <https://github.com/aoirint/skills>
-- Virtual paths: `apm-workflow`, `code-quality-check`,
+- Virtual paths: `apm-workflow`, `changelog-workflow`, `code-quality-check`,
   `commit-message-quality-check`, `docker-quality-check`,
   `git-worktree-workflow`, `github-actions-quality-check`, `github-workflow`,
   `prose-quality-check`, `security-check`, and

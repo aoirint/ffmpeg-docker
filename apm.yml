@@ -13,6 +13,7 @@ dependencies:
       ref: 9831bb2c9d41ffbd9d41336b840384b3e303e2e8
       skills:
         - apm-workflow
+        - changelog-workflow
         - code-quality-check
         - commit-message-quality-check
         - docker-quality-check

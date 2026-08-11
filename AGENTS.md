@@ -32,6 +32,7 @@ Agent Skills は APM で管理します。作業内容に該当する Skill を�
 複数に該当する場合は組み合わせてください。
 
 - APM 依存関係: `apm-workflow`
+- 開発者向け変更履歴: `changelog-workflow`
 - 一般的な実装レビュー: `code-quality-check`
 - Docker: `docker-quality-check`
 - GitHub Actions: `github-actions-quality-check`

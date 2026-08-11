@@ -6,6 +6,7 @@
 
 設計、FFmpeg fork との連動、更新・公開手順は
 [開発者向け文書](docs/README.md)を参照してください。
+変更履歴は [CHANGELOG](CHANGELOG.md)を参照してください。
 
 ## タグ一覧
 

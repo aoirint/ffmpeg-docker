@@ -8,6 +8,11 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+### Changed
+
+- GitHub Actions の runner を Ubuntu 24.04 に固定し、Docker Actions を
+  Node.js 24 対応版へ更新しました。
+
 ## [v0.5.0] - 2026-08-11 UTC
 
 ### Added

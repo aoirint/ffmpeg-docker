@@ -12,6 +12,16 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 - GitHub Actions の runner を Ubuntu 24.04 に固定し、Docker Actions を
   Node.js 24 対応版へ更新しました。
+- FFmpeg を GPL version 3 or later として再配布可能な構成に変更し、ライセンス
+  ファイルをDockerイメージへ収録しました。
+- nv-codec-headers の取得元を FFmpeg 公式 GitHub mirror へ変更しました。
+
+### Removed
+
+- 再配布不能なFFmpegバイナリを生成する `libfdk-aac` と
+  `--enable-nonfree` をビルドから削除しました。
+- NVIDIA版からnonfree扱いとなるCUDA NVCC・NPP filterを削除しました。
+  NVENC/NVDEC codec supportは維持します。
 
 ### Fixed
 

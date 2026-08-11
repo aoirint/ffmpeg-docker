@@ -118,21 +118,6 @@ RUN <<EOF
     rm -rf ${SOURCE_PREFIX}/libvpx
 EOF
 
-# libfdk-aac
-# https://github.com/mstorsjo/fdk-aac.git
-ARG AAC_VERSION=v2.0.3
-RUN <<EOF
-    set -eux
-    mkdir -p ${SOURCE_PREFIX}/libfdk-aac
-    cd ${SOURCE_PREFIX}/libfdk-aac
-    git clone --depth 1 --branch ${AAC_VERSION} https://github.com/mstorsjo/fdk-aac.git ./
-    autoreconf -fiv
-    ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
-    make -j$(nproc)
-    make install
-    rm -rf ${SOURCE_PREFIX}/libfdk-aac
-EOF
-
 # libmp3lame
 # https://sourceforge.net/projects/lame/files/
 ARG LAME_VERSION=3.100
@@ -274,7 +259,7 @@ RUN <<EOF
         # Install ffnvcodec
         mkdir -p "${SOURCE_PREFIX}/nv-codec-headers"
         cd "${SOURCE_PREFIX}/nv-codec-headers"
-        git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://git.videolan.org/git/ffmpeg/nv-codec-headers.git ./
+        git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://github.com/FFmpeg/nv-codec-headers.git ./
 
         make install
 
@@ -293,7 +278,7 @@ RUN <<EOF
     # https://docs.nvidia.com/video-technologies/video-codec-sdk/12.1/ffmpeg-with-nvidia-gpu/index.html
     NVCODEC_OPTS=""
     if [ "${ENABLE_NVCODEC}" = "1" ]; then
-        NVCODEC_OPTS="--enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64"
+        NVCODEC_OPTS="--extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64"
     fi
 
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
@@ -309,10 +294,10 @@ RUN <<EOF
         --extra-libs="-lpthread -lm" \
         --ld="g++" \
         --enable-gpl \
+        --enable-version3 \
         --enable-gnutls \
         --enable-libaom \
         --enable-libass \
-        --enable-libfdk-aac \
         --enable-libfreetype \
         --enable-libmp3lame \
         --enable-libopus \
@@ -322,11 +307,13 @@ RUN <<EOF
         --enable-libx265 \
         --enable-libsvtav1 \
         --enable-libdav1d \
-        --enable-libvmaf \
-        --enable-nonfree ${NVCODEC_OPTS}
+        --enable-libvmaf ${NVCODEC_OPTS}
 
     make -j$(nproc)
     make install
+
+    install -D -m 0644 LICENSE.md "${INSTALL_PREFIX}/share/licenses/ffmpeg/LICENSE.md"
+    install -D -m 0644 COPYING.GPLv3 "${INSTALL_PREFIX}/share/licenses/ffmpeg/COPYING.GPLv3"
 
     rm -rf ${SOURCE_PREFIX}/ffmpeg
 EOF

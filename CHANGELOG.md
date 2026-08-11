@@ -8,9 +8,18 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.7.0] - 2026-08-11 UTC
+
 ### Added
 
 - `ubuntu-aoirint`の公開イメージに対し、外部サービスへ接続せずRTMP strict pathの拒否・受入を確認するsmoke testを追加。
+- `ubuntu-aoirint`を`8.0.3-aoirint.2`へ更新し、strict RTMP listenerが期待する
+  stream名をローカルファイルから読み取る`rtmp_strict_stream_file`を追加。
+
+### Security
+
+- strict pathの期待値をプロセス引数へ置かず、拒否ログにも接続側・期待側の
+  stream名を出力しない運用を可能にしました。
 
 ## [v0.6.0] - 2026-08-11 UTC
 
@@ -189,7 +198,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...HEAD
+[v0.7.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/aoirint/ffmpeg-docker/compare/0.3.0...v0.4.0

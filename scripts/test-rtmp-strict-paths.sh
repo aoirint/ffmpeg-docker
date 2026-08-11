@@ -14,7 +14,7 @@ listener_log=$(mktemp)
 publisher_log=$(mktemp)
 
 cleanup() {
-  docker container stop --time 1 "${listener}" >/dev/null 2>&1 || true
+  docker container rm --force "${listener}" >/dev/null 2>&1 || true
   docker network rm "${network}" >/dev/null 2>&1 || true
   find "${listener_log}" "${publisher_log}" -delete
 }
@@ -25,7 +25,8 @@ docker network create "${network}" >/dev/null
 start_listener() {
   local duration=$1
 
-  docker run --rm --detach \
+  docker container rm "${listener}" >/dev/null 2>&1 || true
+  docker run --detach \
     --name "${listener}" \
     --network "${network}" \
     --init \
@@ -63,9 +64,11 @@ fi
 docker logs "${listener}" >"${listener_log}" 2>&1 || true
 grep -Fq "Unexpected stream" "${listener_log}"
 docker wait "${listener}" >/dev/null
+docker container rm "${listener}" >/dev/null
 
 start_listener 1
 publish_test_source expected 0.8 >"${publisher_log}" 2>&1
 test "$(docker wait "${listener}")" = "0"
+docker container rm "${listener}" >/dev/null
 
 echo "RTMP strict-path smoke test passed"

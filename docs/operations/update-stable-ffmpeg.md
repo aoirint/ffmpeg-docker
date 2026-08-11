@@ -25,7 +25,7 @@ aoirint 派生版を同じ ffmpeg-docker リリースで公開できる状態に
    タグを公開します。Docker 側から参照できることを `git ls-remote` で確認します。
 5. ffmpeg-docker の `Dockerfile` にある既定 `FFMPEG_VERSION` を
    `n<version>` へ更新します。
-6. `.github/workflows/build.yml` の `ubuntu` と `nvidia` を `n<version>`、
+6. `.github/workflows/main.yml` の `ubuntu` と `nvidia` を `n<version>`、
    `ubuntu-aoirint` を `<version>-aoirint.<revision>` へ更新します。
 7. Dockerfile と workflow に旧バージョンが残っていないことを検索し、
    `make build` と `make build-nvidia` を実行します。

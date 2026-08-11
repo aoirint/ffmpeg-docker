@@ -32,8 +32,10 @@ GitHub Actions の matrix が、これらを3つのバリアントへ割り当�
 
 - `main` の push は matrix に固定した FFmpeg 安定版から `edge-<variant>` を
   更新します。
-- GitHub Release は `v<version>-<variant>` を公開します。
-- prerelease でない GitHub Release は `<variant>` も更新します。
+- 新しいstable `VERSION` は `v<version>-<variant>` を公開します。
+- stable releaseは `<variant>` も更新します。
+- prerelease `VERSION` はedge系を検証してGitHub prereleaseを作成し、latest系を
+  更新しません。
 - `ubuntu` は既定バリアントとして `edge`、`v<version>`、`latest` の別名も
   公開します。
 
@@ -44,8 +46,9 @@ GitHub Actions の matrix が、これらを3つのバリアントへ割り当�
 ## ソースrevisionの選択
 
 workflow matrix はバリアントごとに1つの FFmpeg 安定版タグを保持します。
-`main` の push と GitHub Release は同じ `FFMPEG_VERSION` を使用し、公開タグと
-キャッシュのライフサイクルだけを分けます。
+すべての `main` pushは同じ `FFMPEG_VERSION` を使用し、ルートの `VERSION` と
+既存release identityの状態により公開タグとキャッシュのライフサイクルだけを
+分けます。
 
 このため `edge` は FFmpeg `master` の意味ではなく、次のリリースに入る
 ffmpeg-docker の変更を安定版 FFmpeg と組み合わせた継続ビルドです。

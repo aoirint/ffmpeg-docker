@@ -2,30 +2,30 @@
 
 ## 公開経路
 
-`.github/workflows/build.yml` は次の event で3バリアントをビルドし、Docker Hub
-と GHCR へ push します。
+`.github/workflows/main.yml` は `main` へのpushだけで3バリアントをビルドし、
+Docker HubとGHCRへpushします。ルートの `VERSION` が唯一のrelease identityです。
 
-| event | 主な成果物 | キャッシュ |
+| `VERSION` の状態 | 主な成果物 | GitHub Release |
 | --- | --- | --- |
-| `main` への push | `edge-<variant>` | `edge-<variant>-buildcache` |
-| GitHub Release の作成 | `v<version>-<variant>` | 安定版または edge cache |
-| 通常リリース | 上記に加えて `<variant>` と既定別名 | `<variant>-buildcache` |
+| tagとreleaseが両方存在 | `edge-<variant>` | 作成しない |
+| stableでtagとreleaseが両方不在 | `v<version>-<variant>`とlatest系 | stableとして作成 |
+| prereleaseでtagとreleaseが両方不在 | `edge-<variant>` | prereleaseとして作成 |
 
-GitHub Release のタグは `v` で始めます。workflow はそれ以外のタグを拒否します。
-prerelease は version tag を公開しますが、latest 系タグを更新しません。
+tagとreleaseの片方だけが存在する不整合では、安全のため公開を停止します。
+GitHub Releaseの手動作成、tag push、workflow dispatchはリリース経路ではありません。
 
 ## 公開手順
 
-1. `main` の対象コミットで build workflow が成功し、edge 系イメージが両方の
-   レジストリへ公開されたことを確認します。
-2. リリース対象の変更と README のタグ説明が一致することを確認します。
-3. `v<version>` タグの GitHub Release を作成します。検証中のリリースは
-   prerelease にします。
-4. release event の全バリアントが成功したことを確認します。
-5. Docker Hub と GHCR の両方で期待した version tag を pull し、
-   `ffmpeg -version` を実行してソースバージョンを確認します。
-6. 通常リリースでは `<variant>` と `latest`、prerelease では既存 latest 系タグが
-   変わっていないことを確認します。
+1. リリース対象の変更とCHANGELOGを確認します。
+2. ルートの `VERSION` をbare SemVerへ変更します。stableは `0.6.0`、prereleaseは
+   `0.6.0-rc.1` のように記述し、`v` prefixやbuild metadataは使用しません。
+3. Pull Requestの `Check` が成功したら `main` へマージします。
+4. main workflowが全variantを一度だけbuild・publishした後、Docker HubとGHCRの
+   digest一致およびvariant固有機能を検証したことを確認します。
+5. release jobが同じmain commitを指すimmutableな `v<VERSION>` tagとGitHub
+   Releaseを作成したことを確認します。
+6. stable releaseではversion・variant・`latest` aliases、prereleaseでは既存の
+   latest系tagが変わっていないことを確認します。
 
 ## 認証と権限
 
@@ -33,13 +33,15 @@ prerelease は version tag を公開しますが、latest 系タグを更新し�
 | --- | --- | --- |
 | Variable | `DOCKERHUB_USERNAME` | Docker Hub login |
 | Secret | `DOCKERHUB_TOKEN` | Docker Hub push |
-| Secret | `GITHUB_TOKEN` | GHCR push |
+| Secret | `GITHUB_TOKEN` | GHCR pushとrelease作成 |
 
-workflow の権限は `contents: read` と `packages: write` に限定します。資格情報を
+checkとplanは `contents: read`、buildは `packages: write`、testは
+`packages: read`、releaseだけは `contents: write` を使用します。資格情報を
 ローカル文書、ログ、PR本文へ転記しません。
 
 ## 回復
 
-公開に失敗した場合は失敗した job と registry を特定し、原因を修正した新しい
-コミットまたは新しい GitHub Release で再実行します。公開済みの immutable な
-version tag を別内容へ上書きせず、必要ならリポジトリのバージョンを増やします。
+tagとreleaseの作成前に失敗した場合は原因を修正してmainへpushします。同じ
+`VERSION` が未公開なら再試行されます。tagまたはreleaseの片方だけが存在する場合は、
+自動修復せず状態を調査します。公開済みのimmutable identityを上書きせず、成果物の
+修正が必要なら `VERSION` を増やします。

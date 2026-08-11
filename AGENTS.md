@@ -66,8 +66,10 @@ make build-nvidia
 
 ## CI と公開
 
-`.github/workflows/build.yml` は `main` への push と GitHub Release の作成を
-契機に Docker イメージをビルドし、Docker Hub と GHCR へ公開します。
+`.github/workflows/pull-request.yml` は proposed sourceを検証します。
+`.github/workflows/main.yml` は `main` へのpushだけを契機にDockerイメージを
+Docker HubとGHCRへ公開し、ルートの `VERSION` が未公開なら公開物の検証後に
+GitHub Releaseを作成します。GitHub Releaseの手動作成はリリース契機ではありません。
 
 | 種類 | 名前 | 用途 |
 | --- | --- | --- |

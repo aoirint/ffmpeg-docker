@@ -1,0 +1,283 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: aoirint/ffmpeg
+  GHCR_IMAGE_NAME: ghcr.io/aoirint/ffmpeg
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout integrated source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check Docker source
+        uses: ./.github/actions/check-docker-source
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Check Docker build
+        run: docker buildx build --check .
+
+  plan:
+    name: Plan release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      release_mode: ${{ steps.version.outputs.release_mode }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - name: Checkout integrated source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read release version and remote state
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |-
+          version="$(cat VERSION)"
+          if [[ ! "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "VERSION must contain one canonical stable or prerelease SemVer" >&2
+            exit 1
+          fi
+          if ! cmp -s VERSION <(printf '%s\n' "${version}"); then
+            echo "VERSION must contain only the SemVer value and one trailing newline" >&2
+            exit 1
+          fi
+
+          tag="v${version}"
+          tag_exists=false
+          release_exists=false
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            tag_exists=true
+          fi
+          if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --silent >/dev/null 2>&1; then
+            release_exists=true
+          fi
+
+          if [[ "${tag_exists}" == false && "${release_exists}" == false ]]; then
+            if [[ "${version}" == *-* ]]; then
+              release_mode=prerelease
+            else
+              release_mode=latest
+            fi
+          elif [[ "${tag_exists}" == true && "${release_exists}" == true ]]; then
+            release_mode=edge
+          else
+            echo "Inconsistent release identity for ${tag}: tag=${tag_exists}, release=${release_exists}" >&2
+            exit 1
+          fi
+
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "release_mode=${release_mode}" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.variant }}
+    needs:
+      - check
+      - plan
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: ubuntu
+            is_default_tag: true
+            base_image: ubuntu:24.04
+            ffmpeg_repository_url: https://github.com/FFmpeg/FFmpeg.git
+            ffmpeg_version: n8.0.3
+            enable_nvcodec: 0
+          - variant: nvidia
+            is_default_tag: false
+            base_image: nvcr.io/nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
+            ffmpeg_repository_url: https://github.com/FFmpeg/FFmpeg.git
+            ffmpeg_version: n8.0.3
+            enable_nvcodec: 1
+          - variant: ubuntu-aoirint
+            is_default_tag: false
+            base_image: ubuntu:24.04
+            ffmpeg_repository_url: https://github.com/aoirint/FFmpeg.git
+            ffmpeg_version: 8.0.3-aoirint.1
+            enable_nvcodec: 0
+    steps:
+      - name: Checkout integrated source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Derive variant tags
+        id: variant
+        env:
+          RELEASE_MODE: ${{ needs.plan.outputs.release_mode }}
+          VARIANT: ${{ matrix.variant }}
+        run: |-
+          if [[ "${RELEASE_MODE}" == latest ]]; then
+            cache_tag="${VARIANT}-buildcache"
+          else
+            cache_tag="edge-${VARIANT}-buildcache"
+          fi
+          echo "suffix=-${VARIANT}" >> "$GITHUB_OUTPUT"
+          echo "cache_tag=${cache_tag}" >> "$GITHUB_OUTPUT"
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Log in to Docker Hub
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Derive Docker metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.GHCR_IMAGE_NAME }}
+          flavor: latest=false
+          tags: |
+            type=raw,value=edge${{ steps.variant.outputs.suffix }},enable=${{ needs.plan.outputs.release_mode != 'latest' }}
+            type=raw,value=edge,enable=${{ matrix.is_default_tag && needs.plan.outputs.release_mode != 'latest' }}
+            type=raw,value=${{ needs.plan.outputs.tag }}${{ steps.variant.outputs.suffix }},enable=${{ needs.plan.outputs.release_mode == 'latest' }}
+            type=raw,value=${{ needs.plan.outputs.tag }},enable=${{ matrix.is_default_tag && needs.plan.outputs.release_mode == 'latest' }}
+            type=raw,value=${{ matrix.variant }},enable=${{ needs.plan.outputs.release_mode == 'latest' }}
+            type=raw,value=latest,enable=${{ matrix.is_default_tag && needs.plan.outputs.release_mode == 'latest' }}
+      - name: Build and publish Docker image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          file: ./Dockerfile
+          push: true
+          build-args: |
+            BASE_IMAGE=${{ matrix.base_image }}
+            FFMPEG_REPOSITORY_URL=${{ matrix.ffmpeg_repository_url }}
+            FFMPEG_VERSION=${{ matrix.ffmpeg_version }}
+            ENABLE_NVCODEC=${{ matrix.enable_nvcodec }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          cache-from: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-${{ matrix.variant }}-buildcache
+          cache-to: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:${{ steps.variant.outputs.cache_tag }},mode=max
+
+  test:
+    name: Test ${{ matrix.variant }}
+    needs:
+      - build
+      - plan
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: ubuntu
+          - variant: nvidia
+          - variant: ubuntu-aoirint
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Select published tag
+        id: image
+        env:
+          RELEASE_MODE: ${{ needs.plan.outputs.release_mode }}
+          RELEASE_TAG: ${{ needs.plan.outputs.tag }}
+          VARIANT: ${{ matrix.variant }}
+        run: |-
+          if [[ "${RELEASE_MODE}" == latest ]]; then
+            tag="${RELEASE_TAG}-${VARIANT}"
+          else
+            tag="edge-${VARIANT}"
+          fi
+          echo "dockerhub=${{ env.IMAGE_NAME }}:${tag}" >> "$GITHUB_OUTPUT"
+          echo "ghcr=${{ env.GHCR_IMAGE_NAME }}:${tag}" >> "$GITHUB_OUTPUT"
+      - name: Pull and compare published images
+        env:
+          DOCKERHUB_IMAGE: ${{ steps.image.outputs.dockerhub }}
+          GHCR_IMAGE: ${{ steps.image.outputs.ghcr }}
+        run: |-
+          dockerhub_digest="$(docker pull "${DOCKERHUB_IMAGE}" | sed -n 's/^Digest: //p')"
+          ghcr_digest="$(docker pull "${GHCR_IMAGE}" | sed -n 's/^Digest: //p')"
+          test -n "${dockerhub_digest}"
+          test -n "${ghcr_digest}"
+          test "${dockerhub_digest}" = "${ghcr_digest}"
+      - name: Test published FFmpeg image
+        env:
+          IMAGE: ${{ steps.image.outputs.ghcr }}
+          VARIANT: ${{ matrix.variant }}
+        run: |-
+          docker run --rm "${IMAGE}" -L 2>&1 | tee /tmp/license.txt
+          grep -F "GNU General Public License" /tmp/license.txt
+          if grep -F "not legally redistributable" /tmp/license.txt; then
+            exit 1
+          fi
+          docker run --rm --entrypoint sh "${IMAGE}" -c \
+            'test -f /usr/local/share/licenses/ffmpeg/LICENSE.md && test -f /usr/local/share/licenses/ffmpeg/COPYING.GPLv3'
+          if [[ "${VARIANT}" == nvidia ]]; then
+            docker run --rm "${IMAGE}" -hide_banner -encoders 2>/dev/null | grep -F h264_nvenc
+          elif [[ "${VARIANT}" == ubuntu-aoirint ]]; then
+            docker run --rm "${IMAGE}" -hide_banner -h protocol=rtmp 2>&1 | grep -F rtmp_strict_paths
+          fi
+
+  release:
+    name: Release ${{ needs.plan.outputs.tag }}
+    needs:
+      - plan
+      - test
+    if: ${{ needs.plan.outputs.release_mode != 'edge' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Recheck unused release identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+        run: |-
+          if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}" --silent >/dev/null 2>&1; then
+            echo "Release ${TAG} appeared while artifacts were building" >&2
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags "https://github.com/${GITHUB_REPOSITORY}.git" "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} appeared while artifacts were building" >&2
+            exit 1
+          fi
+      - name: Publish immutable GitHub release
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
+        with:
+          tag: ${{ needs.plan.outputs.tag }}
+          commit: ${{ github.sha }}
+          immutableCreate: true
+          prerelease: ${{ needs.plan.outputs.release_mode == 'prerelease' }}
+          makeLatest: ${{ needs.plan.outputs.release_mode == 'latest' }}
+          generateReleaseNotes: true

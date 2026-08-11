@@ -116,7 +116,7 @@ jobs:
             is_default_tag: false
             base_image: ubuntu:24.04
             ffmpeg_repository_url: https://github.com/aoirint/FFmpeg.git
-            ffmpeg_version: 8.0.3-aoirint.1
+            ffmpeg_version: 8.0.3-aoirint.2
             enable_nvcodec: 0
     steps:
       - name: Checkout integrated source

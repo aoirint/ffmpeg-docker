@@ -1,106 +1,98 @@
 # AGENTS.md
 
-このドキュメントは、AIコーディングエージェントがこのリポジトリを理解し、効率的に作業するためのガイドです。
+このリポジトリで作業する AI コーディングエージェント向けの指示です。
 
-## リポジトリ概要
+## リポジトリの役割
 
-- このリポジトリは、FFmpeg の Docker イメージをビルドすることを目的としています。
+このリポジトリは、FFmpeg の安定版と `master` の Docker イメージを
+Docker Hub および GitHub Container Registry に公開します。
 
-## よく使うコマンド
+`ubuntu-aoirint` バリアントは、隣接する `../FFmpeg` の
+[aoirint/FFmpeg](https://github.com/aoirint/FFmpeg) フォークと連動します。
+このフォークは upstream FFmpeg への追従を最小変更で維持し、安定版へ
+`rtmp strict paths` 機能のパッチを適用します。エージェント指示、設計文書、
+リリース運用文書はフォーク側ではなく、このリポジトリで管理してください。
 
-ローカルでの開発作業に使う代表的なコマンドを以下にまとめます。
+## 作業原則
 
-- 通常ビルド: `make build`
-- NVIDIA ハードウェアコーデック対応版ビルド: `make build-nvidia`
+- 実装作業は `origin/main` から `.agents/worktrees/` 配下に隔離 worktree を
+  作成して進めます。
+- 既存の worktree と、元のチェックアウトにある未コミット変更を保持します。
+- Dockerfile、ビルド依存関係、GitHub Actions、公開タグを変更するときは、
+  通常版、NVIDIA 版、`ubuntu-aoirint` 版への影響を確認します。
+- `ubuntu-aoirint` の参照バージョンを変更するときは、`../FFmpeg` のタグ、
+  コミット、パッチ適用状態と対応していることを確認します。
+- 秘密値を追跡ファイル、ログ、PR 本文へ含めません。
 
-## CI
+## Agent Skills
 
-GitHub Actions の各ワークフローがどのように動作するかを説明します。
+Agent Skills は APM で管理します。作業内容に該当する Skill を使用し、
+複数に該当する場合は組み合わせてください。
 
-### `.github/workflows/build.yml`
+- APM 依存関係: `apm-workflow`
+- 一般的な実装レビュー: `code-quality-check`
+- Docker: `docker-quality-check`
+- GitHub Actions: `github-actions-quality-check`
+- セキュリティとサプライチェーン: `security-check`
+- worktree: `git-worktree-workflow`
+- コミットメッセージ: `commit-message-quality-check`
+- Issue、PR、レビュー、マージ: `github-workflow`
+- 文書体系: `software-documentation-maintenance`
+- 文書表現: `prose-quality-check`
 
-- Docker イメージのビルドとレジストリへの公開を行います。
+APM 管理ファイルを変更したら、選定済みの適格な APM CLI で次を実行します。
 
-#### Variables / Secrets
+```shell
+apm lock
+apm install --frozen
+apm audit --ci
+```
 
-|種類|名前|説明|
-|:--|:--|:--|
-|Variables|`DOCKERHUB_USERNAME`|Docker Hub のユーザー名|
-|Secrets|`DOCKERHUB_TOKEN`|Docker Hub のアクセストークン|
-|Secrets|`GITHUB_TOKEN`|GHCR への push に使う GitHub Actions のトークン|
+第三者 Skill は完全なコミット SHA に固定し、`THIRD_PARTY_NOTICES.md` と
+ロックファイルを同じ変更で更新します。
 
-## ルール
+## 検証コマンド
 
-コミットやプルリクエストに関するルールをまとめます。
+```shell
+make build
+make build-nvidia
+```
 
-- コミットメッセージとプルリクエストのタイトルは Conventional Commits のルールに従います。
-	- typeの選択は、以下にある「Conventional Commitsのtype一覧」を参照してください。
-	- 形式: `<type>[optional scope]: <description>`
-	- 参考: <https://www.conventionalcommits.org/ja/v1.0.0/>
-	- 例
-		- `feat(variant): 独自フォーク版のvariant ubuntu-aoirint を追加する`
-		- `fix(build): nvidia 版のビルドがライブラリ不足で失敗するのを修正する`
-		- `docs(readme): NVIDIA ハードウェアコーデックの動作要件を README に追加する`
-		- `style(docker): Dockerfile に空行を追加する`
-		- `build: FFmpeg のバージョンを更新する`
-- プルリクエストのタイトルと説明文は日本語で書きます。
-- Markdown ドキュメントは <https://github.com/DavidAnson/markdownlint> のルールに従います。
+変更範囲に応じて実行し、環境や所要時間を理由に省略した検証は PR 本文に
+明記してください。
 
-### Conventional Commitsのtype一覧
+## CI と公開
 
-このリポジトリで使う type と使いどころの対応表です。
+`.github/workflows/build.yml` は `main` への push と GitHub Release の作成を
+契機に Docker イメージをビルドし、Docker Hub と GHCR へ公開します。
 
-#### feat
+| 種類 | 名前 | 用途 |
+| --- | --- | --- |
+| Variable | `DOCKERHUB_USERNAME` | Docker Hub のユーザー名 |
+| Secret | `DOCKERHUB_TOKEN` | Docker Hub のアクセストークン |
+| Secret | `GITHUB_TOKEN` | GHCR への push |
 
-- ユーザー向けの新機能を追加したときに使用します。
-- 例: イメージのvariantを追加する。
+## コミットとプルリクエスト
 
-#### fix
+- コミットメッセージと PR タイトルは Conventional Commits の
+  `<type>[optional scope]: <description>` 形式にします。
+- PR のタイトルと本文は日本語で記述します。
+- Markdown は markdownlint のルールに従います。
+- PR は検証結果と省略事項を記録し、squash merge では
+  `<PRタイトル> (#<PR番号>)` をコミット件名に指定します。
 
-- ユーザー向けの不具合を修正したときに使用します。
-- 例: nvidia版のビルドがライブラリ不足で失敗するのを修正する。
+主な type は次のとおりです。
 
-#### docs
-
-- ドキュメントのみを変更したときに使用します。
-- 例: NVIDIA ハードウェアコーデックの動作要件を `README.md` に追加する。
-
-#### style
-
-- 自動フォーマットや整形のみを行ったときに使用します。
-- 例: `Dockerfile` やシェルスクリプトに空行を追加する。
-
-#### refactor
-
-- 振る舞いを変えずに内部構造を整理したときに使用します（挙動は変更しません）。
-- 例: `Dockerfile` の命令の統廃合を行う、共通処理のステージ化・外部スクリプト化を行う。
-
-#### perf
-
-- ビルド実行時や成果物実行時の処理時間やリソース効率（CI のビルド時間・配布物のファイルサイズ・実行時のメモリ使用量など）を改善したときに使用します（挙動は変更しません）。
-- 例: FFmpeg のパフォーマンスチューニングを行う、ビルドキャッシュの設定を変更して CI のビルド時間を短縮する、イメージサイズを削減する。
-
-#### test
-
-- テストの追加・修正のみを行ったときに使用します。
-- 例: 動画変換の動作検証を追加する。
-
-#### build
-
-- ビルドシステム、依存関係や成果物の構成を変更したときに使用します。
-- 例: FFmpeg のバージョンを更新する、`Dockerfile` の `syntax` を更新する、`Makefile` のローカルビルド手順を変更する。
-
-#### ci
-
-- CI 設定やワークフローを変更したときに使用します（成果物の構成や挙動には影響しません）。
-- 例: CI のステップ順を成果物に影響しない形で変更する、並列ジョブの実行条件を変更する。
-
-#### chore
-
-- 開発補助の作業（ツール更新など）を行ったときに使用します。
-- 例: `.gitignore` など開発用の補助設定を変更する。
-
-#### revert
-
-- 既存コミットの取り消しを行ったときに使用します。
-- 例: `revert: "build: FFmpeg を 7.1.3 に更新"`
+| type | 用途 |
+| --- | --- |
+| `feat` | ユーザー向け機能またはイメージバリアントの追加 |
+| `fix` | ユーザー向け不具合の修正 |
+| `docs` | 文書のみの変更 |
+| `style` | 振る舞いを変えない整形 |
+| `refactor` | 振る舞いを変えない内部構造の整理 |
+| `perf` | ビルド時間、イメージサイズ、実行効率の改善 |
+| `test` | テストのみの変更 |
+| `build` | ビルドシステム、依存関係、成果物構成の変更 |
+| `ci` | 成果物の挙動を変えない CI の変更 |
+| `chore` | ほかの type に該当しない開発補助作業 |
+| `revert` | 既存コミットの取り消し |

@@ -49,7 +49,7 @@ FFmpeg は GNU General Public License version 3 or later で提供されます�
 ## リリース手順
 
 1. ルートの `VERSION` をリリースするバージョンへ変更する
-	- 例: `0.6.0`（`v` prefixは付けない）
+   - 例: `0.6.0`（`v` prefixは付けない）
 2. 変更をPull Requestでレビューし、`main`へマージする
 3. CIがDocker HubとGHCRの公開物を検証した後、`v<VERSION>`のimmutableな
    GitHub Releaseを作成したことを確認する

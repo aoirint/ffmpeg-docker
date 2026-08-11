@@ -1,0 +1,5 @@
+# APM dependencies
+apm_modules/
+
+# Local Git worktrees used by coding agents
+/.agents/worktrees/

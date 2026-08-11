@@ -1,0 +1,27 @@
+name: ffmpeg-docker-agent-skills
+version: 0.0.0
+description: FFmpeg Docker image maintenance agent context
+author: aoirint
+# Which agent platforms to deploy to.
+# Resolution order: --target flag > this field > auto-detect from filesystem.
+# Accepted values: agent-skills, antigravity, claude, codex, copilot, cursor, gemini, kiro, opencode, windsurf
+targets:
+- codex
+dependencies:
+  apm:
+    - git: aoirint/skills
+      ref: 9831bb2c9d41ffbd9d41336b840384b3e303e2e8
+      skills:
+        - apm-workflow
+        - code-quality-check
+        - commit-message-quality-check
+        - docker-quality-check
+        - git-worktree-workflow
+        - github-actions-quality-check
+        - github-workflow
+        - prose-quality-check
+        - security-check
+        - software-documentation-maintenance
+  mcp: []
+includes: auto
+scripts: {}

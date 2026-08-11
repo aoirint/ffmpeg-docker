@@ -15,9 +15,17 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 - FFmpeg を GPL version 3 or later として再配布可能な構成に変更し、ライセンス
   ファイルをDockerイメージへ収録しました。
 - nv-codec-headers の取得元を FFmpeg 公式 GitHub mirror へ変更しました。
+- CIをproposed-source検証とmain統合・公開workflowへ分離し、ルートの
+  `VERSION`変更を唯一のリリース要求とする経路へ変更しました。
+
+### Added
+
+- 公開後のDocker Hub・GHCR間のdigest一致、FFmpegライセンス、variant固有機能を
+  検証するrelease testを追加しました。
 
 ### Removed
 
+- GitHub Releaseの作成を契機とする従来のリリース経路を削除しました。
 - 再配布不能なFFmpegバイナリを生成する `libfdk-aac` と
   `--enable-nonfree` をビルドから削除しました。
 - NVIDIA版からnonfree扱いとなるCUDA NVCC・NPP filterを削除しました。

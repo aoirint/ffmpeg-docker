@@ -8,7 +8,7 @@ This project builds Docker images that include third-party software.
 - Fork source: <https://github.com/aoirint/FFmpeg>
 - Bundled location in image: `/usr/local/bin` and `/usr/local/lib`
 - Version: see `FFMPEG_VERSION` in `Dockerfile` and `ffmpeg_version` in
-  `.github/workflows/build.yml`
+  `.github/workflows/main.yml`
 - License for this build configuration: GNU General Public License version 3
   or later
 - Upstream license information: <https://ffmpeg.org/legal.html>
@@ -26,8 +26,8 @@ under `/usr/local/share/licenses/ffmpeg/`.
   `git-worktree-workflow`, `github-actions-quality-check`, `github-workflow`,
   `prose-quality-check`, `security-check`, and
   `software-documentation-maintenance`
-- Commit: `fcc0113bde58e1c50ca1f2f783a150b6827ba7c0`
-- License: MIT, <https://github.com/aoirint/skills/blob/fcc0113bde58e1c50ca1f2f783a150b6827ba7c0/LICENSE>
+- Commit: `86894aa7086e86830b254c1517b9fa1ba37f0138`
+- License: MIT, <https://github.com/aoirint/skills/blob/86894aa7086e86830b254c1517b9fa1ba37f0138/LICENSE>
 - Copyright: Copyright (c) 2026 aoirint
 
 The full license text is available at the linked canonical source. This notice

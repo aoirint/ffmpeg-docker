@@ -10,7 +10,7 @@
 
 ## 配布する第三者ソフトウェア
 
-Docker イメージは、`Dockerfile` の `FFMPEG_VERSION` と build workflow の
+Docker イメージは、`Dockerfile` の `FFMPEG_VERSION` と main workflow の
 `ffmpeg_version` で指定した [FFmpeg](https://ffmpeg.org/) を収録します。このビルド構成の
 FFmpeg は GNU General Public License version 3 or later で提供されます。
 詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と
@@ -48,10 +48,13 @@ FFmpeg は GNU General Public License version 3 or later で提供されます�
 
 ## リリース手順
 
-1. GitHub Release を作成する（タグは `v<version>` 形式）
-	- 例: `v0.4.0`
-2. プレリリースの場合は「Pre-release」にチェックを付ける
-3. 公開するとタグ付きイメージが作成される（`latest` はプレリリースを除外）
+1. ルートの `VERSION` をリリースするバージョンへ変更する
+   - 例: `0.6.0`（`v` prefixは付けない）
+2. 変更をPull Requestでレビューし、`main`へマージする
+3. CIがDocker HubとGHCRの公開物を検証した後、`v<VERSION>`のimmutableな
+   GitHub Releaseを作成したことを確認する
+
+既存の `VERSION` のまま `main` を更新した場合は、edge系イメージだけを更新します。
 
 ## 用例
 

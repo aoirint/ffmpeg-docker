@@ -8,6 +8,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.6.0] - 2026-08-11 UTC
+
 ### Changed
 
 - GitHub Actions の runner を Ubuntu 24.04 に固定し、Docker Actions を
@@ -183,7 +185,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...HEAD
+[v0.6.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/aoirint/ffmpeg-docker/compare/0.3.0...v0.4.0
 [0.3.0]: https://github.com/aoirint/ffmpeg-docker/compare/0.2.4...0.3.0

@@ -4,14 +4,14 @@
 
 ## リポジトリの役割
 
-このリポジトリは、FFmpeg の安定版と `master` の Docker イメージを
-Docker Hub および GitHub Container Registry に公開します。
+このリポジトリは、FFmpeg の安定版を使用した Docker イメージを Docker Hub
+および GitHub Container Registry に公開します。
 
 `ubuntu-aoirint` バリアントは、隣接する `../FFmpeg` の
 [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg) フォークと連動します。
-このフォークは upstream FFmpeg への追従を最小変更で維持し、安定版へ
-`rtmp strict paths` 機能のパッチを適用します。エージェント指示、設計文書、
-リリース運用文書はフォーク側ではなく、このリポジトリで管理してください。
+このフォークは upstream FFmpeg の安定版と `master` への追従を最小変更で維持し、
+安定版へ `rtmp strict paths` 機能のパッチを適用します。エージェント指示、
+設計文書、リリース運用文書はフォーク側ではなく、このリポジトリで管理してください。
 
 ## 作業原則
 

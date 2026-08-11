@@ -17,13 +17,13 @@
 |latest|`aoirint/ffmpeg:edge`|`ffmpeg:edge-ubuntu` と同じ|
 |ubuntu|`aoirint/ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
 |ubuntu|`aoirint/ffmpeg:v<version>-ubuntu`|ubuntu版の指定バージョン|
-|ubuntu|`aoirint/ffmpeg:edge-ubuntu`|upstream FFmpeg masterコミット版|
+|ubuntu|`aoirint/ffmpeg:edge-ubuntu`|ubuntu版のmainブランチ最新ビルド|
 |nvidia|`aoirint/ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
 |nvidia|`aoirint/ffmpeg:v<version>-nvidia`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
-|nvidia|`aoirint/ffmpeg:edge-nvidia`|NVIDIA GPU対応のupstream FFmpeg masterコミット版|
+|nvidia|`aoirint/ffmpeg:edge-nvidia`|NVIDIA GPU対応版のmainブランチ最新ビルド|
 |ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
 |ubuntu-aoirint|`aoirint/ffmpeg:v<version>-ubuntu-aoirint`|aoirint Fork版の指定バージョン|
-|ubuntu-aoirint|`aoirint/ffmpeg:edge-ubuntu-aoirint`|aoirint Fork masterコミット版|
+|ubuntu-aoirint|`aoirint/ffmpeg:edge-ubuntu-aoirint`|aoirint Fork版のmainブランチ最新ビルド|
 
 - Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
 

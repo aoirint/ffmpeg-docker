@@ -17,16 +17,16 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ### Changed
 
+- FFmpeg を最新安定版の upstream `n8.0.3`、aoirint fork
+  `8.0.3-aoirint.1` へ更新しました。
+- `edge` build を安定版タグから分離し、upstream と aoirint fork が共有する
+  `master` コミット `03dc244a693ce639cebf82f7bae112fb75580919` へ更新しました。
+- upstream FFmpeg の取得元を、同じタグとコミットを公開する公式GitHub mirrorへ
+  統一しました。
 - エージェントの作業規則へ fork との責務境界、worktree、検証、PR、文書同期の
   要件を追加しました。
-- `edge` タグの説明を、FFmpeg `master` の自動追跡ではなく ffmpeg-docker の
-  継続ビルドである現在の挙動に合わせました。
-
-### Notes
-
-- Known issue: 現在の build workflow は event ごとに `FFMPEG_VERSION` を
-  切り替えないため、`edge` イメージは upstream または fork の `master` を
-  自動追跡しません。
+- `edge` タグの説明を、固定した最新の FFmpeg `master` コミットを使用する
+  現在の挙動に合わせました。
 
 ## [v0.4.0] - 2026-02-09 UTC
 

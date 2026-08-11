@@ -6,6 +6,8 @@
 
 - [FFmpeg 安定版の更新](update-stable-ffmpeg.md): upstream リリースの確認、
   aoirint fork のパッチ移植、Docker matrix 更新、公開前検証を説明します。
+- [FFmpeg master の更新](update-master-ffmpeg.md): fork のfast-forward、固定SHA、
+  edge image の更新を説明します。
 - [Docker イメージの公開](publish-images.md): `main` と GitHub Release から
   Docker Hub・GHCR へ公開される処理と確認事項を説明します。
 

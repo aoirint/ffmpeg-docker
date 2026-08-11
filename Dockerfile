@@ -284,8 +284,8 @@ EOF
 
 # ffmpeg
 # https://ffmpeg.org/download.html
-ARG FFMPEG_REPOSITORY_URL=https://git.ffmpeg.org/ffmpeg.git
-ARG FFMPEG_VERSION=n7.1.3
+ARG FFMPEG_REPOSITORY_URL=https://github.com/FFmpeg/FFmpeg.git
+ARG FFMPEG_VERSION=n8.0.3
 RUN <<EOF
     set -eux
 
@@ -298,7 +298,10 @@ RUN <<EOF
 
     mkdir -p ${SOURCE_PREFIX}/ffmpeg
     cd ${SOURCE_PREFIX}/ffmpeg
-    git clone --depth 1 --branch "${FFMPEG_VERSION}" "${FFMPEG_REPOSITORY_URL}" ./
+    git init
+    git remote add origin "${FFMPEG_REPOSITORY_URL}"
+    git fetch --depth 1 origin "${FFMPEG_VERSION}"
+    git checkout --detach FETCH_HEAD
 
     ./configure \
         --prefix="${INSTALL_PREFIX}" \

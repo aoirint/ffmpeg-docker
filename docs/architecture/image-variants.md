@@ -30,7 +30,8 @@ GitHub Actions の matrix が、これらを3つのバリアントへ割り当�
 同じ成果物を Docker Hub の `aoirint/ffmpeg` と GHCR の
 `ghcr.io/aoirint/ffmpeg` へ公開します。
 
-- `main` の push は `edge-<variant>` を更新します。
+- `main` の push は matrix に固定した FFmpeg `master` コミットから
+  `edge-<variant>` を更新します。
 - GitHub Release は `v<version>-<variant>` を公開します。
 - prerelease でない GitHub Release は `<variant>` も更新します。
 - `ubuntu` は既定バリアントとして `edge`、`v<version>`、`latest` の別名も
@@ -40,12 +41,12 @@ GitHub Actions の matrix が、これらを3つのバリアントへ割り当�
 `edge-<variant>-buildcache` と安定リリース用の `<variant>-buildcache` を
 分離します。
 
-## 現在の制約
+## ソースrevisionの選択
 
-`edge` は ffmpeg-docker の `main` を継続ビルドするタグです。現在の workflow
-は event ごとに `FFMPEG_VERSION` を切り替えないため、upstream または fork の
-`master` を自動追跡していません。`edge` を FFmpeg `master` の成果物にするには、
-安定版 matrix と別のソース参照を選択する実装変更が必要です。
+workflow matrix は安定版タグと edge 用 `master` コミットを別々に保持します。
+GitHub Release では安定版タグを、`main` の push では完全な40文字のコミットSHAを
+`FFMPEG_VERSION` に渡します。
 
-この制約は README の「main ブランチ最新版」という利用者向け説明と一致して
-いません。文書だけで現在の挙動を変更せず、後続の実装修正対象として明示します。
+upstream と aoirint fork の `master` は同じコミットへfast-forwardした状態で
+edge revisionを更新します。branch名を直接cloneせず完全なコミットSHAに固定し、
+同じffmpeg-docker commitの再ビルド結果が意図せず変わることを防ぎます。

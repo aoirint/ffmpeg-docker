@@ -2,9 +2,11 @@
 
 ## 対象
 
-- upstream: [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg)
+- upstream mirror: [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg)
 - fork: [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg)
-- 検証した fork コミット: `c83b178c0e19e35a8d034e1595780c1c03714c4a`
+- 検証した安定版 fork コミット: `c25e55a50cbc4268cfae8d3b66d7b64eb917d9f2`
+- 対応する upstream 安定版: `n8.0.3`
+- 検証した master コミット: `03dc244a693ce639cebf82f7bae112fb75580919`
 - 検証日: 2026-08-11
 
 ## ソースの関係
@@ -14,7 +16,7 @@ aoirint/FFmpeg の `master` は upstream の `master` を追跡します。安�
 `release/<major>.<minor>-aoirint` で管理します。
 
 派生タグは `<version>-aoirint.<revision>` 形式です。たとえば
-`7.1.3-aoirint.1` は upstream `n7.1.3` を基点とし、派生パッチを1コミット
+`8.0.3-aoirint.1` は upstream `n8.0.3` を基点とし、派生パッチを1コミット
 追加したタグです。
 
 ## `rtmp_strict_paths`

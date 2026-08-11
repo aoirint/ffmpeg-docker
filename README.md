@@ -8,6 +8,14 @@
 [開発者向け文書](docs/README.md)を参照してください。
 変更履歴は [CHANGELOG](CHANGELOG.md)を参照してください。
 
+## 配布する第三者ソフトウェア
+
+Docker イメージは、`Dockerfile` の `FFMPEG_VERSION` と build workflow の
+`ffmpeg_version` で指定した [FFmpeg](https://ffmpeg.org/) を収録します。このビルド構成の
+FFmpeg は GNU General Public License version 3 or later で提供されます。
+詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と
+[FFmpeg のライセンス情報](https://ffmpeg.org/legal.html)を参照してください。
+
 ## タグ一覧
 
 |バリアント|イメージ|説明|

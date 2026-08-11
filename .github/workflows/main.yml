@@ -200,6 +200,11 @@ jobs:
           - variant: nvidia
           - variant: ubuntu-aoirint
     steps:
+      - name: Checkout integrated source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
@@ -246,6 +251,7 @@ jobs:
             docker run --rm "${IMAGE}" -hide_banner -encoders 2>/dev/null | grep -F h264_nvenc
           elif [[ "${VARIANT}" == ubuntu-aoirint ]]; then
             docker run --rm "${IMAGE}" -hide_banner -h protocol=rtmp 2>&1 | grep -F rtmp_strict_paths
+            scripts/test-rtmp-strict-paths.sh "${IMAGE}"
           fi
 
   release:

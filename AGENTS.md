@@ -40,7 +40,7 @@ Agent Skills は APM で管理します。作業内容に該当する Skill を�
 - worktree: `git-worktree-workflow`
 - コミットメッセージ: `commit-message-quality-check`
 - Issue、PR、レビュー、マージ: `github-workflow`
-- 文書体系: `software-documentation-maintenance`
+- 文書体系: `domain-architecture-docs-workflow`
 - 文書表現: `prose-quality-check`
 
 APM 管理ファイルを変更したら、選定済みの適格な APM CLI で次を実行します。

@@ -25,9 +25,9 @@ main() {
   install_archive actionlint 1.7.12 actionlint_1.7.12_linux_amd64.tar.gz \
     https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
     8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 actionlint
-  install_archive pinact 4.1.0 pinact_linux_amd64.tar.gz \
-    https://github.com/suzuki-shunsuke/pinact/releases/download/v4.1.0/pinact_linux_amd64.tar.gz \
-    8fcbf1b3e95551c82fd995535e3c1defa70e23299ce36eb3afd6c98778de6ca0 pinact
+  install_archive pinact 4.1.1 pinact_linux_amd64.tar.gz \
+    https://github.com/suzuki-shunsuke/pinact/releases/download/v4.1.1/pinact_linux_amd64.tar.gz \
+    d1cffebe5704b74e2e5f8a864efb9f7e54768972dc686188c008033fb1797841 pinact
   trap - ERR
 }
 

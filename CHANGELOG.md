@@ -16,7 +16,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ### Security
 
-- CA distrust 更新に限り、2026-10-24 の maintainer 承認で cooldown 例外を適用。
+- `ca-certificates=20260816ubuntu0.24.04.1` に限り、2026-10-24 の maintainer 承認で cooldown 例外を適用。
+  理由は [USN-8944-1](https://ubuntu.com/security/notices/USN-8944-1) の CA distrust。
 - TLS certificate 検証が既定で有効になるため、移行時に CA と hostname を確認する手順を追加。
 
 ## [v0.7.0] - 2026-08-11 UTC

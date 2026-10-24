@@ -77,4 +77,4 @@ if send_tls wrong.test -ca_file /fixtures/ca.pem >"${client_log}" 2>&1; then
 fi
 grep -Eiq 'certificate|hostname' "${client_log}"
 
-echo "Updated codecs, libass and TLS trust/hostname smoke test passed"
+echo "Codecs, libass and TLS trust/hostname smoke test passed"

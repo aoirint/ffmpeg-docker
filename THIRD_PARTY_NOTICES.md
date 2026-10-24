@@ -2,7 +2,9 @@
 
 This project builds Docker images that include third-party software.
 
-## FFmpeg
+## Software bundled in images
+
+### FFmpeg
 
 - Upstream source: <https://github.com/FFmpeg/FFmpeg>
 - Fork source: <https://github.com/aoirint/FFmpeg>
@@ -18,26 +20,35 @@ The `ubuntu` and `nvidia` variants build the selected upstream FFmpeg commit. Th
 `rtmp_strict_paths` patch. The image retains `LICENSE.md` and `COPYING.GPLv3`
 under `/usr/local/share/licenses/ffmpeg/`.
 
-## Updated bundled libraries
+### libvpx
 
-- libvpx 1.17.0: BSD-3-Clause and patent grant,
+- Version: 1.17.0
+- License: BSD-3-Clause and patent grant,
   <https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.17.0/LICENSE>.
-  Static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+- Bundled location: static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
   `/usr/local/share/licenses/libvpx/`.
-- libaom 3.15.0: BSD-2-Clause and patent grant,
+
+### libaom
+
+- Version: 3.15.0
+- License: BSD-2-Clause and patent grant,
   <https://aomedia.googlesource.com/aom/+/refs/tags/v3.15.0/LICENSE>.
-  Static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+- Bundled location: static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
   `/usr/local/share/licenses/libaom/`.
-- libass 0.17.5: ISC,
+
+### libass
+
+- Version: 0.17.5
+- License: ISC,
   <https://github.com/libass/libass/blob/0.17.5/COPYING>.
-  Static library in `/usr/local/lib`; `COPYING` is retained in
+- Bundled location: static library in `/usr/local/lib`; `COPYING` is retained in
   `/usr/local/share/licenses/libass/`.
 
-Exact source commits and the narrowly approved CA package exception are recorded
-in [dependency maintenance](docs/operations/update-dependencies.md).
-Unchanged optional libraries remain selected by the existing Dockerfile arguments.
+Library source commits and build options are defined in [Dockerfile](Dockerfile).
 
-## aoirint/skills
+## Development dependencies
+
+### aoirint/skills
 
 - Source: <https://github.com/aoirint/skills>
 - Virtual paths: `apm-workflow`, `changelog-workflow`, `code-quality-check`,

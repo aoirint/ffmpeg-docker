@@ -15,7 +15,7 @@ aoirint/FFmpeg の `master` は upstream の `master` を追跡します。安�
 `release/<major>.<minor>-aoirint` で管理します。
 
 派生タグは `<version>-aoirint.<revision>` 形式です。たとえば
-`8.0.3-aoirint.2` は upstream `n9.0.2` を基点とし、strict path機能と
+`8.0.3-aoirint.2` は upstream `n8.0.3` を基点とし、strict path機能と
 file-backed stream名を追加した派生タグです。
 
 ## `rtmp_strict_paths`

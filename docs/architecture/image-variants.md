@@ -61,11 +61,13 @@ base のパッケージも `apt-get upgrade` で更新します。
 過去 snapshot の Release 有効期限だけを無効化し、署名検証は維持します。
 CUDA の追加 APT repository は無効化し、同梱 CUDA libraries は固定 base の版を維持します。
 
-`ca-certificates` の `20260816ubuntu0.24.04.1` に限り、2026-10-24 に maintainer が
-7 日間 cooldown の例外を承認しました。理由は USN-8944-1 の CA distrust です。
+`ca-certificates` の `20260816ubuntu0.24.04.1` は cooldown 例外の対象です。
+承認日と理由は [CHANGELOG](../../CHANGELOG.md) に記録します。
 単一 `.deb` を SHA-256 検証付きで取得し、他の新しい APT パッケージを取り込みません。
 CA store を持たない最小 base では、この package の証明書で HTTPS を bootstrap します。
 
-libvpx 1.17.0、libaom 3.15.0、libass 0.17.5 は commit SHA を固定してソースビルドします。
+libvpx、libaom、libass は Dockerfile の commit SHA を固定してソースビルドします。
 Ninja と Meson も同じ APT snapshot から取得し、別の pip dependency 解決を行いません。
+固定 snapshot には zlib、XZ、Unbound、libXtst の確認日時点で公開から 7 日未満の修正が含まれません。
+ビルド用 package も最終 image に残る構成です。
 更新方法は [依存関係更新](../operations/update-dependencies.md) を参照してください。

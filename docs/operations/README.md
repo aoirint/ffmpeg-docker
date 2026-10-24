@@ -4,8 +4,7 @@
 
 ## 文書一覧
 
-- [依存関係更新](update-dependencies.md): cooldown、CA 例外、固定 snapshot と隔離検証を説明します。
-
+- [依存関係更新](update-dependencies.md): cooldown、例外承認、固定 snapshot と隔離検証を説明します。
 - [FFmpeg 安定版の更新](update-stable-ffmpeg.md): upstream リリースの確認、
   aoirint fork のパッチ移植、Docker matrix 更新、公開前検証を説明します。
 - [FFmpeg master の更新](update-master-ffmpeg.md): Docker の安定版参照とは独立した

@@ -4,6 +4,8 @@
 
 - <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
 
+依存関係の固定、CA 例外と隔離検証は [依存関係更新](docs/operations/update-dependencies.md)を参照してください。
+
 設計、FFmpeg fork との連動、更新・公開手順は
 [開発者向け文書](docs/README.md)を参照してください。
 変更履歴は [CHANGELOG](CHANGELOG.md)を参照してください。

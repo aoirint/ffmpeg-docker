@@ -17,16 +17,16 @@ aoirint 派生版を同じ ffmpeg-docker リリースで公開できる状態に
 1. aoirint/FFmpeg で `origin` と `upstream` を fetch し、新しい upstream の
    `n<version>` タグと対応する `release/<major>.<minor>` を確認します。
 2. 対応する `release/<major>.<minor>-aoirint` を upstream release branch と
-   同期し、`rtmp_strict_paths` パッチを移植します。
+   同期し、`rtmp_strict_paths` と `rtmp_strict_stream_file` の既存パッチを移植します。
 3. [ドメイン文書の検証点](../domain/ffmpeg-sources.md#更新時の検証点)に従い、
    application と stream path の不一致が有効時だけ I/O エラーになることを
    aoirint/FFmpeg 側で検証します。
-4. aoirint/FFmpeg に `<version>-aoirint.<revision>` タグを作成し、対象ブランチと
+4. fork PR のレビュー・統合を先に行い、aoirint/FFmpeg に `<version>-aoirint.<revision>` タグを作成し、対象ブランチと
    タグを公開します。Docker 側から参照できることを `git ls-remote` で確認します。
 5. ffmpeg-docker の `Dockerfile` にある既定 `FFMPEG_VERSION` を
-   `n<version>` へ更新します。
-6. `.github/workflows/main.yml` の `ubuntu` と `nvidia` を `n<version>`、
-   `ubuntu-aoirint` を `<version>-aoirint.<revision>` へ更新します。
+   確認した upstream tag の完全 commit SHA へ更新します。
+6. `.github/workflows/main.yml` の `ubuntu` と `nvidia` を upstream の完全 SHA、
+   `ubuntu-aoirint` を派生 tag の完全 SHA へ更新します。
 7. Dockerfile と workflow に旧バージョンが残っていないことを検索し、
    `make build` と `make build-nvidia` を実行します。
 8. PR では upstream タグ、fork タグ、パッチ検証、Docker 検証結果を記録します。
@@ -44,3 +44,10 @@ aoirint 派生版を同じ ffmpeg-docker リリースで公開できる状態に
 
 新しい FFmpeg 安定版、安定版 point release、または派生パッチの修正が必要に
 なったときに実行します。
+
+## 依存関係と移行時の追加確認
+
+APT snapshot、例外承認、静的 library 更新、隔離した RTMP / TLS 検証は
+[依存関係更新](update-dependencies.md)に従います。
+TLS の既定値が変わる版では、CA trust と hostname 検証を新旧で比較します。
+本番接続で試験せず、fixture CA と internal network を使って確認してください。

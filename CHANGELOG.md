@@ -8,6 +8,17 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+### Changed
+
+- FFmpeg を upstream 9.0.2 と strict path / file-backed stream 名を保持した派生 commit へ更新。
+- libvpx 1.17.0、libaom 3.15.0、libass 0.17.5 へ更新し、ソース commit を固定。
+- APT を固定 snapshot に揃え、Ninja / Meson も同じ snapshot から取得。
+
+### Security
+
+- CA distrust 更新に限り、2026-10-24 の maintainer 承認で cooldown 例外を適用。
+- TLS certificate 検証が既定で有効になるため、移行時に CA と hostname を確認する手順を追加。
+
 ## [v0.7.0] - 2026-08-11 UTC
 
 ### Added

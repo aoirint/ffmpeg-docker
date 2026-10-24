@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.19.0@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
 ARG BASE_IMAGE=ubuntu:24.04@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea
 FROM $BASE_IMAGE
 
@@ -7,18 +7,40 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG SOURCE_PREFIX=/ffmpeg_sources
 ARG INSTALL_PREFIX=/usr/local
 
+# Keep APT inputs older than seven days; review the snapshot before advancing it.
+ARG UBUNTU_SNAPSHOT=20261016T000000Z
+RUN <<EOF
+    set -eux
+    sed -i -E "s#http://(archive|security).ubuntu.com/ubuntu/?#http://snapshot.ubuntu.com/ubuntu/${UBUNTU_SNAPSHOT}/#g" /etc/apt/sources.list.d/ubuntu.sources
+    # Keep CUDA libraries at the reviewed base-image versions.
+    rm -f /etc/apt/sources.list.d/cuda*.list
+    printf 'Acquire::Check-Valid-Until "false";\n' >/etc/apt/apt.conf.d/99snapshot
+EOF
+
+# Maintainer-approved cooldown exception, 2026-10-24: USN-8944-1 CA distrust.
+# SHA-256 is from the Ubuntu noble-security package index of 2026-10-23.
+ADD --checksum=sha256:8a0a754aaafed72cc8efb8c1731808133284a84fbfc76a4fcc73fce9e01b4187 https://snapshot.ubuntu.com/ubuntu/20261023T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.24.04.1_all.deb /tmp/ca-certificates.deb
+
 # https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 # dependencies
 RUN <<EOF
     set -eux
+    # The minimal base has no CA store; bootstrap HTTPS from the reviewed package.
+    dpkg-deb -x /tmp/ca-certificates.deb /tmp/ca-bootstrap
+    mkdir -p /etc/ssl/certs
+    cat /tmp/ca-bootstrap/usr/share/ca-certificates/mozilla/*.crt >/etc/ssl/certs/ca-certificates.crt
+    rm -rf /tmp/ca-bootstrap
     apt-get update
+    apt-get -y upgrade
     apt-get -y install \
         autoconf \
         automake \
         build-essential \
         cmake \
         git \
-        libass-dev \
+        libfontconfig-dev \
+        libfribidi-dev \
+        libharfbuzz-dev \
         libfreetype6-dev \
         libgnutls28-dev \
         libunistring-dev \
@@ -35,10 +57,10 @@ RUN <<EOF
         wget \
         yasm \
         zlib1g-dev \
-        unzip \
-        python3 \
-        python3-pip \
-        python3-venv
+        meson \
+        ninja-build
+    dpkg -i /tmp/ca-certificates.deb
+    rm /tmp/ca-certificates.deb
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -106,15 +128,21 @@ EOF
 
 # libvpx
 # https://chromium.googlesource.com/webm/libvpx.git
-ARG LIBVPX_VERSION=v1.14.1
+ARG LIBVPX_VERSION=6df3ec34557879fff673706f4a1d9fbd0f3a6f0e
+# libvpx v1.17.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libvpx
     cd ${SOURCE_PREFIX}/libvpx
-    git clone --depth 1 --branch ${LIBVPX_VERSION} https://chromium.googlesource.com/webm/libvpx.git ./
+    git init
+    git remote add origin https://chromium.googlesource.com/webm/libvpx.git
+    git fetch --depth 1 origin "${LIBVPX_VERSION}"
+    git checkout --detach FETCH_HEAD
     ./configure --prefix="${INSTALL_PREFIX}" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm
     make -j$(nproc)
     make install
+    install -D -m 0644 LICENSE "${INSTALL_PREFIX}/share/licenses/libvpx/LICENSE"
+    install -D -m 0644 PATENTS "${INSTALL_PREFIX}/share/licenses/libvpx/PATENTS"
     rm -rf ${SOURCE_PREFIX}/libvpx
 EOF
 
@@ -153,17 +181,23 @@ EOF
 
 # libaom
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=v3.9.0
+ARG AOM_VERSION=de4c1d1edc49723a78954d30a83690aa1937422f
+# libaom v3.15.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libaom
     cd ${SOURCE_PREFIX}/libaom
-    git clone --depth 1 --branch ${AOM_VERSION} https://aomedia.googlesource.com/aom.git ./
+    git init
+    git remote add origin https://aomedia.googlesource.com/aom.git
+    git fetch --depth 1 origin "${AOM_VERSION}"
+    git checkout --detach FETCH_HEAD
     mkdir aom_build
     cd aom_build
     cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" -DENABLE_SHARED=off -DENABLE_TESTS=off -DENABLE_NASM=on ../
     make -j$(nproc)
     make install
+    install -D -m 0644 ../LICENSE "${INSTALL_PREFIX}/share/licenses/libaom/LICENSE"
+    install -D -m 0644 ../PATENTS "${INSTALL_PREFIX}/share/licenses/libaom/PATENTS"
     rm -rf ${SOURCE_PREFIX}/libaom
 EOF
 
@@ -183,37 +217,23 @@ RUN <<EOF
     rm -rf ${SOURCE_PREFIX}/SVT-AV1
 EOF
 
-# ninja
-# https://github.com/ninja-build/ninja
-ARG NINJA_VERSION=v1.12.1
+# libass 0.17.5 fixes GHSA-pjjp-65r7-ppgm and GHSA-5gf7-wjfm-vmvm.
+ARG LIBASS_VERSION=4a05d8127f525943ebf45fdc6497c9e665947f0d
 RUN <<EOF
     set -eux
-    mkdir -p ${SOURCE_PREFIX}/ninja
-    cd ${SOURCE_PREFIX}/ninja
-    wget -O ./ninja-linux.zip "https://github.com/ninja-build/ninja/releases/download/${NINJA_VERSION}/ninja-linux.zip"
-    unzip ./ninja-linux.zip
-    rm ./ninja-linux.zip
-
-    cp ninja "${INSTALL_PREFIX}/bin/"
-    rm -rf ${SOURCE_PREFIX}/ninja
+    mkdir -p ${SOURCE_PREFIX}/libass
+    cd ${SOURCE_PREFIX}/libass
+    git init
+    git remote add origin https://github.com/libass/libass.git
+    git fetch --depth 1 origin "${LIBASS_VERSION}"
+    git checkout --detach FETCH_HEAD
+    ./autogen.sh
+    ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
+    make -j$(nproc)
+    make install
+    install -D -m 0644 COPYING "${INSTALL_PREFIX}/share/licenses/libass/COPYING"
+    rm -rf ${SOURCE_PREFIX}/libass
 EOF
-
-# meson
-# https://github.com/mesonbuild/meson
-ARG MESON_VERSION=1.4.1
-RUN <<EOF
-    set -eux
-    mkdir -p ${SOURCE_PREFIX}/meson
-    cd ${SOURCE_PREFIX}/meson
-    git clone --depth 1 --branch ${MESON_VERSION} https://github.com/mesonbuild/meson.git ./
-
-    mkdir -p /opt/python-venv
-    python3 -m venv /opt/python-venv
-
-    /opt/python-venv/bin/pip3 install --no-cache-dir .
-    rm -rf ${SOURCE_PREFIX}/meson
-EOF
-ARG PATH="/opt/python-venv/bin:${PATH}"
 
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
@@ -270,7 +290,8 @@ EOF
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_REPOSITORY_URL=https://github.com/FFmpeg/FFmpeg.git
-ARG FFMPEG_VERSION=n8.0.3
+ARG FFMPEG_VERSION=946fcce07b6dcd0331c8cc609192aeff5e1924f8
+# upstream n9.0.2
 RUN <<EOF
     set -eux
 

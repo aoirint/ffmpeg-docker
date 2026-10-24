@@ -13,10 +13,29 @@ This project builds Docker images that include third-party software.
   or later
 - Upstream license information: <https://ffmpeg.org/legal.html>
 
-The `ubuntu` and `nvidia` variants build the selected upstream FFmpeg tag. The
-`ubuntu-aoirint` variant builds the corresponding fork tag with the
+The `ubuntu` and `nvidia` variants build the selected upstream FFmpeg commit. The
+`ubuntu-aoirint` variant builds the corresponding fork commit with the
 `rtmp_strict_paths` patch. The image retains `LICENSE.md` and `COPYING.GPLv3`
 under `/usr/local/share/licenses/ffmpeg/`.
+
+## Updated bundled libraries
+
+- libvpx 1.17.0: BSD-3-Clause and patent grant,
+  <https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.17.0/LICENSE>.
+  Static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+  `/usr/local/share/licenses/libvpx/`.
+- libaom 3.15.0: BSD-2-Clause and patent grant,
+  <https://aomedia.googlesource.com/aom/+/refs/tags/v3.15.0/LICENSE>.
+  Static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+  `/usr/local/share/licenses/libaom/`.
+- libass 0.17.5: ISC,
+  <https://github.com/libass/libass/blob/0.17.5/COPYING>.
+  Static library in `/usr/local/lib`; `COPYING` is retained in
+  `/usr/local/share/licenses/libass/`.
+
+Exact source commits and the narrowly approved CA package exception are recorded
+in [dependency maintenance](docs/operations/update-dependencies.md).
+Unchanged optional libraries remain selected by the existing Dockerfile arguments.
 
 ## aoirint/skills
 

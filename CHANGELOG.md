@@ -8,6 +8,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.8.0] - 2026-10-24 UTC
+
 ### Changed
 
 - FFmpeg を upstream 9.0.2 と strict path / file-backed stream 名を保持した派生 commit へ更新。
@@ -210,7 +212,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.8.0...HEAD
+[v0.8.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...v0.8.0
 [v0.7.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.4.0...v0.5.0

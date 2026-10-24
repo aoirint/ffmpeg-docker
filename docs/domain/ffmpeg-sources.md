@@ -4,7 +4,7 @@
 
 - upstream mirror: [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg)
 - fork: [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg)
-- 検証した安定版 fork コミット: `be9184f722387eddad52a138a7c9611afb589d3e`
+- 検証した安定版 fork コミット: `a6838d7635f59fc2115470d15861bdbbecc6cae6`
 - 対応する upstream 安定版: `n9.0.2`
 - 検証日: 2026-10-24
 

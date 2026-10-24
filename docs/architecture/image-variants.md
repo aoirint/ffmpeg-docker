@@ -11,7 +11,7 @@
 | --- | --- |
 | `BASE_IMAGE` | Ubuntu または NVIDIA CUDA のビルド・実行基盤 |
 | `FFMPEG_REPOSITORY_URL` | upstream または aoirint fork の Git URL |
-| `FFMPEG_VERSION` | clone する完全なタグ、ブランチ、またはコミット |
+| `FFMPEG_VERSION` | clone する完全なコミット SHA |
 | `ENABLE_NVCODEC` | NVIDIA codec headers と CUDA configure option の有効化 |
 
 GitHub Actions の matrix が、これらを3つのバリアントへ割り当てます。
@@ -45,10 +45,29 @@ GitHub Actions の matrix が、これらを3つのバリアントへ割り当�
 
 ## ソースrevisionの選択
 
-workflow matrix はバリアントごとに1つの FFmpeg 安定版タグを保持します。
+workflow matrix はバリアントごとに1つの FFmpeg 安定版の完全 commit SHA を保持します。
 すべての `main` pushは同じ `FFMPEG_VERSION` を使用し、ルートの `VERSION` と
 既存release identityの状態により公開タグとキャッシュのライフサイクルだけを
 分けます。
 
 このため `edge` は FFmpeg `master` の意味ではなく、次のリリースに入る
 ffmpeg-docker の変更を安定版 FFmpeg と組み合わせた継続ビルドです。
+
+## APT とセキュリティ更新
+
+対象は Ubuntu 24.04 系イメージです。確認日: 2026-10-24。
+APT は `UBUNTU_SNAPSHOT=20261016T000000Z` の署名付き snapshot に固定し、
+base のパッケージも `apt-get upgrade` で更新します。
+過去 snapshot の Release 有効期限だけを無効化し、署名検証は維持します。
+CUDA の追加 APT repository は無効化し、同梱 CUDA libraries は固定 base の版を維持します。
+
+`ca-certificates` の `20260816ubuntu0.24.04.1` は cooldown 例外の対象です。
+承認日と理由は [CHANGELOG](../../CHANGELOG.md) に記録します。
+単一 `.deb` を SHA-256 検証付きで取得し、他の新しい APT パッケージを取り込みません。
+CA store を持たない最小 base では、この package の証明書で HTTPS を bootstrap します。
+
+libvpx、libaom、libass は Dockerfile の commit SHA を固定してソースビルドします。
+Ninja と Meson も同じ APT snapshot から取得し、別の pip dependency 解決を行いません。
+固定 snapshot には zlib、XZ、Unbound、libXtst の確認日時点で公開から 7 日未満の修正が含まれません。
+ビルド用 package も最終 image に残る構成です。
+更新方法は [依存関係更新](../operations/update-dependencies.md) を参照してください。

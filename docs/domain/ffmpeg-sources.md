@@ -4,10 +4,9 @@
 
 - upstream mirror: [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg)
 - fork: [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg)
-- 検証した安定版 fork コミット: `d707f8d7f497f5d8ff18c55b0d16834c01e0143f`
-- 対応する upstream 安定版: `n8.0.3`
-- 検証した master コミット: `03dc244a693ce639cebf82f7bae112fb75580919`
-- 検証日: 2026-08-11
+- 検証した安定版 fork コミット: `a6838d7635f59fc2115470d15861bdbbecc6cae6`
+- 対応する upstream 安定版: `n9.0.2`
+- 検証日: 2026-10-24
 
 ## ソースの関係
 
@@ -26,7 +25,7 @@ file-backed stream名を追加した派生タグです。
 I/O エラーとして終了します。
 
 - connect メッセージの application と待受 URL の application
-- publish または play の stream 名と待受 URL の stream path
+- publish の stream 名と待受 URL の stream path
 
 このオプションは組み込みの `rtmp` プロトコルと `librtmp` プロトコルの
 オプション一覧へ公開されています。パッチの出典は [FFmpeg Patchwork][patch]
@@ -45,3 +44,13 @@ strict path拒否ログは、接続側・期待側いずれのstream名も出力
 stream path の両方の不一致経路がエラーを返すことを確認します。upstream の
 RTMP 接続処理が変わった場合は、パッチが適用できたことだけを互換性の根拠に
 しません。
+
+## TLS 検証
+
+FFmpeg 9.0.2 の組み込み TLS は peer certificate 検証が既定で有効です。
+GnuTLS backend は信頼チェーンと接続先ホスト名を検証します。
+旧版からの更新では、従来接続できた未信頼証明書の相手が拒否される場合があります。
+検証を無効化せず、隔離した TLS peer で受入・拒否を確認します。
+
+根拠: [n9.0.2 tls.h](https://github.com/FFmpeg/FFmpeg/blob/n9.0.2/libavformat/tls.h)、
+[n9.0.2 GnuTLS backend](https://github.com/FFmpeg/FFmpeg/blob/n9.0.2/libavformat/tls_gnutls.c)。

@@ -8,6 +8,20 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.8.0] - 2026-10-24 UTC
+
+### Changed
+
+- FFmpeg を upstream 9.0.2 と strict path / file-backed stream 名を保持した派生 commit へ更新。
+- libvpx 1.17.0、libaom 3.15.0、libass 0.17.5 へ更新し、ソース commit を固定。
+- APT を固定 snapshot に揃え、Ninja / Meson も同じ snapshot から取得。
+
+### Security
+
+- `ca-certificates=20260816ubuntu0.24.04.1` に限り、2026-10-24 の maintainer 承認で cooldown 例外を適用。
+  理由は [USN-8944-1](https://ubuntu.com/security/notices/USN-8944-1) の CA distrust。
+- TLS certificate 検証が既定で有効になるため、移行時に CA と hostname を確認する手順を追加。
+
 ## [v0.7.0] - 2026-08-11 UTC
 
 ### Added
@@ -198,7 +212,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.8.0...HEAD
+[v0.8.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...v0.8.0
 [v0.7.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.4.0...v0.5.0

@@ -2,7 +2,9 @@
 
 This project builds Docker images that include third-party software.
 
-## FFmpeg
+## Software bundled in images
+
+### FFmpeg
 
 - Upstream source: <https://github.com/FFmpeg/FFmpeg>
 - Fork source: <https://github.com/aoirint/FFmpeg>
@@ -13,12 +15,40 @@ This project builds Docker images that include third-party software.
   or later
 - Upstream license information: <https://ffmpeg.org/legal.html>
 
-The `ubuntu` and `nvidia` variants build the selected upstream FFmpeg tag. The
-`ubuntu-aoirint` variant builds the corresponding fork tag with the
+The `ubuntu` and `nvidia` variants build the selected upstream FFmpeg commit. The
+`ubuntu-aoirint` variant builds the corresponding fork commit with the
 `rtmp_strict_paths` patch. The image retains `LICENSE.md` and `COPYING.GPLv3`
 under `/usr/local/share/licenses/ffmpeg/`.
 
-## aoirint/skills
+### libvpx
+
+- Version: 1.17.0
+- License: BSD-3-Clause and patent grant,
+  <https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.17.0/LICENSE>.
+- Bundled location: static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+  `/usr/local/share/licenses/libvpx/`.
+
+### libaom
+
+- Version: 3.15.0
+- License: BSD-2-Clause and patent grant,
+  <https://aomedia.googlesource.com/aom/+/refs/tags/v3.15.0/LICENSE>.
+- Bundled location: static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+  `/usr/local/share/licenses/libaom/`.
+
+### libass
+
+- Version: 0.17.5
+- License: ISC,
+  <https://github.com/libass/libass/blob/0.17.5/COPYING>.
+- Bundled location: static library in `/usr/local/lib`; `COPYING` is retained in
+  `/usr/local/share/licenses/libass/`.
+
+Library source commits and build options are defined in [Dockerfile](Dockerfile).
+
+## Development dependencies
+
+### aoirint/skills
 
 - Source: <https://github.com/aoirint/skills>
 - Virtual paths: `apm-workflow`, `changelog-workflow`, `code-quality-check`,

@@ -255,6 +255,7 @@ jobs:
             docker run --rm "${IMAGE}" -hide_banner -h protocol=rtmp 2>&1 | grep -F rtmp_strict_paths
             scripts/test-rtmp-strict-paths.sh "${IMAGE}"
           fi
+          scripts/test-runtime.sh "${IMAGE}"
           scripts/test-codecs-and-tls.sh "${IMAGE}"
 
   release:

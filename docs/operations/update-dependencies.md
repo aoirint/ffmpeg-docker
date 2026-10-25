@@ -34,9 +34,11 @@ Docker daemon と Bash、GNU timeout、tar が必要です。Docker Desktop で�
 # FORK_COMMIT にレビュー対象の完全 commit SHA を設定してから実行します。
 : "${FORK_COMMIT:?Set the reviewed fork commit SHA}"
 docker buildx build --check .
+# 通常版は make build、NVIDIA 版は make build-nvidia でもビルドできます。
 docker build -t ffmpeg:review \
   --build-arg FFMPEG_REPOSITORY_URL=https://github.com/aoirint/FFmpeg.git \
   --build-arg "FFMPEG_VERSION=${FORK_COMMIT}" .
+scripts/test-runtime.sh ffmpeg:review
 scripts/test-rtmp-strict-paths.sh ffmpeg:review
 scripts/test-codecs-and-tls.sh ffmpeg:review
 ```
@@ -46,7 +48,20 @@ CRLF、UID/GID 1000:1000 と mode 600、secret 非露出、tee / fifo の 2 出�
 終了時に自分が作成した container、network、volume、log を削除します。
 異常終了で残った場合も、実行時の固有名を確認し、そのリソースだけを削除してください。
 
-通常版も build し、NVIDIA 版は `make build-nvidia` と実 GPU 上の encode を別々に確認します。
+通常版も build し、全3バリアントで `scripts/test-runtime.sh IMAGE` と codec / TLS test を実行します。
+NVIDIA 版は `make build-nvidia` 後、対応 GPU 上で `scripts/test-nvidia.sh ffmpeg:nvidia` を実行します。
+H.264 / HEVC / AV1 の NVENC encode、CUDA decode、CUVID decode を、非 root・read-only rootfs で検証します。
+driver と NVIDIA Container Toolkit が必要です。公開済み digest の検証も同じ script で行います。
+runtime test は FFmpeg と付属 CLI の共有ライブラリ解決、開発ツールの除外、同梱通知、GPLv3+ 表示を確認します。
+
+ライブラリ単体の開発用ビルドには `docker build --target vpx .` のようにステージを指定します。
+全ライブラリを利用する場合は `--target ffmpeg-build` を使います。
+`BASE_IMAGE` と `RUNTIME_IMAGE` は Ubuntu 24.04 の ABI と architecture を揃えて更新してください。
+共通の `UBUNTU_SNAPSHOT` と例外 CA package はビルド・実行の両ステージへ反映します。
+キャッシュ検証は通常ビルド後に `--build-arg LIBVPX_VERSION=<reviewed-commit>` など単独の入力を変え、
+兄弟ライブラリが cache hit することを plain progress log で確認します。
+新しい入力を実行する前に同じ provenance / cooldown レビューを行ってください。
+最終 image のサイズは `docker image inspect --format '{{.Size}}' IMAGE` で旧版と比較します。
 GPU がなければ実行済みと記録しません。`ffmpeg -L`、同梱 license、`ldd`、APT package 一覧を
 最終 image から確認し、source package と静的 library を APT scanner だけで検証しません。
 

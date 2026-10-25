@@ -21,7 +21,7 @@ GitHub Releaseの手動作成、tag push、workflow dispatchはリリース経�
    `0.6.0-rc.1` のように記述し、`v` prefixやbuild metadataは使用しません。
 3. Pull Requestの `Check` が成功したら `main` へマージします。
 4. main workflowが全variantを一度だけbuild・publishした後、Docker HubとGHCRの
-   digest一致およびvariant固有機能を検証したことを確認します。
+   digest一致、runtime の共有ライブラリ・同梱通知・開発ツール除外、およびvariant固有機能を検証したことを確認します。
 5. release jobが同じmain commitを指すimmutableな `v<VERSION>` tagとGitHub
    Releaseを作成したことを確認します。
 6. stable releaseではversion・variant・`latest` aliases、prereleaseでは既存の

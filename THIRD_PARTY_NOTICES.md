@@ -8,7 +8,7 @@ This project builds Docker images that include third-party software.
 
 - Upstream source: <https://github.com/FFmpeg/FFmpeg>
 - Fork source: <https://github.com/aoirint/FFmpeg>
-- Bundled location in image: `/usr/local/bin` and `/usr/local/lib`
+- Bundled location in runtime image: `/usr/local/bin`
 - Version: see `FFMPEG_VERSION` in `Dockerfile` and `ffmpeg_version` in
   `.github/workflows/main.yml`
 - License for this build configuration: GNU General Public License version 3
@@ -25,7 +25,7 @@ under `/usr/local/share/licenses/ffmpeg/`.
 - Version: 1.17.0
 - License: BSD-3-Clause and patent grant,
   <https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.17.0/LICENSE>.
-- Bundled location: static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+- Bundled location: statically linked into FFmpeg; `LICENSE` and `PATENTS` are retained in
   `/usr/local/share/licenses/libvpx/`.
 
 ### libaom
@@ -33,7 +33,7 @@ under `/usr/local/share/licenses/ffmpeg/`.
 - Version: 3.15.0
 - License: BSD-2-Clause and patent grant,
   <https://aomedia.googlesource.com/aom/+/refs/tags/v3.15.0/LICENSE>.
-- Bundled location: static library in `/usr/local/lib`; `LICENSE` and `PATENTS` are retained in
+- Bundled location: statically linked into FFmpeg; `LICENSE` and `PATENTS` are retained in
   `/usr/local/share/licenses/libaom/`.
 
 ### libass
@@ -41,10 +41,28 @@ under `/usr/local/share/licenses/ffmpeg/`.
 - Version: 0.17.5
 - License: ISC,
   <https://github.com/libass/libass/blob/0.17.5/COPYING>.
-- Bundled location: static library in `/usr/local/lib`; `COPYING` is retained in
+- Bundled location: statically linked into FFmpeg; `COPYING` is retained in
   `/usr/local/share/licenses/libass/`.
 
-Library source commits and build options are defined in [Dockerfile](Dockerfile).
+### Other linked libraries
+
+Source versions and build options are defined in [Dockerfile](Dockerfile).
+The runtime image retains the following notices under `/usr/local/share/licenses/`:
+
+| Library | Source | License | Notice |
+| --- | --- | --- | --- |
+| x264 | <https://code.videolan.org/videolan/x264> | GPL-2.0-or-later | `x264/COPYING` |
+| LAME | <https://sourceforge.net/projects/lame/> | LGPL-2.0-or-later | `lame/COPYING` |
+| Opus | <https://github.com/xiph/opus> | BSD-3-Clause | `opus/COPYING` |
+| SVT-AV1 | <https://gitlab.com/AOMediaCodec/SVT-AV1> | BSD-3-Clause-Clear | `svtav1/LICENSE.md` |
+| dav1d | <https://code.videolan.org/videolan/dav1d> | BSD-2-Clause | `dav1d/COPYING` |
+| VMAF | <https://github.com/Netflix/vmaf> | BSD-2-Clause Plus Patent | `vmaf/LICENSE` |
+| nv-codec-headers (NVIDIA variant) | <https://github.com/FFmpeg/nv-codec-headers> | MIT | `nv-codec-headers/*.h.txt` (header notices) |
+
+Ubuntu runtime packages, including x265, retain their package copyright files under
+`/usr/share/doc/`. Static archives and development headers are confined to build stages.
+CUDA and cuDNN are not bundled in the runtime image; NVIDIA driver libraries are supplied
+by the host container runtime.
 
 ## Development dependencies
 

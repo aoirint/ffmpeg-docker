@@ -18,6 +18,16 @@ FFmpeg は GNU General Public License version 3 or later で提供されます�
 詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と
 [FFmpeg のライセンス情報](https://ffmpeg.org/legal.html)を参照してください。
 
+## イメージの構成
+
+実行用イメージには FFmpeg / ffprobe / ffplay、既存の x264 / LAME / VMAF CLI と実行時の依存関係を収録します。
+compiler、Git、開発用 header、静的 library は含めません。
+追加コンパイルが必要な場合は `docker build --target ffmpeg-build` で開発用ステージを利用できます。
+NVIDIA 版も Ubuntu の実行用イメージを使い、CUDA / cuDNN の開発環境は含めません。
+GPU の利用にはホスト側の NVIDIA Container Toolkit と対応 driver が必要です。
+CUDA decode には `--gpus 'all,"capabilities=compute,video"'` を指定します。
+ビルド引数とステージの責務は [イメージ構成](docs/architecture/image-variants.md)を参照してください。
+
 ## タグ一覧
 
 |バリアント|イメージ|説明|

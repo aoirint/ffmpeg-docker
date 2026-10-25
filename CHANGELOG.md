@@ -8,6 +8,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.9.0] - 2026-10-25 UTC
+
 ### Changed
 
 - ライブラリのソースビルドを独立ステージに分け、ライブラリ間の cache invalidation を削減。
@@ -15,6 +17,16 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   開発用環境は `ffmpeg-build` target で利用可能。
 - NVIDIA 版の CUDA / cuDNN 開発環境をビルド側に限定し、実行時はホストの driver library を使用。
 - ソースからリンクするライブラリの license 通知を最終 image に保持し、実行環境の検証を公開後 test に追加。
+
+### Notes
+
+- Ubuntu 24.04 を維持する容量削減リリース。Ubuntu 26.04 移行と Mesa VDPAU backend の変更は含みません。
+- [USN-8944-1](https://ubuntu.com/security/notices/USN-8944-1) の Ubuntu 24.04 修正版
+  `ca-certificates=20260816ubuntu0.24.04.1` は既存の更新を保持。
+  全3バリアントの実イメージでインストール版、emSign ECC Root CA - G3 を含まない trust store、
+  TLS の信頼・hostname 検証を確認。
+- 全3バリアントの runtime・codec 検証、fork 版の RTMP strict path・tee/fifo 復旧、
+  NVIDIA 版の H.264 / HEVC / AV1 の NVENC encode と CUDA / CUVID decode を確認。
 
 ## [v0.8.0] - 2026-10-24 UTC
 
@@ -220,7 +232,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.9.0...HEAD
+[v0.9.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.8.0...v0.9.0
 [v0.8.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...v0.8.0
 [v0.7.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.5.0...v0.6.0

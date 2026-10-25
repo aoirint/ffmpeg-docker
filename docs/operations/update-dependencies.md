@@ -2,8 +2,8 @@
 
 ## 対象
 
-- Dockerfile の Ubuntu 24.04、upstream / fork FFmpeg、同梱ライブラリ
-- 確認日: 2026-10-24
+- Dockerfile の Ubuntu 26.04、upstream / fork FFmpeg、同梱ライブラリ
+- 確認日: 2026-10-25
 - 依存関係の選定、source PR、ローカル検証、公開前確認を扱います。
 
 ## 依存関係の選定
@@ -56,7 +56,7 @@ runtime test は FFmpeg と付属 CLI の共有ライブラリ解決、開発ツ
 
 ライブラリ単体の開発用ビルドには `docker build --target vpx .` のようにステージを指定します。
 全ライブラリを利用する場合は `--target ffmpeg-build` を使います。
-`BASE_IMAGE` と `RUNTIME_IMAGE` は Ubuntu 24.04 の ABI と architecture を揃えて更新してください。
+`BASE_IMAGE` と `RUNTIME_IMAGE` は Ubuntu 26.04 の ABI と architecture を揃えて更新してください。
 共通の `UBUNTU_SNAPSHOT` と例外 CA package はビルド・実行の両ステージへ反映します。
 キャッシュ検証は通常ビルド後に `--build-arg LIBVPX_VERSION=<reviewed-commit>` など単独の入力を変え、
 兄弟ライブラリが cache hit することを plain progress log で確認します。
@@ -64,6 +64,13 @@ runtime test は FFmpeg と付属 CLI の共有ライブラリ解決、開発ツ
 最終 image のサイズは `docker image inspect --format '{{.Size}}' IMAGE` で旧版と比較します。
 GPU がなければ実行済みと記録しません。`ffmpeg -L`、同梱 license、`ldd`、APT package 一覧を
 最終 image から確認し、source package と静的 library を APT scanner だけで検証しません。
+
+## Ubuntu 26.04 移行の確認環境
+
+2026-10-25 の linux/amd64 検証では、RTX 5070 Ti / driver 617.42 の Docker Desktop 環境で
+`scripts/test-nvidia.sh` の全 codec の encode / decode を確認しました。
+AMD / Intel VA-API は最終 image の package・driver ファイル・loader まで確認し、実 GPU 操作は未検証です。
+この実行環境には `/dev/dri` と X11 の接続経路がないため、VDPAU / VA-API 変換 driver の同等性は主張しません。
 
 ## 公開前確認
 

@@ -8,6 +8,42 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.10.0] - 2026-10-25 UTC
+
+### Changed
+
+- 全3バリアントのビルド・実行基盤を Ubuntu 26.04 へ更新し、x265 の runtime package を `libx265-215` に変更。
+- NVIDIA のビルド基盤を CUDA 13.4.3 / cuDNN の固定 digest へ更新。NVENC / NVDEC と Ubuntu runtime の構成を維持。
+
+### Added
+
+- x265 / SVT-AV1 の実エンコード検証を既存 smoke test に追加。
+
+### Fixed
+
+- APT 3 の OpenSSL に bootstrap CA store のパスを明示し、HTTPS の証明書検証を維持。
+- SVT-AV1 同梱 cpuinfo に CMake 4 の最小 policy を指定し、ソース版を変えずにビルド。
+
+### Removed
+
+- Ubuntu 26.04 / Mesa 上流で廃止された旧 Mesa VDPAU backend の同梱を終了。
+  旧同梱 backend の利用者は、対応 GPU の VA-API または NVIDIA の CUDA / CUVID decode への移行が必要。
+  Mesa の VA-API / OpenGL 依存と、FFmpeg の VDPAU API / `libvdpau1` は保持。
+
+### Security
+
+- `ca-certificates=20260816ubuntu0.26.04.1` に限り、2026-10-25 の maintainer 承認で cooldown 例外を適用。
+  [USN-8944-1](https://ubuntu.com/security/notices/USN-8944-1) が Ubuntu 26.04 の修正版として明記する CA distrust 対応。
+
+### Notes
+
+- linux/amd64 の全3構成で CA 修正版・trust store、runtime、codec / TLS をローカル検証。
+  fork 版の RTMP strict path / tee-fifo 復旧、および RTX 5070 Ti / driver 617.42 で
+  H.264 / HEVC / AV1 の NVENC encode と CUDA / CUVID decode を確認。
+- FFmpeg が列挙する codec / filter / protocol / hwaccel の名前は v0.9.0 と一致。
+  VDPAU API の列挙は旧 Mesa backend の実体が同梱されることを意味しません。
+- AMD / Intel の VA-API は package・driver 実体・loader を確認し、実 GPU 操作は未検証。
+
 ## [v0.9.0] - 2026-10-25 UTC
 
 ### Changed
@@ -232,7 +268,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.10.0...HEAD
+[v0.10.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.9.0...v0.10.0
 [v0.9.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.8.0...v0.9.0
 [v0.8.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...v0.8.0
 [v0.7.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.6.0...v0.7.0

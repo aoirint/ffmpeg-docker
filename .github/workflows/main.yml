@@ -102,19 +102,19 @@ jobs:
         include:
           - variant: ubuntu
             is_default_tag: true
-            base_image: ubuntu:24.04@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea
+            base_image: ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944
             ffmpeg_repository_url: https://github.com/FFmpeg/FFmpeg.git
             ffmpeg_version: 946fcce07b6dcd0331c8cc609192aeff5e1924f8 # n9.0.2
             enable_nvcodec: 0
           - variant: nvidia
             is_default_tag: false
-            base_image: nvcr.io/nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04@sha256:24c8e3581ea6330038b0d374920721983312627f8adbfcf390bdb4b399d280ed
+            base_image: nvcr.io/nvidia/cuda:13.4.3-cudnn-devel-ubuntu26.04@sha256:a34cd707296198f7bf581ab8da0a977e2d6cea912ba081cf872c6742e3ade503
             ffmpeg_repository_url: https://github.com/FFmpeg/FFmpeg.git
             ffmpeg_version: 946fcce07b6dcd0331c8cc609192aeff5e1924f8 # n9.0.2
             enable_nvcodec: 1
           - variant: ubuntu-aoirint
             is_default_tag: false
-            base_image: ubuntu:24.04@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea
+            base_image: ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944
             ffmpeg_repository_url: https://github.com/aoirint/FFmpeg.git
             ffmpeg_version: a6838d7635f59fc2115470d15861bdbbecc6cae6 # 9.0.2 strict-path fork
             enable_nvcodec: 0

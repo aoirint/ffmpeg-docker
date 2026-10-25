@@ -41,6 +41,20 @@ for codec in libvpx-vp9 libaom-av1; do
     -nostdin -v error -f lavfi -i testsrc2=size=64x64:rate=1 \
     -frames:v 1 -c:v "${codec}" -cpu-used 8 -f null -
 done
+
+# Exercise SVT-AV1 after configuring its bundled cpuinfo with CMake 4 policies.
+docker run --rm --network none --user 1000:1000 --cap-drop ALL \
+  --security-opt no-new-privileges:true "${image}" \
+  -nostdin -v error -f lavfi -i testsrc2=size=64x64:rate=1 \
+  -frames:v 1 -c:v libsvtav1 -preset 12 -svtav1-params lp=2 -f null -
+
+# Exercise the distro x265 ABI, which changes with the Ubuntu runtime.
+docker run --rm --network none --user 1000:1000 --cap-drop ALL \
+  --security-opt no-new-privileges:true "${image}" \
+  -nostdin -v error -f lavfi -i testsrc2=size=64x64:rate=1 \
+  -frames:v 1 -c:v libx265 -preset ultrafast \
+  -x265-params pools=none:frame-threads=1:log-level=error -f null -
+
 docker run --rm --network none --user 1000:1000 --cap-drop ALL \
   --security-opt no-new-privileges:true \
   --mount "type=volume,src=${fixtures},dst=/fixtures,readonly" "${image}" \

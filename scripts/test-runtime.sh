@@ -31,7 +31,7 @@ docker run --rm --network none --read-only --user 1000:1000 --cap-drop ALL \
     test -z "$(find /usr/local/include -mindepth 1 -print -quit)"
     test ! -d /usr/local/lib/pkgconfig
     test -z "$(find /usr/local -name "*.a" -print -quit)"
-    test -s /usr/share/doc/libx265-199/copyright
+    test -s /usr/share/doc/libx265-215/copyright
     for file in ffmpeg/LICENSE.md ffmpeg/COPYING.GPLv3 x264/COPYING \
       libvpx/LICENSE libvpx/PATENTS lame/COPYING opus/COPYING \
       libaom/LICENSE libaom/PATENTS svtav1/LICENSE.md libass/COPYING \

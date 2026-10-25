@@ -4,6 +4,9 @@ This project builds Docker images that include third-party software.
 
 ## Software bundled in images
 
+Library source versions and build options are defined in [Dockerfile](Dockerfile).
+Static archives and development headers are confined to build stages.
+
 ### FFmpeg
 
 - Upstream source: <https://github.com/FFmpeg/FFmpeg>
@@ -44,25 +47,62 @@ under `/usr/local/share/licenses/ffmpeg/`.
 - Bundled location: statically linked into FFmpeg; `COPYING` is retained in
   `/usr/local/share/licenses/libass/`.
 
-### Other linked libraries
+### x264
 
-Source versions and build options are defined in [Dockerfile](Dockerfile).
-The runtime image retains the following notices under `/usr/local/share/licenses/`:
+- Source: <https://code.videolan.org/videolan/x264>
+- License: GPL-2.0-or-later
+- Bundled location: statically linked into FFmpeg; CLI at `/usr/local/bin/x264`.
+- Notice: `/usr/local/share/licenses/x264/COPYING`
 
-| Library | Source | License | Notice |
-| --- | --- | --- | --- |
-| x264 | <https://code.videolan.org/videolan/x264> | GPL-2.0-or-later | `x264/COPYING` |
-| LAME | <https://sourceforge.net/projects/lame/> | LGPL-2.0-or-later | `lame/COPYING` |
-| Opus | <https://github.com/xiph/opus> | BSD-3-Clause | `opus/COPYING` |
-| SVT-AV1 | <https://gitlab.com/AOMediaCodec/SVT-AV1> | BSD-3-Clause-Clear | `svtav1/LICENSE.md` |
-| dav1d | <https://code.videolan.org/videolan/dav1d> | BSD-2-Clause | `dav1d/COPYING` |
-| VMAF | <https://github.com/Netflix/vmaf> | BSD-2-Clause Plus Patent | `vmaf/LICENSE` |
-| nv-codec-headers (NVIDIA variant) | <https://github.com/FFmpeg/nv-codec-headers> | MIT | `nv-codec-headers/*.h.txt` (header notices) |
+### LAME
 
-Ubuntu runtime packages, including x265, retain their package copyright files under
-`/usr/share/doc/`. Static archives and development headers are confined to build stages.
+- Source: <https://sourceforge.net/projects/lame/>
+- License: LGPL-2.0-or-later
+- Bundled location: statically linked into FFmpeg; CLI at `/usr/local/bin/lame`.
+- Notice: `/usr/local/share/licenses/lame/COPYING`
+
+### Opus
+
+- Source: <https://github.com/xiph/opus>
+- License: BSD-3-Clause
+- Bundled location: statically linked into FFmpeg.
+- Notice: `/usr/local/share/licenses/opus/COPYING`
+
+### SVT-AV1
+
+- Source: <https://gitlab.com/AOMediaCodec/SVT-AV1>
+- License: BSD-3-Clause-Clear
+- Bundled location: statically linked into FFmpeg.
+- Notice: `/usr/local/share/licenses/svtav1/LICENSE.md`
+
+### dav1d
+
+- Source: <https://code.videolan.org/videolan/dav1d>
+- License: BSD-2-Clause
+- Bundled location: statically linked into FFmpeg.
+- Notice: `/usr/local/share/licenses/dav1d/COPYING`
+
+### VMAF
+
+- Source: <https://github.com/Netflix/vmaf>
+- License: BSD-2-Clause Plus Patent
+- Bundled location: statically linked into FFmpeg; CLI at `/usr/local/bin/vmaf`.
+- Notice: `/usr/local/share/licenses/vmaf/LICENSE`
+
+### nv-codec-headers
+
+- Source: <https://github.com/FFmpeg/nv-codec-headers>
+- License: MIT
+- Build role: headers used to compile the NVIDIA variant.
+- Notice: header notices retained as `/usr/local/share/licenses/nv-codec-headers/*.h.txt`.
+
 CUDA and cuDNN are not bundled in the runtime image; NVIDIA driver libraries are supplied
 by the host container runtime.
+
+### Ubuntu runtime packages
+
+Ubuntu runtime packages, including x265, retain their package copyright files under
+`/usr/share/doc/`.
 
 ## Development dependencies
 

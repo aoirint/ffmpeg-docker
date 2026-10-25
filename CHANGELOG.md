@@ -8,6 +8,14 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+### Changed
+
+- ライブラリのソースビルドを独立ステージに分け、ライブラリ間の cache invalidation を削減。
+- 全3バリアントを Ubuntu の実行用ステージへ分離し、開発ツール・header・静的 archive を最終 image から除外。
+  開発用環境は `ffmpeg-build` target で利用可能。
+- NVIDIA 版の CUDA / cuDNN 開発環境をビルド側に限定し、実行時はホストの driver library を使用。
+- ソースからリンクするライブラリの license 通知を最終 image に保持し、実行環境の検証を公開後 test に追加。
+
 ## [v0.8.0] - 2026-10-24 UTC
 
 ### Changed

@@ -47,9 +47,15 @@ APM 管理ファイルを変更したら、選定済みの適格な APM CLI で�
 
 ```shell
 apm lock
+apm install
 apm install --frozen
 apm audit --ci
 ```
+
+`apm install` は展開台帳を完成させる準備操作です。実行前に
+[台帳の再構築手順](.agents/skills/apm-workflow/references/cli-selection.md#12-complete-a-new-or-rebuilt-deployment-ledger)
+に従い、所有が確認できた生成物と旧 lockfile を保管してください。解決した pin と
+展開差分をレビューした後に frozen 再現と audit を行います。
 
 第三者 Skill は完全なコミット SHA に固定し、`THIRD_PARTY_NOTICES.md` と
 ロックファイルを同じ変更で更新します。
@@ -67,9 +73,12 @@ make build-nvidia
 ## CI と公開
 
 `.github/workflows/pull-request.yml` は proposed sourceを検証します。
-`.github/workflows/main.yml` は `main` へのpushだけを契機にDockerイメージを
-Docker HubとGHCRへ公開し、ルートの `VERSION` が未公開なら公開物の検証後に
-GitHub Releaseを作成します。GitHub Releaseの手動作成はリリース契機ではありません。
+`.github/workflows/main.yml` は `main` push時にsourceを検証します。
+APMだけの保守変更ではimage build・公開を省略し、Checkは維持します。
+アプリ変更ではDocker Hub・GHCRへの公開を行い、ルートの `VERSION` と
+公開済みreleaseの整合性を確認してGitHub Releaseを作成します。
+差分のbefore/headを確認できない場合は公開せず失敗します。
+GitHub Releaseの手動作成はリリース契機ではありません。
 
 | 種類 | 名前 | 用途 |
 | --- | --- | --- |

@@ -1,13 +1,5 @@
 # Docker イメージの公開
 
-## APMだけの保守変更
-
-mainのPlanはpushのbefore/headを比較します。APMのpin・台帳・生成技能・
-運用ガイドと、その検証用CIだけの変更では、Checkを維持してimage build・
-公開を省略します。main workflowについては、この差分判定の追加行だけを
-除外し、image variantなど他の変更はアプリ変更として扱います。
-比較元commitが欠落するなど差分を確定できない場合は、公開せず失敗します。
-
 ## 公開経路
 
 `.github/workflows/main.yml` は `main` へのpushだけで3バリアントをビルドし、

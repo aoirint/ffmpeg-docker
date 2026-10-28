@@ -73,12 +73,9 @@ make build-nvidia
 ## CI と公開
 
 `.github/workflows/pull-request.yml` は proposed sourceを検証します。
-`.github/workflows/main.yml` は `main` push時にsourceを検証します。
-APMだけの保守変更ではimage build・公開を省略し、Checkは維持します。
-アプリ変更ではDocker Hub・GHCRへの公開を行い、ルートの `VERSION` と
-公開済みreleaseの整合性を確認してGitHub Releaseを作成します。
-差分のbefore/headを確認できない場合は公開せず失敗します。
-GitHub Releaseの手動作成はリリース契機ではありません。
+`.github/workflows/main.yml` は `main` へのpushだけを契機にDockerイメージを
+Docker HubとGHCRへ公開し、ルートの `VERSION` が未公開なら公開物の検証後に
+GitHub Releaseを作成します。GitHub Releaseの手動作成はリリース契機ではありません。
 
 | 種類 | 名前 | 用途 |
 | --- | --- | --- |

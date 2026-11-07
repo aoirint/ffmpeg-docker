@@ -114,8 +114,8 @@ Ubuntu runtime packages, including x265, retain their package copyright files un
   `git-worktree-workflow`, `github-actions-quality-check`, `github-workflow`,
   `prose-quality-check`, `security-check`, and
   `domain-architecture-docs-workflow`
-- Commit: `1bbdf247da61492e8c1531f341aae400a04b9503`
-- License: MIT, <https://github.com/aoirint/skills/blob/1bbdf247da61492e8c1531f341aae400a04b9503/LICENSE>
+- Commit: `d7e4e238f6aa4f80b1be13194a0e291bc18aef0f`
+- License: MIT, <https://github.com/aoirint/skills/blob/d7e4e238f6aa4f80b1be13194a0e291bc18aef0f/LICENSE>
 - Copyright: Copyright (c) 2026 aoirint
 
 The full license text is available at the linked canonical source. This notice

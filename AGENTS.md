@@ -72,10 +72,11 @@ make build-nvidia
 
 ## CI と公開
 
-`.github/workflows/pull-request.yml` は proposed sourceを検証します。
-`.github/workflows/main.yml` は `main` へのpushだけを契機にDockerイメージを
-Docker HubとGHCRへ公開し、ルートの `VERSION` が未公開なら公開物の検証後に
-GitHub Releaseを作成します。GitHub Releaseの手動作成はリリース契機ではありません。
+`.github/workflows/pull-request.yml` は PR の変更内容を検証します。
+`.github/workflows/main.yml` は `main` への push を契機に Docker イメージを
+Docker Hub と GHCR へ公開します。ルートの `VERSION` が未公開なら、公開物の
+検証後に GitHub Release を作成します。GitHub Release の手動作成は
+リリース契機ではありません。
 
 | 種類 | 名前 | 用途 |
 | --- | --- | --- |

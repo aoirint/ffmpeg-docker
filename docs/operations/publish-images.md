@@ -2,8 +2,8 @@
 
 ## 公開経路
 
-`.github/workflows/main.yml` は `main` へのpushだけで3バリアントをビルドし、
-Docker HubとGHCRへpushします。ルートの `VERSION` が唯一のrelease identityです。
+`.github/workflows/main.yml` は `main` への push を契機に3バリアントをビルドし、
+Docker Hub と GHCR へ公開します。リリースの識別元はルートの `VERSION` です。
 
 | `VERSION` の状態 | 主な成果物 | GitHub Release |
 | --- | --- | --- |
@@ -11,8 +11,8 @@ Docker HubとGHCRへpushします。ルートの `VERSION` が唯一のrelease i
 | stableでtagとreleaseが両方不在 | `v<version>-<variant>`とlatest系 | stableとして作成 |
 | prereleaseでtagとreleaseが両方不在 | `edge-<variant>` | prereleaseとして作成 |
 
-tagとreleaseの片方だけが存在する不整合では、安全のため公開を停止します。
-GitHub Releaseの手動作成、tag push、workflow dispatchはリリース経路ではありません。
+タグと GitHub Release の片方だけが存在する場合は、安全のため公開を停止します。
+GitHub Release の手動作成、タグの push、workflow dispatch はリリースの契機ではありません。
 
 ## 公開手順
 
@@ -20,8 +20,10 @@ GitHub Releaseの手動作成、tag push、workflow dispatchはリリース経�
 2. ルートの `VERSION` をbare SemVerへ変更します。stableは `0.6.0`、prereleaseは
    `0.6.0-rc.1` のように記述し、`v` prefixやbuild metadataは使用しません。
 3. Pull Requestの `Check` が成功したら `main` へマージします。
-4. main workflowが全variantを一度だけbuild・publishした後、Docker HubとGHCRの
-   digest一致、runtime の共有ライブラリ・同梱通知・開発ツール除外、およびvariant固有機能を検証したことを確認します。
+4. main workflow が全バリアントを一度ずつビルド・公開し、次の検証を完了したことを確認します。
+    - Docker Hub と GHCR の digest が一致すること。
+    - 実行時の共有ライブラリが解決でき、必要な通知が同梱され、開発ツールが除外されていること。
+    - 各バリアント固有の機能が動作すること。
 5. release jobが同じmain commitを指すimmutableな `v<VERSION>` tagとGitHub
    Releaseを作成したことを確認します。
 6. stable releaseではversion・variant・`latest` aliases、prereleaseでは既存の
@@ -41,7 +43,8 @@ checkとplanは `contents: read`、buildは `packages: write`、testは
 
 ## 回復
 
-tagとreleaseの作成前に失敗した場合は原因を修正してmainへpushします。同じ
-`VERSION` が未公開なら再試行されます。tagまたはreleaseの片方だけが存在する場合は、
-自動修復せず状態を調査します。公開済みのimmutable identityを上書きせず、成果物の
-修正が必要なら `VERSION` を増やします。
+タグと GitHub Release の作成前に失敗した場合は、原因を修正して `main` へ
+push します。同じ `VERSION` が未公開なら再試行されます。
+
+タグと GitHub Release の片方だけが存在する場合は、自動修復せず状態を調査します。
+公開済みのバージョンを上書きせず、成果物の修正が必要なら `VERSION` を増やします。

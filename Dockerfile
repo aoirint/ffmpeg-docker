@@ -1,6 +1,17 @@
 # syntax=docker/dockerfile:1.19.0@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
 ARG BASE_IMAGE=ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944
 ARG RUNTIME_IMAGE=ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944
+FROM $RUNTIME_IMAGE AS ca-bootstrap
+
+# Verify the bootstrap package against the signed resolute-security index.
+ADD --checksum=sha256:a7e3bf769aec16ba21ca39cba180d6d311dafcbae68346a05f137c5cc26c9ca6 https://snapshot.ubuntu.com/ubuntu/20261112T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.2_all.deb /tmp/ca-certificates.deb
+RUN <<EOF
+    set -eux
+    dpkg-deb -x /tmp/ca-certificates.deb /tmp/ca-bootstrap
+    cat /tmp/ca-bootstrap/usr/share/ca-certificates/mozilla/*.crt >/ca-certificates.crt
+    rm -rf /tmp/ca-bootstrap /tmp/ca-certificates.deb
+EOF
+
 FROM $BASE_IMAGE AS build-base
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -11,35 +22,29 @@ ARG INSTALL_PREFIX=/usr/local
 ARG BUILD_JOBS=4
 
 # Keep APT inputs older than seven days; review the snapshot before advancing it.
-ARG UBUNTU_SNAPSHOT=20261016T000000Z
+ARG UBUNTU_SNAPSHOT=20261112T000000Z
 RUN <<EOF
     set -eux
-    sed -i -E "s#http://(archive|security).ubuntu.com/ubuntu/?#http://snapshot.ubuntu.com/ubuntu/${UBUNTU_SNAPSHOT}/#g" /etc/apt/sources.list.d/ubuntu.sources
+    sed -i -E "s#http://(archive|security).ubuntu.com/ubuntu/?#https://snapshot.ubuntu.com/ubuntu/${UBUNTU_SNAPSHOT}/#g" /etc/apt/sources.list.d/ubuntu.sources
     # Keep CUDA libraries at the reviewed base-image versions.
     rm -f /etc/apt/sources.list.d/cuda*.list
     # APT 3 uses OpenSSL; point it at the bootstrapped store before CA installation.
     printf 'Acquire::Check-Valid-Until "false";\nAcquire::https::CaInfo "/etc/ssl/certs/ca-certificates.crt";\n' >/etc/apt/apt.conf.d/99snapshot
 EOF
 
-# Maintainer-approved cooldown exception, 2026-10-25: USN-8944-1 CA distrust.
-# SHA-256 is from the Ubuntu resolute-security package index of 2026-10-23.
-ADD --checksum=sha256:5b6326f1932cfd7be57130561dc78192f09ed9f58bfbe6606ed0c50510c3b6cd https://snapshot.ubuntu.com/ubuntu/20261023T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.1_all.deb /tmp/ca-certificates.deb
+COPY --from=ca-bootstrap /ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 # https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 # dependencies
 RUN <<EOF
     set -eux
-    # The minimal base has no CA store; bootstrap HTTPS from the reviewed package.
-    dpkg-deb -x /tmp/ca-certificates.deb /tmp/ca-bootstrap
-    mkdir -p /etc/ssl/certs
-    cat /tmp/ca-bootstrap/usr/share/ca-certificates/mozilla/*.crt >/etc/ssl/certs/ca-certificates.crt
-    rm -rf /tmp/ca-bootstrap
-    apt-get update
+    apt-get update --error-on=any
     apt-get -y upgrade
     apt-get -y install \
         autoconf \
         automake \
         build-essential \
+        ca-certificates \
         cmake \
         git \
         libfontconfig-dev \
@@ -65,8 +70,7 @@ RUN <<EOF
         zlib1g-dev \
         meson \
         ninja-build
-    dpkg -i /tmp/ca-certificates.deb
-    rm /tmp/ca-certificates.deb
+    update-ca-certificates --fresh
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -361,15 +365,12 @@ EOF
 
 FROM $RUNTIME_IMAGE AS runtime
 ARG DEBIAN_FRONTEND=noninteractive
-ARG UBUNTU_SNAPSHOT=20261016T000000Z
 COPY --from=build-base /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources
 COPY --from=build-base /etc/apt/apt.conf.d/99snapshot /etc/apt/apt.conf.d/99snapshot
-# Bootstrap HTTPS with the same reviewed CA package as the build foundation.
-COPY --from=build-base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-ADD --checksum=sha256:5b6326f1932cfd7be57130561dc78192f09ed9f58bfbe6606ed0c50510c3b6cd https://snapshot.ubuntu.com/ubuntu/20261023T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.1_all.deb /tmp/ca-certificates.deb
+COPY --from=ca-bootstrap /ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 RUN <<EOF
     set -eux
-    apt-get update
+    apt-get update --error-on=any
     apt-get -y upgrade
     apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -399,8 +400,7 @@ RUN <<EOF
         libstdc++6 \
         openssl \
         zlib1g
-    dpkg -i /tmp/ca-certificates.deb
-    rm /tmp/ca-certificates.deb
+    update-ca-certificates --fresh
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF

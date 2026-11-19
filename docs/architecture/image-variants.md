@@ -112,18 +112,16 @@ ffmpeg-docker の変更を安定版 FFmpeg と組み合わせた継続ビルド�
 
 ## APT とセキュリティ更新
 
-対象は Ubuntu 26.04 系イメージです。確認日: 2026-10-25。
-APT は `UBUNTU_SNAPSHOT=20261016T000000Z` の署名付き snapshot に固定し、
-base のパッケージも `apt-get upgrade` で更新します。
-過去 snapshot の Release 有効期限だけを無効化し、署名検証は維持します。
-CUDA の追加 APT repository は無効化し、同梱 CUDA libraries は固定 base の版を維持します。
+ビルドとランタイムの APT は、同じ Ubuntu 26.04 スナップショットを HTTPS で使います。
+過去のスナップショットに対する Release の有効期限チェックのみ無効にし、
+TLS 証明書とアーカイブ署名は引き続き検証します。
+インデックスの取得に失敗した場合はビルドを中止します。
+CUDA の追加 APT リポジトリは無効にし、同梱の CUDA ライブラリはベースイメージの版を維持します。
 
-`ca-certificates` の `20260816ubuntu0.26.04.1` は cooldown 例外の対象です。
-承認日と理由は [CHANGELOG](../../CHANGELOG.md) に記録します。
-単一 `.deb` を SHA-256 検証付きで取得し、他の新しい APT パッケージを取り込みません。
-CA store を持たない最小 base では、この package の証明書で HTTPS を bootstrap します。
-Ubuntu 26.04 の APT 3 は OpenSSL を使用するため、`Acquire::https::CaInfo` で bootstrap store のパスを明示します。
-HTTPS の証明書検証と archive 署名検証はともに維持します。
+最初の APT 取得に使う CA バンドルは、署名付きインデックスと照合した Ubuntu の
+`ca-certificates` パッケージから展開します。初回取得後は、両ステージとも APT で
+`ca-certificates` をインストールし、インストール済み証明書から信頼ストアを生成します。
+初回取得用のパッケージでインストール済みの版を上書きすることはありません。
 
 libvpx、libaom、libass は Dockerfile の commit SHA を固定してソースビルドします。
 Ninja と Meson も同じ APT snapshot から取得し、別の pip dependency 解決を行いません。

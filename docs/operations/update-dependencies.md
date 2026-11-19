@@ -57,7 +57,9 @@ runtime test は FFmpeg と付属 CLI の共有ライブラリ解決、開発ツ
 ライブラリ単体の開発用ビルドには `docker build --target vpx .` のようにステージを指定します。
 全ライブラリを利用する場合は `--target ffmpeg-build` を使います。
 `BASE_IMAGE` と `RUNTIME_IMAGE` は Ubuntu 26.04 の ABI と architecture を揃えて更新してください。
-共通の `UBUNTU_SNAPSHOT` と例外 CA package はビルド・実行の両ステージへ反映します。
+APT スナップショットを更新するときは、署名付きインデックスで初回 HTTPS 取得用の
+CA パッケージの SHA-256 も確認します。キャッシュなしで初回の APT 取得を確認し、
+ビルド・ランタイムの両ステージで `apt` と `ca-certificates` の最終版を照合します。
 キャッシュ検証は通常ビルド後に `--build-arg LIBVPX_VERSION=<reviewed-commit>` など単独の入力を変え、
 兄弟ライブラリが cache hit することを plain progress log で確認します。
 新しい入力を実行する前に同じ provenance / cooldown レビューを行ってください。

@@ -8,6 +8,11 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+### Security
+
+- Ubuntu スナップショットを更新し、[USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1) の APT 修正版を採用。
+  初回から HTTPS を使い、CA バンドルの初期化と APT による CA パッケージのインストールを分離。
+
 ## [v0.10.0] - 2026-10-25 UTC
 
 ### Changed

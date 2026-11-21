@@ -4,7 +4,7 @@ ARG RUNTIME_IMAGE=ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a3
 FROM $RUNTIME_IMAGE AS ca-bootstrap
 
 # Verify the bootstrap package against the signed resolute-security index.
-ADD --checksum=sha256:a7e3bf769aec16ba21ca39cba180d6d311dafcbae68346a05f137c5cc26c9ca6 https://snapshot.ubuntu.com/ubuntu/20261112T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.2_all.deb /tmp/ca-certificates.deb
+ADD --checksum=sha256:a7e3bf769aec16ba21ca39cba180d6d311dafcbae68346a05f137c5cc26c9ca6 https://snapshot.ubuntu.com/ubuntu/20261114T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.2_all.deb /tmp/ca-certificates.deb
 RUN <<EOF
     set -eux
     dpkg-deb -x /tmp/ca-certificates.deb /tmp/ca-bootstrap
@@ -22,7 +22,7 @@ ARG INSTALL_PREFIX=/usr/local
 ARG BUILD_JOBS=4
 
 # Keep APT inputs older than seven days; review the snapshot before advancing it.
-ARG UBUNTU_SNAPSHOT=20261112T000000Z
+ARG UBUNTU_SNAPSHOT=20261114T000000Z
 RUN <<EOF
     set -eux
     sed -i -E "s#http://(archive|security).ubuntu.com/ubuntu/?#https://snapshot.ubuntu.com/ubuntu/${UBUNTU_SNAPSHOT}/#g" /etc/apt/sources.list.d/ubuntu.sources
@@ -77,12 +77,14 @@ EOF
 FROM build-base AS nasm
 # nasm
 # https://www.nasm.us/
-ARG NASM_VERSION=2.16.03
+ARG NASM_VERSION=3.02
+ARG NASM_SHA256=ce7ed93281615379e4a9d4e76503c64a79c1d5ca696dbe148f16cf0b93e239af
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/nasm
     cd ${SOURCE_PREFIX}/
     wget -O nasm.tar.bz2 https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.bz2
+    printf '%s  %s\n' "${NASM_SHA256}" nasm.tar.bz2 | sha256sum --check
     tar xjvf ./nasm.tar.bz2 -C ./nasm --strip-components 1
     rm ./nasm.tar.bz2
 
@@ -117,8 +119,8 @@ EOF
 FROM library-base AS vpx
 # libvpx
 # https://chromium.googlesource.com/webm/libvpx.git
+# Git Tag: v1.17.0
 ARG LIBVPX_VERSION=6df3ec34557879fff673706f4a1d9fbd0f3a6f0e
-# libvpx v1.17.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libvpx
@@ -139,11 +141,13 @@ FROM library-base AS lame
 # libmp3lame
 # https://sourceforge.net/projects/lame/files/
 ARG LAME_VERSION=3.100
+ARG LAME_SHA256=ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libmp3lame
     cd ${SOURCE_PREFIX}/
     wget -O ./lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
+    printf '%s  %s\n' "${LAME_SHA256}" lame.tar.gz | sha256sum --check
     tar xzvf ./lame.tar.gz -C ./libmp3lame --strip-components 1
     rm ./lame.tar.gz
 
@@ -157,14 +161,20 @@ EOF
 
 FROM library-base AS opus
 # libopus
-# https://github.com/xiph/opus.git
-ARG OPUS_VERSION=v1.4
+# https://opus-codec.org/
+ARG OPUS_VERSION=1.6.1
+ARG OPUS_SHA256=6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libopus
-    cd ${SOURCE_PREFIX}/libopus
-    git clone --depth 1 --branch ${OPUS_VERSION} https://github.com/xiph/opus.git ./
-    ./autogen.sh
+    cd ${SOURCE_PREFIX}/
+    version="${OPUS_VERSION#v}"
+    wget -O opus.tar.gz https://downloads.xiph.org/releases/opus/opus-${version}.tar.gz
+    printf '%s  %s\n' "${OPUS_SHA256}" opus.tar.gz | sha256sum --check
+    tar xzvf ./opus.tar.gz -C ./libopus --strip-components 1
+    rm ./opus.tar.gz
+
+    cd ./libopus
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
     make -j"${BUILD_JOBS}"
     make DESTDIR=/out install
@@ -175,8 +185,8 @@ EOF
 FROM library-base AS aom
 # libaom
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=de4c1d1edc49723a78954d30a83690aa1937422f
-# libaom v3.15.0
+# Git Tag: v3.15.3
+ARG AOM_VERSION=b141d9c45db236335351c8a4b2a14b3ade27c937
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libaom
@@ -198,12 +208,16 @@ EOF
 FROM library-base AS svtav1
 # libsvtav1
 # https://gitlab.com/AOMediaCodec/SVT-AV1
-ARG SVTAV1_VERSION=v2.1.0
+# Git Tag: v4.3.0
+ARG SVTAV1_VERSION=e3d63405f9ba8219913a7276c2c47d10e5d022fe
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/SVT-AV1
     cd ${SOURCE_PREFIX}/SVT-AV1
-    git clone --depth 1 --branch ${SVTAV1_VERSION} https://gitlab.com/AOMediaCodec/SVT-AV1.git ./
+    git init
+    git remote add origin https://gitlab.com/AOMediaCodec/SVT-AV1.git
+    git fetch --depth 1 origin "${SVTAV1_VERSION}"
+    git checkout --detach FETCH_HEAD
     mkdir build
     cd build
     # Bundled cpuinfo predates CMake 4; use its supported minimum policy level.
@@ -216,6 +230,7 @@ EOF
 
 FROM library-base AS ass
 # libass 0.17.5 fixes GHSA-pjjp-65r7-ppgm and GHSA-5gf7-wjfm-vmvm.
+# Git Tag: 0.17.5
 ARG LIBASS_VERSION=4a05d8127f525943ebf45fdc6497c9e665947f0d
 RUN <<EOF
     set -eux
@@ -236,12 +251,16 @@ EOF
 FROM library-base AS dav1d
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
-ARG DAV1D_VERSION=1.4.2
+# Git Tag: 1.5.4
+ARG DAV1D_VERSION=54706fc6bc0cdecab7e9593974a4039cc038fca7
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/dav1d
     cd ${SOURCE_PREFIX}/dav1d
-    git clone --depth 1 --branch ${DAV1D_VERSION} https://code.videolan.org/videolan/dav1d.git ./
+    git init
+    git remote add origin https://code.videolan.org/videolan/dav1d.git
+    git fetch --depth 1 origin "${DAV1D_VERSION}"
+    git checkout --detach FETCH_HEAD
     mkdir build
     cd build
     meson setup -Denable_tools=false -Denable_tests=false --default-library=static --prefix="${INSTALL_PREFIX}" --libdir="${INSTALL_PREFIX}/lib" ../
@@ -254,12 +273,16 @@ EOF
 FROM library-base AS vmaf
 # libvmaf
 # https://github.com/Netflix/vmaf
-ARG VMAF_VERSION=v3.0.0
+# Git Tag: v3.2.1
+ARG VMAF_VERSION=f85a853692a8c730d0270cd733c8bb30b5b93b7c
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/vmaf
     cd ${SOURCE_PREFIX}/vmaf
-    git clone --depth 1 --branch ${VMAF_VERSION} https://github.com/Netflix/vmaf.git ./
+    git init
+    git remote add origin https://github.com/Netflix/vmaf.git
+    git fetch --depth 1 origin "${VMAF_VERSION}"
+    git checkout --detach FETCH_HEAD
     cd libvmaf
     mkdir build
     cd build
@@ -274,7 +297,8 @@ FROM build-base AS nvcodec
 # NVIDIA video codec
 # https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git
 ARG ENABLE_NVCODEC=0
-ARG NVCODEC_HEADER_VERSION=n12.2.72.0
+# Git Tag: n13.1.15.0
+ARG NVCODEC_HEADER_VERSION=0a6fba9a2820628b8103464f4c8753ee05838baa
 RUN <<EOF
     set -eux
 
@@ -283,7 +307,10 @@ RUN <<EOF
         # Install ffnvcodec
         mkdir -p "${SOURCE_PREFIX}/nv-codec-headers"
         cd "${SOURCE_PREFIX}/nv-codec-headers"
-        git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://github.com/FFmpeg/nv-codec-headers.git ./
+        git init
+        git remote add origin https://github.com/FFmpeg/nv-codec-headers.git
+        git fetch --depth 1 origin "${NVCODEC_HEADER_VERSION}"
+        git checkout --detach FETCH_HEAD
 
         make DESTDIR=/out install
         # Upstream embeds its MIT notices in each header rather than a COPYING file.

@@ -110,6 +110,23 @@ workflow matrix はバリアントごとに1つの FFmpeg 安定版の完全 com
 このため `edge` は FFmpeg `master` の意味ではなく、次のリリースに入る
 ffmpeg-docker の変更を安定版 FFmpeg と組み合わせた継続ビルドです。
 
+## Dockerfile の依存入力
+
+依存関係ごとに公式の配布形式が異なります。ビルドや版の識別に必要な情報を保持できる
+形式を選び、入力を次のように固定します。
+
+- **Git**: libaom は公式リリースに対応する完全なコミット SHA を `AOM_VERSION` に指定し、
+  `git fetch --depth 1 origin "${AOM_VERSION}"` で取得します。対応するタグは `# Git Tag: v3.15.3` のように示します。
+- **公式配布アーカイブ**: Opus は版情報を含むリリースアーカイブを `OPUS_VERSION` で指定します。
+  配布元や信頼できるパッケージ情報で確認した SHA-256 を `OPUS_SHA256` に指定し、
+  `sha256sum --check` で展開前に照合します。NASM と LAME も同じ方式です。
+- **APT**: `UBUNTU_SNAPSHOT` で [署名付き Ubuntu スナップショット](#apt-とセキュリティ更新)の時点を固定します。
+- **ベースイメージ**: `ubuntu:26.04@sha256:<digest>` のように、タグを添えて digest で固定します。
+
+Dockerfile はイメージの構築と、ハッシュや署名による取得物の検証を担います。
+最終イメージのパッケージ版、信頼ストア、実行時の挙動はビルド後のテストで確認します。
+入力の出所確認と更新手順は [依存関係更新](../operations/update-dependencies.md) を参照してください。
+
 ## APT とセキュリティ更新
 
 ビルドとランタイムの APT は、同じ Ubuntu 26.04 スナップショットを HTTPS で使います。
@@ -122,10 +139,6 @@ CUDA の追加 APT リポジトリは無効にし、同梱の CUDA ライブラ�
 `ca-certificates` をインストールし、インストール済み証明書から信頼ストアを生成します。
 初回取得用のパッケージでインストール済みの版を上書きすることはありません。
 
-Dockerfile はイメージの構築と、取得物のチェックサムや署名の検証を担います。
-最終イメージに入った APT や CA のバージョン、信頼ストアの内容は、ビルド後のテストで確認します。
-
-libvpx、libaom、libass は Dockerfile の commit SHA を固定してソースビルドします。
 Ninja と Meson も同じ APT snapshot から取得し、別の pip dependency 解決を行いません。
 snapshot より新しいセキュリティ更新は、対象パッケージと Ubuntu revision を更新ごとに照合します。
 最終 image は実行用 package を明示的にインストールし、Ubuntu package の copyright 情報も保持します。

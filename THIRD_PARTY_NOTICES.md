@@ -33,9 +33,9 @@ under `/usr/local/share/licenses/ffmpeg/`.
 
 ### libaom
 
-- Version: 3.15.0
+- Version: 3.15.3
 - License: BSD-2-Clause and patent grant,
-  <https://aomedia.googlesource.com/aom/+/refs/tags/v3.15.0/LICENSE>.
+  <https://aomedia.googlesource.com/aom/+/refs/tags/v3.15.3/LICENSE>.
 - Bundled location: statically linked into FFmpeg; `LICENSE` and `PATENTS` are retained in
   `/usr/local/share/licenses/libaom/`.
 
@@ -63,7 +63,7 @@ under `/usr/local/share/licenses/ffmpeg/`.
 
 ### Opus
 
-- Source: <https://github.com/xiph/opus>
+- Source: <https://opus-codec.org/>
 - License: BSD-3-Clause
 - Bundled location: statically linked into FFmpeg.
 - Notice: `/usr/local/share/licenses/opus/COPYING`

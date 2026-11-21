@@ -116,9 +116,10 @@ ffmpeg-docker の変更を安定版 FFmpeg と組み合わせた継続ビルド�
 形式を選び、入力を次のように固定します。
 
 - **Git**: libaom は公式リリースに対応する完全なコミット SHA を `AOM_VERSION` に指定し、
-  リリース名はコメントで示します。
+  `git fetch --depth 1 origin "${AOM_VERSION}"` で取得します。リリース名はコメントで示します。
 - **公式配布アーカイブ**: Opus は版情報を含むリリースアーカイブを `OPUS_VERSION` で指定します。
-  NASM と LAME も同じ方式で、配布元や信頼できるパッケージ情報と照合した SHA-256 を展開前に検証します。
+  配布元や信頼できるパッケージ情報で確認した SHA-256 を `OPUS_SHA256` に指定し、
+  `sha256sum --check` で展開前に照合します。NASM と LAME も同じ方式です。
 - **APT**: `UBUNTU_SNAPSHOT` で [署名付き Ubuntu スナップショット](#apt-とセキュリティ更新)の時点を固定します。
 - **ベースイメージ**: `ubuntu:26.04@sha256:<digest>` のように、タグを添えて digest で固定します。
 

@@ -18,6 +18,7 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 ### Changed
 
 - NASM、Opus、libaom、SVT-AV1、dav1d、VMAF を更新。
+- NVIDIA 版の nv-codec-headers を 13.1.15.0 に更新。ホストの最低ドライバー要件は Linux / Windows ともに 610.0。
 
 ## [v0.10.0] - 2026-10-25 UTC
 

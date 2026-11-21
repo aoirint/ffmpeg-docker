@@ -24,7 +24,8 @@ FFmpeg は GNU General Public License version 3 or later で提供されます�
 compiler、Git、開発用 header、静的 library は含めません。
 追加コンパイルが必要な場合は `docker build --target ffmpeg-build` で開発用ステージを利用できます。
 NVIDIA 版も Ubuntu の実行用イメージを使い、CUDA / cuDNN の開発環境は含めません。
-GPU の利用にはホスト側の NVIDIA Container Toolkit と対応 driver が必要です。
+GPU の利用にはホスト側の NVIDIA Container Toolkit が必要です。
+このソースでビルドした NVIDIA 版では、Linux / Windows ともに NVIDIA ドライバー 610.0 以降が必要です。
 CUDA decode には `--gpus 'all,"capabilities=compute,video"'` を指定します。
 Ubuntu 26.04 では旧 Mesa VDPAU backend の同梱を終了します。VA-API と NVIDIA NVENC / NVDEC の構成は保持します。
 旧 VDPAU 利用時の移行と backend の範囲は [ハードウェア decode](docs/architecture/image-variants.md#ハードウェア-decode-の範囲)を参照してください。

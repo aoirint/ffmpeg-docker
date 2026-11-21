@@ -161,18 +161,20 @@ EOF
 
 FROM library-base AS opus
 # libopus
-# https://github.com/xiph/opus.git
-# v1.6.1
-ARG OPUS_VERSION=22244de5a79bd1d6d623c32e72bf1954b56235be
+# https://opus-codec.org/
+ARG OPUS_VERSION=1.6.1
+ARG OPUS_SHA256=6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libopus
-    cd ${SOURCE_PREFIX}/libopus
-    git init
-    git remote add origin https://github.com/xiph/opus.git
-    git fetch --depth 1 origin "${OPUS_VERSION}"
-    git checkout --detach FETCH_HEAD
-    ./autogen.sh
+    cd ${SOURCE_PREFIX}/
+    version="${OPUS_VERSION#v}"
+    wget -O opus.tar.gz https://downloads.xiph.org/releases/opus/opus-${version}.tar.gz
+    printf '%s  %s\n' "${OPUS_SHA256}" opus.tar.gz | sha256sum --check
+    tar xzvf ./opus.tar.gz -C ./libopus --strip-components 1
+    rm ./opus.tar.gz
+
+    cd ./libopus
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
     make -j"${BUILD_JOBS}"
     make DESTDIR=/out install

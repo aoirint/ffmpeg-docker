@@ -63,7 +63,7 @@ under `/usr/local/share/licenses/ffmpeg/`.
 
 ### Opus
 
-- Source: <https://github.com/xiph/opus>
+- Source: <https://opus-codec.org/>
 - License: BSD-3-Clause
 - Bundled location: statically linked into FFmpeg.
 - Notice: `/usr/local/share/licenses/opus/COPYING`

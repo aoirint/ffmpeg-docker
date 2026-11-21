@@ -78,11 +78,13 @@ FROM build-base AS nasm
 # nasm
 # https://www.nasm.us/
 ARG NASM_VERSION=3.02
+ARG NASM_SHA256=ce7ed93281615379e4a9d4e76503c64a79c1d5ca696dbe148f16cf0b93e239af
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/nasm
     cd ${SOURCE_PREFIX}/
     wget -O nasm.tar.bz2 https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.bz2
+    printf '%s  %s\n' "${NASM_SHA256}" nasm.tar.bz2 | sha256sum --check
     tar xjvf ./nasm.tar.bz2 -C ./nasm --strip-components 1
     rm ./nasm.tar.bz2
 
@@ -139,11 +141,13 @@ FROM library-base AS lame
 # libmp3lame
 # https://sourceforge.net/projects/lame/files/
 ARG LAME_VERSION=3.100
+ARG LAME_SHA256=ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libmp3lame
     cd ${SOURCE_PREFIX}/
     wget -O ./lame.tar.gz https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz
+    printf '%s  %s\n' "${LAME_SHA256}" lame.tar.gz | sha256sum --check
     tar xzvf ./lame.tar.gz -C ./libmp3lame --strip-components 1
     rm ./lame.tar.gz
 
@@ -158,12 +162,16 @@ EOF
 FROM library-base AS opus
 # libopus
 # https://github.com/xiph/opus.git
-ARG OPUS_VERSION=v1.6.1
+# v1.6.1
+ARG OPUS_VERSION=22244de5a79bd1d6d623c32e72bf1954b56235be
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libopus
     cd ${SOURCE_PREFIX}/libopus
-    git clone --depth 1 --branch ${OPUS_VERSION} https://github.com/xiph/opus.git ./
+    git init
+    git remote add origin https://github.com/xiph/opus.git
+    git fetch --depth 1 origin "${OPUS_VERSION}"
+    git checkout --detach FETCH_HEAD
     ./autogen.sh
     ./configure --prefix="${INSTALL_PREFIX}" --disable-shared
     make -j"${BUILD_JOBS}"
@@ -198,12 +206,16 @@ EOF
 FROM library-base AS svtav1
 # libsvtav1
 # https://gitlab.com/AOMediaCodec/SVT-AV1
-ARG SVTAV1_VERSION=v4.3.0
+# v4.3.0
+ARG SVTAV1_VERSION=e3d63405f9ba8219913a7276c2c47d10e5d022fe
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/SVT-AV1
     cd ${SOURCE_PREFIX}/SVT-AV1
-    git clone --depth 1 --branch ${SVTAV1_VERSION} https://gitlab.com/AOMediaCodec/SVT-AV1.git ./
+    git init
+    git remote add origin https://gitlab.com/AOMediaCodec/SVT-AV1.git
+    git fetch --depth 1 origin "${SVTAV1_VERSION}"
+    git checkout --detach FETCH_HEAD
     mkdir build
     cd build
     # Bundled cpuinfo predates CMake 4; use its supported minimum policy level.
@@ -236,12 +248,16 @@ EOF
 FROM library-base AS dav1d
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
-ARG DAV1D_VERSION=1.5.4
+# 1.5.4
+ARG DAV1D_VERSION=54706fc6bc0cdecab7e9593974a4039cc038fca7
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/dav1d
     cd ${SOURCE_PREFIX}/dav1d
-    git clone --depth 1 --branch ${DAV1D_VERSION} https://code.videolan.org/videolan/dav1d.git ./
+    git init
+    git remote add origin https://code.videolan.org/videolan/dav1d.git
+    git fetch --depth 1 origin "${DAV1D_VERSION}"
+    git checkout --detach FETCH_HEAD
     mkdir build
     cd build
     meson setup -Denable_tools=false -Denable_tests=false --default-library=static --prefix="${INSTALL_PREFIX}" --libdir="${INSTALL_PREFIX}/lib" ../
@@ -254,12 +270,16 @@ EOF
 FROM library-base AS vmaf
 # libvmaf
 # https://github.com/Netflix/vmaf
-ARG VMAF_VERSION=v3.2.1
+# v3.2.1
+ARG VMAF_VERSION=f85a853692a8c730d0270cd733c8bb30b5b93b7c
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/vmaf
     cd ${SOURCE_PREFIX}/vmaf
-    git clone --depth 1 --branch ${VMAF_VERSION} https://github.com/Netflix/vmaf.git ./
+    git init
+    git remote add origin https://github.com/Netflix/vmaf.git
+    git fetch --depth 1 origin "${VMAF_VERSION}"
+    git checkout --detach FETCH_HEAD
     cd libvmaf
     mkdir build
     cd build
@@ -274,7 +294,8 @@ FROM build-base AS nvcodec
 # NVIDIA video codec
 # https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git
 ARG ENABLE_NVCODEC=0
-ARG NVCODEC_HEADER_VERSION=n13.1.15.0
+# n13.1.15.0
+ARG NVCODEC_HEADER_VERSION=0a6fba9a2820628b8103464f4c8753ee05838baa
 RUN <<EOF
     set -eux
 
@@ -283,7 +304,10 @@ RUN <<EOF
         # Install ffnvcodec
         mkdir -p "${SOURCE_PREFIX}/nv-codec-headers"
         cd "${SOURCE_PREFIX}/nv-codec-headers"
-        git clone --depth 1 --branch "${NVCODEC_HEADER_VERSION}" https://github.com/FFmpeg/nv-codec-headers.git ./
+        git init
+        git remote add origin https://github.com/FFmpeg/nv-codec-headers.git
+        git fetch --depth 1 origin "${NVCODEC_HEADER_VERSION}"
+        git checkout --detach FETCH_HEAD
 
         make DESTDIR=/out install
         # Upstream embeds its MIT notices in each header rather than a COPYING file.

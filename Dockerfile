@@ -119,7 +119,7 @@ EOF
 FROM library-base AS vpx
 # libvpx
 # https://chromium.googlesource.com/webm/libvpx.git
-# v1.17.0
+# Git Tag: v1.17.0
 ARG LIBVPX_VERSION=6df3ec34557879fff673706f4a1d9fbd0f3a6f0e
 RUN <<EOF
     set -eux
@@ -185,7 +185,7 @@ EOF
 FROM library-base AS aom
 # libaom
 # https://aomedia.googlesource.com/aom.git
-# v3.15.3
+# Git Tag: v3.15.3
 ARG AOM_VERSION=b141d9c45db236335351c8a4b2a14b3ade27c937
 RUN <<EOF
     set -eux
@@ -208,7 +208,7 @@ EOF
 FROM library-base AS svtav1
 # libsvtav1
 # https://gitlab.com/AOMediaCodec/SVT-AV1
-# v4.3.0
+# Git Tag: v4.3.0
 ARG SVTAV1_VERSION=e3d63405f9ba8219913a7276c2c47d10e5d022fe
 RUN <<EOF
     set -eux
@@ -230,6 +230,7 @@ EOF
 
 FROM library-base AS ass
 # libass 0.17.5 fixes GHSA-pjjp-65r7-ppgm and GHSA-5gf7-wjfm-vmvm.
+# Git Tag: 0.17.5
 ARG LIBASS_VERSION=4a05d8127f525943ebf45fdc6497c9e665947f0d
 RUN <<EOF
     set -eux
@@ -250,7 +251,7 @@ EOF
 FROM library-base AS dav1d
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
-# 1.5.4
+# Git Tag: 1.5.4
 ARG DAV1D_VERSION=54706fc6bc0cdecab7e9593974a4039cc038fca7
 RUN <<EOF
     set -eux
@@ -272,7 +273,7 @@ EOF
 FROM library-base AS vmaf
 # libvmaf
 # https://github.com/Netflix/vmaf
-# v3.2.1
+# Git Tag: v3.2.1
 ARG VMAF_VERSION=f85a853692a8c730d0270cd733c8bb30b5b93b7c
 RUN <<EOF
     set -eux
@@ -296,7 +297,7 @@ FROM build-base AS nvcodec
 # NVIDIA video codec
 # https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git
 ARG ENABLE_NVCODEC=0
-# n13.1.15.0
+# Git Tag: n13.1.15.0
 ARG NVCODEC_HEADER_VERSION=0a6fba9a2820628b8103464f4c8753ee05838baa
 RUN <<EOF
     set -eux

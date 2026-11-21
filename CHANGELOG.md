@@ -10,20 +10,22 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ### Security
 
-- ビルド時のパッケージ取得に、[USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1) の APT 修正版を採用。
-  初回から HTTPS を使用し、初回接続用の CA バンドルと APT がインストールする CA パッケージを分離。
-- 実行用イメージに、[USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1) の glibc 修正版を採用。
+- 実行用イメージに glibc のセキュリティ修正
+  （[USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1)）を取り込みました。
+- イメージのビルドでは、パッケージ取得に APT の修正版
+  （[USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1)）を使います。
+  取得には初回から HTTPS を使い、その接続用の CA バンドルは APT がインストールする CA パッケージと分けています。
 
 ### Changed
 
-- ビルド時に使う NASM を更新。
-- 実行時に使う Opus、libaom、SVT-AV1、dav1d、VMAF を更新。
-- NVIDIA 版のビルドに使う nv-codec-headers を 13.1.15.0 に更新。
+- コーデック処理や画質評価に使う Opus、libaom、SVT-AV1、dav1d、VMAF を更新しました。
+- ビルド用の NASM と、NVIDIA 版のビルド用ヘッダー（nv-codec-headers 13.1.15.0）を更新しました。
 
 ### Notes
 
-- NVIDIA 版で NVENC を使う場合、ホストの最低ドライバーバージョンが Linux では 550.54.14 から、
-  Windows では 551.76 から、いずれも 610.0 に上がります。610.0 未満では NVENC を利用できません。
+- NVIDIA 版で NVENC を使う方は、イメージの更新前にホストのドライバーを確認してください。
+  最低バージョンは Linux では 550.54.14、Windows では 551.76 でしたが、更新後はどちらも 610.0 が必要です。
+  610.0 未満の場合は、先にドライバーを更新してください。
 
 ## [v0.10.0] - 2026-10-25 UTC
 

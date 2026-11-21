@@ -11,14 +11,16 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 ### Security
 
 - 依存関係の更新に合わせ、Ubuntu のスナップショットを 2026-11-14 UTC 時点に更新。
-  glibc ([USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1)) のセキュリティ修正を取り込み。
+  実行用イメージには glibc ([USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1)) のセキュリティ修正を取り込み。
   APT ([USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1)) の修正も引き続き含まれます。
-- APT の初回アクセスから HTTPS を使用。初回接続用の CA バンドルと、APT がインストールする CA パッケージを分離。
+- ビルド時の APT パッケージ取得では、初回から HTTPS を使用。
+  初回接続用の CA バンドルと、APT がインストールする CA パッケージを分離。
 
 ### Changed
 
-- NASM、Opus、libaom、SVT-AV1、dav1d、VMAF を更新。
-- NVIDIA 版の nv-codec-headers を 13.1.15.0 に更新。
+- ビルド時に使う NASM を更新。
+- 実行時に使う Opus、libaom、SVT-AV1、dav1d、VMAF を更新。
+- NVIDIA 版のビルドに使う nv-codec-headers を 13.1.15.0 に更新。
 
 ### Notes
 

@@ -30,6 +30,7 @@ docker run --rm --mount "type=bind,source=${PWD},target=/work" -w /work \
 ## NVIDIA GPU を使う
 
 Linux ホストでは NVIDIA Container Toolkit を設定します。
+Windows では、[Docker Desktop の WSL 2 バックエンドで GPU を使う手順](https://docs.docker.com/desktop/features/gpu/)を参照してください。
 NVENC を使う前に、[README のドライバー要件](../README.md#docker-で実行する)を確認してください。
 
 CUDA でデコードし、NVENC で H.264 にエンコードする例です。

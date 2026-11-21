@@ -10,6 +10,8 @@ FFmpeg を Docker で実行するためのイメージです。FFmpeg、ffprobe�
 | NVIDIA GPU でハードウェアエンコードやデコードを使う | `aoirint/ffmpeg:nvidia` |
 | [RTMP のパス制限（rtmp_strict_paths）](docs/domain/ffmpeg-sources.md#rtmp_strict_paths)を使う | `aoirint/ffmpeg:ubuntu-aoirint` |
 
+公開イメージのプラットフォームは `linux/amd64` です。
+
 ## Docker で実行する
 
 通常版で FFmpeg のバージョンを表示します。

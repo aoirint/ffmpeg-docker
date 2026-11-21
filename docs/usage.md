@@ -5,7 +5,8 @@
 ## タグ
 
 以下は [Docker Hub の `aoirint/ffmpeg`](https://hub.docker.com/r/aoirint/ffmpeg) のタグです。
-安定版タグはプレリリースを指さず、edge タグは `main` のビルドを指します。
+GHCR の ghcr.io/aoirint/ffmpeg でも同じタグを使えます。
+安定版タグはプレリリースを指さず、edge タグは main のビルドを指します。
 
 | バリアント | 最新の安定版 | バージョン指定 | edge |
 | --- | --- | --- | --- |

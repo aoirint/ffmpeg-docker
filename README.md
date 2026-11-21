@@ -8,7 +8,7 @@ FFmpeg を Docker で実行するためのイメージです。FFmpeg、ffprobe�
 | --- | --- |
 | 通常はこちら | `aoirint/ffmpeg:ubuntu` |
 | NVIDIA GPU でハードウェアエンコードやデコードを使う | `aoirint/ffmpeg:nvidia` |
-| [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg) の変更を使う | `aoirint/ffmpeg:ubuntu-aoirint` |
+| [RTMP のパス制限（rtmp_strict_paths）](docs/domain/ffmpeg-sources.md#rtmp_strict_paths)を使う | `aoirint/ffmpeg:ubuntu-aoirint` |
 
 ## Docker で実行する
 

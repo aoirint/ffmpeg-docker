@@ -29,6 +29,19 @@ GitHub Release の手動作成、タグの push、workflow dispatch はリリー
 6. stable releaseではversion・variant・`latest` aliases、prereleaseでは既存の
    latest系tagが変わっていないことを確認します。
 
+## 変更履歴とリリースノート
+
+[CHANGELOG](../../CHANGELOG.md) を変更履歴の正本とします。公開イメージで FFmpeg を使う人に向けて、
+更新内容と互換性が分かるよう、変更や修正を一項目ずつ記載します。
+
+- `Security`: 修正を個別に挙げ、対応する上流の告知へリンクします。
+  例: glibc のセキュリティ修正（[USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1)）を取り込みました。
+- `Changed`: 依存関係は「Opus v1.6.1 に更新しました。」のように更新先の版を示します。
+  Ubuntu スナップショットを記載する場合は `20261114T000000Z` のような識別子を使います。
+  細かな間接依存の定例更新まで列挙する必要はありません。
+- `Notes`: 「NVIDIA 版で NVENC を使うための最低ドライバー要件を、Linux・Windows ともに 610.0 に変更しました。」
+  のように互換性の変更を示します。理由や、前のリリースでの OS ごとの要件は、必要ならその下に補足します。
+
 ## 認証と権限
 
 | 種類 | 名前 | 用途 |

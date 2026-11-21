@@ -58,11 +58,13 @@ runtime test は FFmpeg と付属 CLI の共有ライブラリ解決、開発ツ
 全ライブラリを利用する場合は `--target ffmpeg-build` を使います。
 `BASE_IMAGE` と `RUNTIME_IMAGE` は Ubuntu 26.04 の ABI と architecture を揃えて更新してください。
 APT スナップショットを更新するときは、署名付きインデックスで初回 HTTPS 取得用の
-CA パッケージの SHA-256 も確認します。キャッシュなしで初回の APT 取得を確認し、
-ビルド・ランタイムの両ステージで `apt` と `ca-certificates` の最終版を照合します。
+CA パッケージの SHA-256 も確認します。キャッシュなしで初回の APT 取得を確認します。
+両ステージのイメージをビルドした後、 `apt` と `ca-certificates` の版を照合します。
 キャッシュ検証は通常ビルド後に `--build-arg LIBVPX_VERSION=<reviewed-commit>` など単独の入力を変え、
 兄弟ライブラリが cache hit することを plain progress log で確認します。
 新しい入力を実行する前に同じ provenance / cooldown レビューを行ってください。
+取得方法ごとの固定方針は [Dockerfile の依存入力](../architecture/image-variants.md#dockerfile-の依存入力) を
+参照してください。NASM、LAME、Opus の版を上書きする場合は、対応する `*_SHA256` も指定してください。
 最終 image のサイズは `docker image inspect --format '{{.Size}}' IMAGE` で旧版と比較します。
 GPU がなければ実行済みと記録しません。`ffmpeg -L`、同梱 license、`ldd`、APT package 一覧を
 最終 image から確認し、source package と静的 library を APT scanner だけで検証しません。

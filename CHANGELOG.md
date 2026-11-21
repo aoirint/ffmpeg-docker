@@ -10,14 +10,19 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ### Security
 
-- Ubuntu のスナップショットを 2026-11-14 UTC 時点に更新。APT と glibc のセキュリティ修正を取り込み
-  ([USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1)、[USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1))。
+- APT ([USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1)) と
+  glibc ([USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1)) のセキュリティ修正を取り込むため、
+  Ubuntu のスナップショットを 2026-11-14 UTC 時点に更新。
 - APT の初回アクセスから HTTPS を使用。初回接続用の CA バンドルと、APT がインストールする CA パッケージを分離。
 
 ### Changed
 
 - NASM、Opus、libaom、SVT-AV1、dav1d、VMAF を更新。
-- NVIDIA 版の nv-codec-headers を 13.1.15.0 に更新。Linux / Windows ともにホストの NVIDIA ドライバー 610.0 以降が必要。
+- NVIDIA 版の nv-codec-headers を 13.1.15.0 に更新。
+
+### Notes
+
+- NVIDIA 版で NVENC を利用するには、Linux / Windows ともにホストの NVIDIA ドライバー 610.0 以降が必要。
 
 ## [v0.10.0] - 2026-10-25 UTC
 

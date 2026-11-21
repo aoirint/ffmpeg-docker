@@ -1,109 +1,44 @@
 # ffmpeg-docker
 
-最新のFFmpegを使うためのDockerイメージ
+FFmpeg を Docker で実行するためのイメージです。FFmpeg、ffprobe、ffplay を収録しています。
 
-- <https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu>
+## イメージを選ぶ
 
-依存関係の固定と隔離検証は [依存関係更新](docs/operations/update-dependencies.md)を参照してください。
+| 用途 | Docker Hub イメージ |
+| --- | --- |
+| 通常はこちら | `aoirint/ffmpeg:ubuntu` |
+| NVIDIA GPU でハードウェアエンコードやデコードを使う | `aoirint/ffmpeg:nvidia` |
+| [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg) の変更を使う | `aoirint/ffmpeg:ubuntu-aoirint` |
 
-設計、FFmpeg fork との連動、更新・公開手順は
-[開発者向け文書](docs/README.md)を参照してください。
-変更履歴は [CHANGELOG](CHANGELOG.md)を参照してください。
+## Docker で実行する
 
-## 配布する第三者ソフトウェア
+通常版で FFmpeg のバージョンを表示します。
 
-Docker イメージは、`Dockerfile` の `FFMPEG_VERSION` と main workflow の
-`ffmpeg_version` で指定した [FFmpeg](https://ffmpeg.org/) を収録します。このビルド構成の
-FFmpeg は GNU General Public License version 3 or later で提供されます。
-詳細は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) と
+```shell
+docker run --rm aoirint/ffmpeg:ubuntu -version
+```
+
+aoirint/FFmpeg 版も同じように起動できます。
+
+```shell
+docker run --rm aoirint/ffmpeg:ubuntu-aoirint -version
+```
+
+NVIDIA 版で GPU を使うには、ホストで Docker コンテナから GPU を利用できる構成が必要です。
+NVENC を使う場合は、Linux・Windows ともに NVIDIA ドライバー 610.0 以降が必要です。
+
+```shell
+docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia -version
+```
+
+GPU を使った変換、指定バージョンや edge のタグは [使い方](docs/usage.md) を参照してください。
+
+## 関連文書
+
+- [Docker Hub](https://hub.docker.com/r/aoirint/ffmpeg)
+- [変更履歴](CHANGELOG.md)
+- [開発者向け文書](docs/README.md)
+
+この構成の FFmpeg は GNU General Public License version 3 or later で提供されます。
+詳細は [第三者ソフトウェアの通知](THIRD_PARTY_NOTICES.md) と
 [FFmpeg のライセンス情報](https://ffmpeg.org/legal.html)を参照してください。
-
-## イメージの構成
-
-実行用イメージは Ubuntu 26.04 を基盤とし、FFmpeg / ffprobe / ffplay、既存の x264 / LAME / VMAF CLI と実行時の依存関係を収録します。
-compiler、Git、開発用 header、静的 library は含めません。
-追加コンパイルが必要な場合は `docker build --target ffmpeg-build` で開発用ステージを利用できます。
-NVIDIA 版も Ubuntu の実行用イメージを使い、CUDA / cuDNN の開発環境は含めません。
-GPU の利用にはホスト側の NVIDIA Container Toolkit が必要です。
-このソースでビルドした NVIDIA 版では、Linux / Windows ともに NVIDIA ドライバー 610.0 以降が必要です。
-CUDA decode には `--gpus 'all,"capabilities=compute,video"'` を指定します。
-Ubuntu 26.04 では旧 Mesa VDPAU backend の同梱を終了します。VA-API と NVIDIA NVENC / NVDEC の構成は保持します。
-旧 VDPAU 利用時の移行と backend の範囲は [ハードウェア decode](docs/architecture/image-variants.md#ハードウェア-decode-の範囲)を参照してください。
-ビルド引数とステージの責務は [イメージ構成](docs/architecture/image-variants.md)を参照してください。
-
-## タグ一覧
-
-|バリアント|イメージ|説明|
-|:--|:--|:--|
-|latest|`aoirint/ffmpeg:latest`|`ffmpeg:ubuntu` と同じ|
-|latest|`aoirint/ffmpeg:v<version>`|`ffmpeg:v<version>-ubuntu` と同じ|
-|latest|`aoirint/ffmpeg:edge`|`ffmpeg:edge-ubuntu` と同じ|
-|ubuntu|`aoirint/ffmpeg:ubuntu`|ubuntu版の最新リリース（プレリリース除く）|
-|ubuntu|`aoirint/ffmpeg:v<version>-ubuntu`|ubuntu版の指定バージョン|
-|ubuntu|`aoirint/ffmpeg:edge-ubuntu`|ubuntu版のmainブランチ最新ビルド|
-|nvidia|`aoirint/ffmpeg:nvidia`|NVIDIA GPU ハードウェアコーデック対応版の最新リリース（プレリリース除く）|
-|nvidia|`aoirint/ffmpeg:v<version>-nvidia`|NVIDIA GPU ハードウェアコーデック対応版の指定バージョン|
-|nvidia|`aoirint/ffmpeg:edge-nvidia`|NVIDIA GPU対応版のmainブランチ最新ビルド|
-|ubuntu-aoirint|`aoirint/ffmpeg:ubuntu-aoirint`|aoirint Fork版の最新リリース（プレリリース除く）|
-|ubuntu-aoirint|`aoirint/ffmpeg:v<version>-ubuntu-aoirint`|aoirint Fork版の指定バージョン|
-|ubuntu-aoirint|`aoirint/ffmpeg:edge-ubuntu-aoirint`|aoirint Fork版のmainブランチ最新ビルド|
-
-- Docker Hub: <https://hub.docker.com/r/aoirint/ffmpeg>
-
-## ビルドキャッシュ
-
-|バリアント|イメージ|説明|
-|:--|:--|:--|
-|ubuntu|`ghcr.io/aoirint/ffmpeg:ubuntu-buildcache`|ubuntu版のbuildcache（latest系）|
-|ubuntu|`ghcr.io/aoirint/ffmpeg:edge-ubuntu-buildcache`|ubuntu版のbuildcache（edge系）|
-|nvidia|`ghcr.io/aoirint/ffmpeg:nvidia-buildcache`|NVIDIA GPU ハードウェアコーデック対応版のbuildcache（latest系）|
-|nvidia|`ghcr.io/aoirint/ffmpeg:edge-nvidia-buildcache`|NVIDIA GPU ハードウェアコーデック対応版のbuildcache（edge系）|
-|ubuntu-aoirint|`ghcr.io/aoirint/ffmpeg:ubuntu-aoirint-buildcache`|aoirint Fork版のbuildcache（latest系）|
-|ubuntu-aoirint|`ghcr.io/aoirint/ffmpeg:edge-ubuntu-aoirint-buildcache`|aoirint Fork版のbuildcache（edge系）|
-
-## リリース手順
-
-1. ルートの `VERSION` をリリースするバージョンへ変更する
-   - 例: `0.6.0`（`v` prefixは付けない）
-2. 変更をPull Requestでレビューし、`main`へマージする
-3. CIがDocker HubとGHCRの公開物を検証した後、`v<VERSION>`のimmutableな
-   GitHub Releaseを作成したことを確認する
-
-既存の `VERSION` のまま `main` を更新した場合は、edge系イメージだけを更新します。
-
-## 用例
-
-### 通常版
-
-```shell
-docker pull aoirint/ffmpeg:ubuntu
-
-docker run --rm aoirint/ffmpeg:ubuntu -help
-docker run --rm aoirint/ffmpeg:ubuntu -formats
-docker run --rm aoirint/ffmpeg:ubuntu -encoders
-docker run --rm aoirint/ffmpeg:ubuntu -decoders
-```
-
-### NVIDIA GPU ハードウェアコーデック対応版
-
-```shell
-docker pull aoirint/ffmpeg:nvidia
-
-docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia -help
-docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia -formats
-docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia -encoders
-docker run --rm --gpus all,capabilities=video aoirint/ffmpeg:nvidia -decoders
-```
-
-### aoirint Fork版
-
-[aoirint/FFmpeg](https://github.com/aoirint/FFmpeg)でメンテナンスしているFork版。
-
-```shell
-docker pull aoirint/ffmpeg:ubuntu-aoirint
-
-docker run --rm aoirint/ffmpeg:ubuntu-aoirint -help
-docker run --rm aoirint/ffmpeg:ubuntu-aoirint -formats
-docker run --rm aoirint/ffmpeg:ubuntu-aoirint -encoders
-docker run --rm aoirint/ffmpeg:ubuntu-aoirint -decoders
-```

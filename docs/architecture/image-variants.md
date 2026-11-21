@@ -45,7 +45,6 @@ x265 は同じ snapshot の APT package を使い、nv-codec-headers は `nvcode
 CA 証明書、字幕用フォント、ライセンス・特許通知を収録します。
 TLS の隔離検証にも使う OpenSSL CLI を残します。
 compiler、assembler、Git、開発用 header、静的 archive、pkg-config metadata は収録しません。
-開発や追加コンパイルには `--target ffmpeg-build` を使います。
 
 NVIDIA 版のビルド基盤は CUDA 13.4.3 / cuDNN の Ubuntu 26.04 イメージです。
 Ubuntu と CUDA の公式 tag・manifest を確認し、双方を index digest へ固定します。

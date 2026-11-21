@@ -22,7 +22,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ### Notes
 
-- NVIDIA 版で NVENC を利用するには、Linux / Windows ともにホストの NVIDIA ドライバー 610.0 以降が必要。
+- NVIDIA 版で NVENC を使う場合、ホストの最低ドライバーバージョンが Linux では 550.54.14 から、
+  Windows では 551.76 から、いずれも 610.0 に上がります。610.0 未満では NVENC を利用できません。
 
 ## [v0.10.0] - 2026-10-25 UTC
 

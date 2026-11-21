@@ -4,7 +4,7 @@ ARG RUNTIME_IMAGE=ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a3
 FROM $RUNTIME_IMAGE AS ca-bootstrap
 
 # Verify the bootstrap package against the signed resolute-security index.
-ADD --checksum=sha256:a7e3bf769aec16ba21ca39cba180d6d311dafcbae68346a05f137c5cc26c9ca6 https://snapshot.ubuntu.com/ubuntu/20261112T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.2_all.deb /tmp/ca-certificates.deb
+ADD --checksum=sha256:a7e3bf769aec16ba21ca39cba180d6d311dafcbae68346a05f137c5cc26c9ca6 https://snapshot.ubuntu.com/ubuntu/20261114T000000Z/pool/main/c/ca-certificates/ca-certificates_20260816ubuntu0.26.04.2_all.deb /tmp/ca-certificates.deb
 RUN <<EOF
     set -eux
     dpkg-deb -x /tmp/ca-certificates.deb /tmp/ca-bootstrap
@@ -22,7 +22,7 @@ ARG INSTALL_PREFIX=/usr/local
 ARG BUILD_JOBS=4
 
 # Keep APT inputs older than seven days; review the snapshot before advancing it.
-ARG UBUNTU_SNAPSHOT=20261112T000000Z
+ARG UBUNTU_SNAPSHOT=20261114T000000Z
 RUN <<EOF
     set -eux
     sed -i -E "s#http://(archive|security).ubuntu.com/ubuntu/?#https://snapshot.ubuntu.com/ubuntu/${UBUNTU_SNAPSHOT}/#g" /etc/apt/sources.list.d/ubuntu.sources
@@ -78,7 +78,7 @@ EOF
 FROM build-base AS nasm
 # nasm
 # https://www.nasm.us/
-ARG NASM_VERSION=2.16.03
+ARG NASM_VERSION=3.02
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/nasm
@@ -159,7 +159,7 @@ EOF
 FROM library-base AS opus
 # libopus
 # https://github.com/xiph/opus.git
-ARG OPUS_VERSION=v1.4
+ARG OPUS_VERSION=v1.6.1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libopus
@@ -176,8 +176,8 @@ EOF
 FROM library-base AS aom
 # libaom
 # https://aomedia.googlesource.com/aom.git
-ARG AOM_VERSION=de4c1d1edc49723a78954d30a83690aa1937422f
-# libaom v3.15.0
+ARG AOM_VERSION=b141d9c45db236335351c8a4b2a14b3ade27c937
+# libaom v3.15.3
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/libaom
@@ -199,7 +199,7 @@ EOF
 FROM library-base AS svtav1
 # libsvtav1
 # https://gitlab.com/AOMediaCodec/SVT-AV1
-ARG SVTAV1_VERSION=v2.1.0
+ARG SVTAV1_VERSION=v4.3.0
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/SVT-AV1
@@ -237,7 +237,7 @@ EOF
 FROM library-base AS dav1d
 # libdav1d
 # https://code.videolan.org/videolan/dav1d
-ARG DAV1D_VERSION=1.4.2
+ARG DAV1D_VERSION=1.5.4
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/dav1d
@@ -255,7 +255,7 @@ EOF
 FROM library-base AS vmaf
 # libvmaf
 # https://github.com/Netflix/vmaf
-ARG VMAF_VERSION=v3.0.0
+ARG VMAF_VERSION=v3.2.1
 RUN <<EOF
     set -eux
     mkdir -p ${SOURCE_PREFIX}/vmaf

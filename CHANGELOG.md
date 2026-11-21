@@ -13,6 +13,12 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 - Ubuntu スナップショットを更新し、[USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1) の APT 修正版を採用。
   初回から HTTPS を使い、CA バンドルの初期化と APT による CA パッケージのインストールを分離。
 
+- Ubuntu スナップショットを更新し、[USN-9065-1](https://ubuntu.com/security/notices/USN-9065-1) の glibc 修正版を採用。
+
+### Changed
+
+- NASM、Opus、libaom、SVT-AV1、dav1d、VMAF を更新。
+
 ## [v0.10.0] - 2026-10-25 UTC
 
 ### Changed

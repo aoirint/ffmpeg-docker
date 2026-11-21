@@ -8,6 +8,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+## [v0.11.0] - 2026-11-21 UTC
+
 ### Security
 
 - glibc のセキュリティ修正
@@ -295,7 +297,8 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
   追加しました。
 - Docker Hub へイメージを公開する GitHub Actions workflow を追加しました。
 
-[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/aoirint/ffmpeg-docker/compare/v0.11.0...HEAD
+[v0.11.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.10.0...v0.11.0
 [v0.10.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.9.0...v0.10.0
 [v0.9.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.8.0...v0.9.0
 [v0.8.0]: https://github.com/aoirint/ffmpeg-docker/compare/v0.7.0...v0.8.0

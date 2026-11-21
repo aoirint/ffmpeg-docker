@@ -42,6 +42,19 @@ GitHub Release の手動作成、タグの push、workflow dispatch はリリー
 - `Notes`: 「NVIDIA 版で NVENC を使うための最低ドライバー要件を、Linux・Windows ともに 610.0 に変更しました。」
   のように互換性の変更を示します。理由や、前のリリースでの OS ごとの要件は、必要ならその下に補足します。
 
+## ビルドキャッシュ
+
+GitHub Actions はバリアントごとに GHCR のビルドキャッシュを使います。
+以下のタグは実行用イメージではありません。
+
+| バリアント | 安定版のキャッシュ | edge のキャッシュ |
+| --- | --- | --- |
+| ubuntu | `ubuntu-buildcache` | `edge-ubuntu-buildcache` |
+| nvidia | `nvidia-buildcache` | `edge-nvidia-buildcache` |
+| ubuntu-aoirint | `ubuntu-aoirint-buildcache` | `edge-ubuntu-aoirint-buildcache` |
+
+キャッシュのリポジトリは `ghcr.io/aoirint/ffmpeg` です。
+
 ## 認証と権限
 
 | 種類 | 名前 | 用途 |

@@ -119,7 +119,7 @@ EOF
 FROM library-base AS vpx
 # libvpx
 # https://chromium.googlesource.com/webm/libvpx.git
-# libvpx v1.17.0
+# v1.17.0
 ARG LIBVPX_VERSION=6df3ec34557879fff673706f4a1d9fbd0f3a6f0e
 RUN <<EOF
     set -eux
@@ -185,7 +185,7 @@ EOF
 FROM library-base AS aom
 # libaom
 # https://aomedia.googlesource.com/aom.git
-# libaom v3.15.3
+# v3.15.3
 ARG AOM_VERSION=b141d9c45db236335351c8a4b2a14b3ade27c937
 RUN <<EOF
     set -eux

@@ -8,6 +8,10 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ## [Unreleased]
 
+### Changed
+
+- 通常版と NVIDIA 版の FFmpeg を 9.1 へ更新。派生版も同じ版を基点とし、既存の RTMP strict path パッチを維持。
+
 ### Security
 
 - Ubuntu スナップショットを更新し、[USN-8996-1](https://ubuntu.com/security/notices/USN-8996-1) の APT 修正版を採用。

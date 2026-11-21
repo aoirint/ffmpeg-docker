@@ -38,7 +38,7 @@ COPY --from=ca-bootstrap /ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 # dependencies
 RUN <<EOF
     set -eux
-    apt-get update --error-on=any
+    apt-get update
     apt-get -y upgrade
     apt-get -y install \
         autoconf \
@@ -70,7 +70,6 @@ RUN <<EOF
         zlib1g-dev \
         meson \
         ninja-build
-    update-ca-certificates --fresh
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
@@ -370,7 +369,7 @@ COPY --from=build-base /etc/apt/apt.conf.d/99snapshot /etc/apt/apt.conf.d/99snap
 COPY --from=ca-bootstrap /ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 RUN <<EOF
     set -eux
-    apt-get update --error-on=any
+    apt-get update
     apt-get -y upgrade
     apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -400,7 +399,6 @@ RUN <<EOF
         libstdc++6 \
         openssl \
         zlib1g
-    update-ca-certificates --fresh
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF

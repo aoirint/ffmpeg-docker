@@ -49,7 +49,6 @@ RTMP 接続処理が変わった場合は、パッチが適用できたことだ
 
 FFmpeg 9.0.2 の組み込み TLS は peer certificate 検証が既定で有効です。
 GnuTLS backend は信頼チェーンと接続先ホスト名を検証します。
-旧版からの更新では、従来接続できた未信頼証明書の相手が拒否される場合があります。
 検証を無効化せず、隔離した TLS peer で受入・拒否を確認します。
 
 根拠: [n9.0.2 tls.h](https://github.com/FFmpeg/FFmpeg/blob/n9.0.2/libavformat/tls.h)、

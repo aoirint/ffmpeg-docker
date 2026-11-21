@@ -116,7 +116,7 @@ jobs:
             is_default_tag: false
             base_image: ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944
             ffmpeg_repository_url: https://github.com/aoirint/FFmpeg.git
-            ffmpeg_version: cfb80a31e8f059443bed544f32c3e93577115ce3 # 9.1 strict-path fork
+            ffmpeg_version: fed6921cccb37a839095552f4f71a1c765c8de73 # 9.1-aoirint.1
             enable_nvcodec: 0
     steps:
       - name: Checkout integrated source

@@ -4,9 +4,9 @@
 
 - upstream mirror: [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg)
 - fork: [aoirint/FFmpeg](https://github.com/aoirint/FFmpeg)
-- 検証した安定版 fork コミット: `a6838d7635f59fc2115470d15861bdbbecc6cae6`
-- 対応する upstream 安定版: `n9.0.2`
-- 検証日: 2026-10-24
+- 検証した安定版 fork コミット: `fed6921cccb37a839095552f4f71a1c765c8de73`
+- 対応する upstream 安定版: `n9.1`
+- 検証日: 2026-11-21
 
 ## ソースの関係
 
@@ -47,9 +47,9 @@ RTMP 接続処理が変わった場合は、パッチが適用できたことだ
 
 ## TLS 検証
 
-FFmpeg 9.0.2 の組み込み TLS は peer certificate 検証が既定で有効です。
+FFmpeg 9.1 の組み込み TLS は peer certificate 検証が既定で有効です。
 GnuTLS backend は信頼チェーンと接続先ホスト名を検証します。
 検証を無効化せず、隔離した TLS peer で受入・拒否を確認します。
 
-根拠: [n9.0.2 tls.h](https://github.com/FFmpeg/FFmpeg/blob/n9.0.2/libavformat/tls.h)、
-[n9.0.2 GnuTLS backend](https://github.com/FFmpeg/FFmpeg/blob/n9.0.2/libavformat/tls_gnutls.c)。
+根拠: [n9.1 tls.h](https://github.com/FFmpeg/FFmpeg/blob/n9.1/libavformat/tls.h)、
+[n9.1 GnuTLS backend](https://github.com/FFmpeg/FFmpeg/blob/n9.1/libavformat/tls_gnutls.c)。

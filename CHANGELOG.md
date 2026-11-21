@@ -17,6 +17,7 @@ v0.4.0 以前の項目は、2026-08-11 に Git タグ、GitHub Release、コミ�
 
 ### Changed
 
+- FFmpeg v9.1 に更新しました。
 - Ubuntu の APT スナップショットを 20261114T000000Z に更新しました。
 - Opus v1.6.1 に更新しました。
 - libaom v3.15.3 に更新しました。

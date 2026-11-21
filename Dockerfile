@@ -339,8 +339,8 @@ ARG ENABLE_NVCODEC=0
 # ffmpeg
 # https://ffmpeg.org/download.html
 ARG FFMPEG_REPOSITORY_URL=https://github.com/FFmpeg/FFmpeg.git
-ARG FFMPEG_VERSION=946fcce07b6dcd0331c8cc609192aeff5e1924f8
-# upstream n9.0.2
+ARG FFMPEG_VERSION=74e4393595cf2b5857f0da925c4e0dd74ea306e5
+# upstream n9.1
 RUN <<EOF
     set -eux
 
